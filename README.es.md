@@ -43,13 +43,17 @@ grupo de chat.
 4. El bot mantiene un único mensaje por participante actualizado con el
    estado actual del código, editándolo cada vez que alguien reporta
    algo nuevo — no inunda el chat con un mensaje nuevo por cada reporte.
-5. Si dos personas reportan valores distintos para la misma posición,
-   ambos se conservan: el bot muestra cada posible código completo en un
-   bloque fácil de copiar, con cuántas personas lo respaldan — y, en los
-   menos respaldados, quién los ha reportado, para que quien ha creado
-   el evento pueda detectar un error o un troll. Si lo que envías no
-   encaja con la posición esperada, o contradice lo que ya hay, el bot
-   te pide confirmación antes de registrarlo.
+5. Si dos personas distintas reportan valores distintos para la misma
+   posición, ambos se conservan: el bot muestra cada posible código
+   completo en un bloque fácil de copiar, con cuántas personas lo
+   respaldan — y, en los menos respaldados, quién los ha reportado, para
+   que quien ha creado el evento pueda detectar un error o un troll. Si
+   lo que envías no encaja con la posición esperada, o contradice lo que
+   **otra persona** ya ha reportado, el bot te pide confirmación antes
+   de registrarlo. Corregir tu **propio** reporte anterior es distinto:
+   no hace falta confirmación, tu valor anterior en esa posición se
+   sustituye directamente — y si era lo único que mantenía una
+   discrepancia, la discrepancia desaparece al instante.
 6. Quien ha creado el evento resuelve una discrepancia con `/resolve`, y
    puede marcar a un participante como de confianza o como troll si hace
    falta. Marcar a alguien como troll, solo para ese evento, descarta el

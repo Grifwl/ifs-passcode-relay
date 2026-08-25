@@ -41,13 +41,17 @@ group chat.
    current state of the code, editing it in place every time someone
    reports something new — it does not spam the chat with a new message
    per report.
-5. If two people report different values for the same position, both are
-   kept: the bot shows every resulting full-code possibility in its own
-   easy-to-copy block, with how many people back each one — and, for the
-   least-backed ones, who reported them, so the event's creator can spot
-   a mistake or a troll. If what you send doesn't match the expected
-   position, or contradicts what's already there, the bot asks you to
-   confirm before recording it.
+5. If two different people report different values for the same
+   position, both are kept: the bot shows every resulting full-code
+   possibility in its own easy-to-copy block, with how many people back
+   each one — and, for the least-backed ones, who reported them, so the
+   event's creator can spot a mistake or a troll. If what you send
+   doesn't match the expected position, or contradicts what someone
+   *else* already reported, the bot asks you to confirm before recording
+   it. Correcting your **own** earlier report is different: no
+   confirmation needed, your previous value there is simply replaced —
+   and if that was the only thing keeping a position in disagreement,
+   the disagreement resolves itself right away.
 6. The event's creator settles a disagreement with `/resolve`, and can
    mark a participant as trusted or as a troll if needed. Marking
    someone a troll, for that event only, discards the rest of their

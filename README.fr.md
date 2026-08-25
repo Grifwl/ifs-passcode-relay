@@ -43,14 +43,19 @@ dans un groupe de discussion.
 4. Le bot maintient un seul message par participant à jour avec l'état
    actuel du code, en le modifiant à chaque nouveau signalement — il
    n'inonde pas la discussion d'un nouveau message à chaque fois.
-5. Si deux personnes signalent des valeurs différentes pour la même
-   position, les deux sont conservées : le bot affiche chaque code
-   complet possible dans son propre bloc facile à copier, avec le nombre
-   de personnes qui le confirment — et, pour les moins confirmés, qui
-   les a signalés, afin que la personne qui a créé l'événement puisse
-   repérer une erreur ou un troll. Si ce que vous envoyez ne correspond
-   pas à la position attendue, ou contredit ce qui existe déjà, le bot
-   vous demande confirmation avant de l'enregistrer.
+5. Si deux personnes différentes signalent des valeurs différentes pour
+   la même position, les deux sont conservées : le bot affiche chaque
+   code complet possible dans son propre bloc facile à copier, avec le
+   nombre de personnes qui le confirment — et, pour les moins confirmés,
+   qui les a signalés, afin que la personne qui a créé l'événement
+   puisse repérer une erreur ou un troll. Si ce que vous envoyez ne
+   correspond pas à la position attendue, ou contredit ce qu'**une
+   autre personne** a déjà signalé, le bot vous demande confirmation
+   avant de l'enregistrer. Corriger votre **propre** signalement
+   précédent est différent : aucune confirmation nécessaire, votre
+   ancienne valeur à cette position est simplement remplacée — et si
+   c'était la seule chose qui maintenait un désaccord, le désaccord
+   disparaît aussitôt.
 6. La personne qui a créé l'événement résout un désaccord avec
    `/resolve`, et peut marquer un participant comme fiable ou comme
    troll si besoin. Marquer quelqu'un comme troll, pour cet événement

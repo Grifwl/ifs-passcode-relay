@@ -109,10 +109,13 @@ is ever supplied.
   `user_id` (PK), `event_id`, `chat_id`, `status_message_id` (id of the
   live-updating status message edited on every passcode change),
   `joined_at`.
-- **`passcode_reports`** — append-only log of every accepted submission
-  (including deliberate duplicates created via the confirmation prompt,
-  see below). This is the source of truth; everything else is derived
-  from it.
+- **`passcode_reports`** — log of every accepted submission (including
+  deliberate duplicates from two different agents disagreeing, created
+  via the confirmation prompt below), append-only with exactly one
+  exception: a user's own prior row at a position is deleted when they
+  later correct that same position (see "Self-correction vs.
+  disagreeing with someone else"). This is the source of truth;
+  everything else is derived from it.
   `id` (PK), `event_id`, `position` (slot index), `value`, `user_id`,
   `display_name_snapshot`, `created_at`.
 - **`passcode_candidates`** — a **SQL view**, not a stored table: distinct
@@ -188,21 +191,46 @@ ABC12CYPHER345XY
 ```
 👥 1 — @suspicious_agent ⚠️
 
+### Self-correction vs. disagreeing with someone else
+
+Before anything else, a submission is checked against **that same
+user's own** most recent report at that position, if any:
+
+- If it's identical, it's a no-op (nothing written, a short
+  acknowledgement is enough).
+- If it **differs**, this is treated as the agent fixing their own
+  mistake, not a new disagreement: no confirmation is needed for this
+  reason, their previous report(s) at that position are **deleted**, and
+  the new value is inserted in their place. `passcode_reports` is
+  therefore append-only with exactly one exception — a user's own prior
+  row at a position is removed when they later correct that same
+  position.
+  If their old value was the only thing keeping that position in
+  disagreement (e.g. they were the sole supporter of a minority
+  candidate), the disagreement disappears immediately as a side effect —
+  the event's creator does **not** need to `/resolve` it.
+
+Only once this self-correction case doesn't apply (i.e. the user has no
+prior report at that position, or is resubmitting the same value someone
+*else* already reported) do the confirmation rules below kick in.
+
 ### Confirmation on conflicting or pattern-breaking input
 
 A submission triggers a Sí/No inline-keyboard confirmation (via callback
 query, not a stored "pending" row — the event id, position and value fit
 directly in the button's `callback_data`) whenever either is true:
 
-- **The position already has a different value** recorded (from anyone,
-  including the same participant correcting themselves). Confirming adds
-  the new value as an additional candidate — it does **not** replace the
-  old one, since the pattern-7 rule below relies on being able to keep
-  operating even on an event whose pattern was set up wrong.
+- **The position already has a different value reported by someone
+  else.** Confirming adds the new value as an additional candidate — it
+  does **not** replace the other person's, since resolving a genuine
+  disagreement between two different agents is the event creator's call
+  via `/resolve`, not something either agent can override unilaterally
+  the way a self-correction can.
 - **The value's shape doesn't match its slot's expected type** (a digit
   where the pattern expects a letter, or vice versa). This is a soft
   check only: confirming still accepts the value as-is, in case the
-  pattern itself is the thing that's wrong, not the report.
+  pattern itself is the thing that's wrong, not the report. This check
+  applies regardless of whether the submission is a self-correction.
 
 Declining (No) discards the submission entirely — nothing is written to
 `passcode_reports`. Both conditions can apply to the same submission at

@@ -42,13 +42,17 @@ recollir captures de pantalla manualment en un grup de xat.
 4. El bot manté un únic missatge per participant actualitzat amb l'estat
    actual del codi, editant-lo cada cop que algú reporta alguna cosa
    nova — no inunda el xat amb un missatge nou per cada report.
-5. Si dues persones reporten valors diferents per a la mateixa posició,
-   totes dues es conserven: el bot mostra cada possible codi complet en
-   un bloc fàcil de copiar, amb quantes persones el donen per bo — i, en
-   els menys donats per bons, qui els ha reportat, perquè qui ha creat
-   l'esdeveniment pugui detectar un error o un troll. Si el que envies
-   no encaixa amb la posició esperada, o contradiu el que ja hi ha, el
-   bot et demana confirmació abans de registrar-ho.
+5. Si dues persones diferents reporten valors diferents per a la
+   mateixa posició, totes dues es conserven: el bot mostra cada possible
+   codi complet en un bloc fàcil de copiar, amb quantes persones el
+   donen per bo — i, en els menys donats per bons, qui els ha reportat,
+   perquè qui ha creat l'esdeveniment pugui detectar un error o un
+   troll. Si el que envies no encaixa amb la posició esperada, o
+   contradiu el que **algú altre** ja ha reportat, el bot et demana
+   confirmació abans de registrar-ho. Corregir el teu **propi** report
+   anterior és diferent: no cal confirmació, el teu valor anterior en
+   aquella posició se substitueix directament — i si era l'única cosa
+   que mantenia una discrepància, la discrepància desapareix a l'acte.
 6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve`, i
    pot marcar un participant com a de confiança o com a troll si cal.
    Marcar algú com a troll, només per a aquell esdeveniment, descarta la
