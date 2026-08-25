@@ -7,6 +7,8 @@ export type EventStatus = "active" | "closed";
 export interface User {
   userId: number;
   language: SupportedLanguage;
+  /** Telegram @username, refreshed on every interaction; null if the user has none set. */
+  username: string | null;
   createdAt: string;
 }
 

@@ -6,7 +6,7 @@ import { getParticipant, removeParticipant } from "../db/participants.js";
 import { getEventById } from "../db/events.js";
 
 export async function handleLeave(ctx: Context, env: Env): Promise<void> {
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
   const participant = await getParticipant(env.DB, user.userId);
 
   if (!participant) {

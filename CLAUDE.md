@@ -342,7 +342,7 @@ operation, not just a side effect of `/newevent`.
 | `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
 | `/untrust <user>` | creator | Clear a participant's trust flag back to neutral. |
 | `/kick <user>` | creator | Remove a participant from the event. |
-| `/closeevent` | creator | Requires every position resolved; pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
+| `/closeevent` | creator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
 | `/events` | anyone | List events the caller created. |
 
 Letters and word slots are always **displayed uppercase**; input is
@@ -359,11 +359,18 @@ accepted in any case and normalized on the way in.
   conflict expansion, variant capping, trust filtering, language
   fallback) lives in dedicated, unit-testable functions, not inline in
   handlers.
-- Never log a raw grammY `BotError` or `Context` (e.g. `console.error(err)`
-  from inside `bot.catch(...)`): `Context.api` carries the bot token in
-  plain text, so dumping the whole object leaks it into Worker logs.
-  Log a sanitized summary instead — e.g. the update id and
-  `err.error.message` — as `src/bot.ts`'s `bot.catch` handler does.
+- Never log a raw grammY `BotError` or `Context` (e.g. `console.error(err)`):
+  `Context.api` carries the bot token in plain text, so dumping the
+  whole object leaks it into Worker logs. Log a sanitized summary
+  instead — just `err.message` (a plain string), never the error object
+  itself. Note `bot.catch(...)` is **not** the place to do this: it only
+  fires for long polling (see `Bot.handleUpdates` vs. `Bot.handleUpdate`
+  in grammY's source) and is silently inert in webhook mode. For a
+  webhook-based bot like this one, wrap the call to the
+  `webhookCallback(...)`-produced handler in `src/index.ts`'s route in a
+  try/catch instead — that's where `handleUpdate()`'s rejection actually
+  surfaces — and still return 200 from the catch branch so Telegram
+  doesn't retry the same failing update forever.
 - D1 schema changes go through `wrangler d1 migrations` files under
   `migrations/`, never hand-edited against a live database.
 

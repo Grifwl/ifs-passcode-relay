@@ -5,7 +5,7 @@ import { t, resolveLanguage } from "../i18n/index.js";
 import { getEventByCode } from "../db/events.js";
 
 export async function handleShareText(ctx: Context, env: Env): Promise<void> {
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
   const parts = String(ctx.match ?? "").trim().split(/\s+/).filter(Boolean);
   const code = parts[0];
 

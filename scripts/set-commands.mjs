@@ -16,6 +16,16 @@ const COMMANDS = [
   { command: "join", description: "Join an event by its code" },
   { command: "leave", description: "Leave your current event" },
   { command: "myevent", description: "Show which event you're in" },
+  { command: "submit", description: "Report a value: /submit <position> <value>" },
+  { command: "status", description: "Show the current state of the code" },
+  { command: "resolve", description: "Settle a disagreement (creator)" },
+  { command: "unresolve", description: "Reopen a resolved position (creator)" },
+  { command: "trust", description: "Mark a participant as trusted (creator)" },
+  { command: "troll", description: "Exclude a participant's reports (creator)" },
+  { command: "untrust", description: "Clear a participant's trust flag (creator)" },
+  { command: "kick", description: "Remove a participant from the event (creator)" },
+  { command: "closeevent", description: "Freeze the event and announce the result (creator)" },
+  { command: "events", description: "List the events you've created" },
 ];
 
 function readBotToken() {

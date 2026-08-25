@@ -6,7 +6,7 @@ import { createEvent } from "../db/events.js";
 import { DEFAULT_PATTERN, isValidPattern } from "../domain/pattern.js";
 
 export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
   const raw = String(ctx.match ?? "").trim();
 
   if (!raw) {

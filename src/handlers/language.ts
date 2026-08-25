@@ -9,7 +9,7 @@ function isSupportedLanguage(code: string): code is SupportedLanguage {
 }
 
 export async function handleLanguage(ctx: Context, env: Env): Promise<void> {
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
   const arg = String(ctx.match ?? "").trim().toLowerCase();
 
   if (!arg) {

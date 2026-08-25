@@ -5,12 +5,13 @@ import { ensureUser } from "../session.js";
 import { t } from "../i18n/index.js";
 import { getEventByCode, getEventById } from "../db/events.js";
 import { getParticipant, joinEvent } from "../db/participants.js";
+import { deliverStatus } from "../services/broadcast.js";
 
 const CALLBACK_CANCEL = "join:cancel";
 const CALLBACK_CONFIRM_PREFIX = "join:confirm:";
 
 export async function handleJoin(ctx: Context, env: Env): Promise<void> {
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
   const code = String(ctx.match ?? "").trim().toUpperCase();
 
   if (!code) {
@@ -51,11 +52,14 @@ export async function handleJoin(ctx: Context, env: Env): Promise<void> {
 
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
   await ctx.reply(t(user.language, "join.joined", { name: event.name }));
+
+  const participant = await getParticipant(env.DB, user.userId);
+  if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);
 }
 
 export async function handleJoinCallback(ctx: Context, env: Env): Promise<void> {
   const data = ctx.callbackQuery?.data ?? "";
-  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code);
+  const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
 
   if (data === CALLBACK_CANCEL) {
     const current = await getParticipant(env.DB, user.userId);
@@ -81,4 +85,7 @@ export async function handleJoinCallback(ctx: Context, env: Env): Promise<void> 
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
   await ctx.answerCallbackQuery();
   await ctx.editMessageText(t(user.language, "join.switched", { name: event.name }));
+
+  const participant = await getParticipant(env.DB, user.userId);
+  if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);
 }
