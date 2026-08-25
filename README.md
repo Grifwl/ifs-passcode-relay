@@ -98,7 +98,7 @@ looking to contribute.
 - **Bot framework:** [grammY](https://grammy.dev).
 - **Database:** [Cloudflare D1](https://developers.cloudflare.com/d1/).
 - **Language:** TypeScript.
-- **Domain:** a subdomain of `grifwl.blue` (to be decided).
+- **Domain:** `ifspasscoderelay.grifwl.blue`.
 
 ## Setup guide
 
@@ -120,13 +120,29 @@ Worker, so they come last once implementation starts.
    - `/setdescription` — the long description shown on the bot's empty
      chat screen, before anyone has talked to it.
    - `/setabouttext` — the short bio shown on its profile page.
-   - `/setcommands` — paste the command list (see the reference table
-     above) so Telegram autocompletes them while typing; keep this in
-     sync whenever a command is added or removed.
    - `/setjoingroups` → *Disable*. The bot is built around private 1:1
      chats — each participant's live status message is edited in place,
      which only makes sense in a chat with just them and the bot — so
      group usage stays off.
+
+   There's no need for `/setcommands`: the bot registers its own command
+   list straight from the code via the Bot API's `setMyCommands`, so
+   Telegram shows autocomplete suggestions automatically and they can
+   never drift out of sync with a manually maintained BotFather list.
+
+#### Suggested description & about text
+
+Set the English version first with `/setdescription` and `/setabouttext`
+— it's what BotFather falls back to for any Telegram client language the
+bot doesn't have a translation for. Then, from the same menus, add the
+`ca`/`es`/`fr` versions below as per-language descriptions.
+
+| Language | `/setdescription` (long) | `/setabouttext` (short) |
+|---|---|---|
+| `en` | Collaboratively build your Ingress First Saturday event's redeemable passcode in real time. Report the character you found and its position — the bot keeps everyone's code in sync, flags disagreements, and announces the final result. Available in English, Català, Castellano and Français. Send /help to start, or /newevent to create one for your IFS. | Real-time collaborative passcode relay for Ingress First Saturday events. |
+| `ca` | Construeix en temps real, de manera col·laborativa, el passcode bescanviable del teu esdeveniment Ingress First Saturday. Reporta el caràcter que has trobat i la seva posició — el bot manté el codi sincronitzat per a tothom, marca les discrepàncies i anuncia el resultat final. Disponible en català, anglès, castellà i francès. Envia /help per començar, o /newevent per crear-ne un pel teu IFS. | Relleu col·laboratiu en temps real del passcode d'un Ingress First Saturday. |
+| `es` | Construye en tiempo real, de forma colaborativa, el passcode canjeable de tu evento Ingress First Saturday. Reporta el carácter que has encontrado y su posición — el bot mantiene el código sincronizado para todos, marca las discrepancias y anuncia el resultado final. Disponible en español, inglés, catalán y francés. Envía /help para empezar, o /newevent para crear uno para tu IFS. | Relevo colaborativo en tiempo real del passcode de un Ingress First Saturday. |
+| `fr` | Construisez en temps réel, de façon collaborative, le passcode échangeable de votre événement Ingress First Saturday. Signalez le caractère trouvé et sa position — le bot garde le code synchronisé pour tout le monde, signale les désaccords et annonce le résultat final. Disponible en français, anglais, catalan et espagnol. Envoyez /help pour commencer, ou /newevent pour en créer un pour votre IFS. | Relais collaboratif en temps réel du passcode d'un Ingress First Saturday. |
 
 ### 2. Create the Cloudflare Worker and D1 database
 
@@ -143,14 +159,22 @@ installed (`npm install -g wrangler`, or use `npx wrangler`).
 
 ### 3. Assign the subdomain
 
-1. In the Cloudflare dashboard, under the `grifwl.blue` zone, add the
-   chosen subdomain (e.g. `ifs.grifwl.blue` — exact name still to be
-   decided) as a [Custom
-   Domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
-   for the Worker (preferred over a plain Worker Route).
-2. Equivalently, this can be declared in `wrangler.toml` with a `routes`
-   entry using `custom_domain = true` for that hostname, applied on the
-   next `wrangler deploy`.
+The bot lives at **`ifspasscoderelay.grifwl.blue`**. Since the
+`grifwl.blue` zone is already on the same Cloudflare account used to
+deploy, this needs no manual dashboard step — declare it as a [Custom
+Domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+directly in `wrangler.toml`:
+
+```toml
+routes = [
+  { pattern = "ifspasscoderelay.grifwl.blue", custom_domain = true }
+]
+```
+
+`wrangler deploy` then provisions the DNS record and TLS certificate for
+it automatically. The dashboard is only needed as a fallback if the zone
+ever needs manual attention (e.g. it turns out to live on a different
+Cloudflare account than the one `wrangler` is logged into).
 
 ### 4. Publish the bot token as a secret
 
@@ -169,7 +193,7 @@ installed (`npm install -g wrangler`, or use `npx wrangler`).
 Once the Worker is deployed and reachable at its public URL:
 
 ```sh
-curl "https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=https://<subdomain>/telegram/webhook&secret_token=<TELEGRAM_WEBHOOK_SECRET>"
+curl "https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=https://ifspasscoderelay.grifwl.blue/telegram/webhook&secret_token=<TELEGRAM_WEBHOOK_SECRET>"
 ```
 
 Telegram then includes that same secret in an

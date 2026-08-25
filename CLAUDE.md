@@ -33,8 +33,15 @@ different dates), each with its own passcode. A Telegram user (an
 - **Database**: Cloudflare D1 (managed SQLite), accessed through the `DB`
   binding declared in `wrangler.toml`. All state lives in D1 — a Worker
   invocation must not rely on in-memory state surviving between requests.
-- **Domain**: a subdomain of `grifwl.blue` (exact subdomain TBD) is
-  mapped to the Worker via a route in `wrangler.toml`.
+- **Domain**: `ifspasscoderelay.grifwl.blue`, mapped to the Worker as a
+  Custom Domain declared directly in `wrangler.toml`'s `routes`
+  (`custom_domain = true`). Since the `grifwl.blue` zone is on the same
+  Cloudflare account used to deploy, `wrangler deploy` provisions the
+  DNS record and certificate on its own — no dashboard step needed.
+- **Command list**: registered from application code via the Bot API's
+  `setMyCommands` (grammY exposes this as `bot.api.setMyCommands(...)`),
+  not through BotFather's `/setcommands` — call it once on startup/deploy
+  so it can never drift from what the handlers actually implement.
 - **Secrets**: `BOT_TOKEN` is set with `wrangler secret put BOT_TOKEN` in
   production; for local development it goes in `.dev.vars` (gitignored).
 - **Webhook verification**: `setWebhook` is called with a random
