@@ -376,6 +376,8 @@ accepted in any case and normalized on the way in.
 
 ## Status
 
-Design phase complete. No application code has been written yet — see
-`README.md` for the current project status and setup instructions once
-they exist.
+Deployed and live at `@ifs_relay_bot`, running on the
+`ifspasscoderelay.grifwl.blue` Worker described above. Every command in
+the "Command reference" table is implemented. See `README.md` for the
+setup guide (now fully completed for this deployment) if standing up
+another instance.

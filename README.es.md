@@ -91,14 +91,14 @@ vez con `/language` y recordado a partir de entonces.
 
 ## Estado del proyecto
 
-Este proyecto está actualmente en **fase de diseño**. El modelo de
-interacción descrito arriba está cerrado, pero todavía no se ha escrito
-código de la aplicación. Consulta [`CLAUDE.md`](CLAUDE.md) (en inglés)
-para el diseño técnico completo (modelo de datos, algoritmo de
-resolución de conflictos, arquitectura de internacionalización) si
-quieres contribuir.
+**En marcha**, en [`@ifs_relay_bot`](https://t.me/ifs_relay_bot) en
+Telegram. Todos los comandos descritos arriba están implementados y
+desplegados. Consulta [`CLAUDE.md`](CLAUDE.md) (en inglés) para el
+diseño técnico completo (modelo de datos, algoritmo de resolución de
+conflictos, arquitectura de internacionalización) si quieres
+contribuir.
 
-## Arquitectura (prevista)
+## Arquitectura
 
 - **Runtime:** Cloudflare Workers, recibiendo las actualizaciones de
   Telegram vía webhook.

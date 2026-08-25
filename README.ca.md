@@ -90,13 +90,13 @@ un cop amb `/language` i recordat a partir de llavors.
 
 ## Estat del projecte
 
-Aquest projecte és actualment en **fase de disseny**. El model
-d'interacció descrit més amunt està tancat, però encara no s'ha escrit
-codi de l'aplicació. Consulta [`CLAUDE.md`](CLAUDE.md) (en anglès) per al
+**En marxa**, a [`@ifs_relay_bot`](https://t.me/ifs_relay_bot) a
+Telegram. Totes les comandes descrites més amunt estan implementades i
+desplegades. Consulta [`CLAUDE.md`](CLAUDE.md) (en anglès) per al
 disseny tècnic complet (model de dades, algorisme de resolució de
 conflictes, arquitectura d'internacionalització) si vols contribuir-hi.
 
-## Arquitectura (prevista)
+## Arquitectura
 
 - **Runtime:** Cloudflare Workers, rebent les actualitzacions de Telegram
   via webhook.

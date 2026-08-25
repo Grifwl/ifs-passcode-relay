@@ -94,14 +94,14 @@ fois avec `/language` et mémorisée par la suite.
 
 ## État du projet
 
-Ce projet est actuellement en **phase de conception**. Le modèle
-d'interaction décrit ci-dessus est finalisé, mais aucun code applicatif
-n'a encore été écrit. Consultez [`CLAUDE.md`](CLAUDE.md) (en anglais)
-pour la conception technique complète (modèle de données, algorithme de
+**En ligne**, sur [`@ifs_relay_bot`](https://t.me/ifs_relay_bot) sur
+Telegram. Toutes les commandes décrites ci-dessus sont implémentées et
+déployées. Consultez [`CLAUDE.md`](CLAUDE.md) (en anglais) pour la
+conception technique complète (modèle de données, algorithme de
 résolution des conflits, architecture d'internationalisation) si vous
 souhaitez contribuer.
 
-## Architecture (prévue)
+## Architecture
 
 - **Runtime :** Cloudflare Workers, recevant les mises à jour de
   Telegram via webhook.

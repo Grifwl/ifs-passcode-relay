@@ -89,13 +89,13 @@ Every player sees the bot's messages in their own language, set once with
 
 ## Project status
 
-This project is currently in the **design phase**. The interaction model
-described above is finalized, but no application code has been written
-yet. See [`CLAUDE.md`](CLAUDE.md) for the full technical design (data
-model, conflict-resolution algorithm, i18n architecture) once you're
-looking to contribute.
+**Live**, at [`@ifs_relay_bot`](https://t.me/ifs_relay_bot) on Telegram.
+Every command described above is implemented and deployed. See
+[`CLAUDE.md`](CLAUDE.md) for the full technical design (data model,
+conflict-resolution algorithm, i18n architecture) if you're looking to
+contribute.
 
-## Architecture (planned)
+## Architecture
 
 - **Runtime:** Cloudflare Workers, receiving Telegram updates via
   webhook.
