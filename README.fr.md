@@ -28,10 +28,11 @@ dans un groupe de discussion.
 
 1. La personne qui organise le relais de passcode d'un IFS crée un
    événement avec `/newevent` et obtient un code court à partager avec
-   les participants (par exemple dans un groupe WhatsApp) — la personne
-   qui crée l'événement y est automatiquement inscrite, car être
-   l'organisateur ne dispense pas de chasser des portails aussi. Par
-   défaut, le passcode est censé suivre le modèle `XXX99*999XX` (trois
+   les participants (par exemple dans un groupe WhatsApp) — le bot
+   envoie aussitôt un texte d'invitation prêt à coller avec ce code, et
+   la personne qui crée l'événement y est automatiquement inscrite, car
+   être l'organisateur ne dispense pas de chasser des portails aussi.
+   Par défaut, le passcode est censé suivre le modèle `XXX99*999XX` (trois
    lettres, deux chiffres, un mot entier, trois chiffres, deux lettres)
    — la personne qui crée l'événement peut définir un autre modèle si
    cet IFS utilise un format différent. Le nom de l'événement n'a pas
@@ -85,7 +86,7 @@ dans un groupe de discussion.
 | `/start`, `/help` | tout le monde | Introduction et liste des commandes. |
 | `/language <code>` | tout le monde | Définit votre langue (`en`, `ca`, `es`, `fr`). |
 | `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès. |
-| `/sharetext <code> [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre, éventuellement dans une langue différente de la vôtre. |
+| `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement. |
 | `/leave` | participant | Quitter l'événement actuel. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |

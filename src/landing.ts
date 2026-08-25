@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from "./domain/language.js";
+import { BOT_URL } from "./domain/botInfo.js";
 
-const BOT_URL = "https://t.me/ifs_relay_bot";
 const REPO_URL = "https://github.com/Grifwl/ifs-passcode-relay";
 
 // GitHub's own "mark-github" Octicon (MIT-licensed), inlined so the
@@ -58,7 +58,7 @@ const en: LandingContent = {
   ],
   howHeading: "How it works",
   steps: [
-    "Whoever organizes the passcode relay creates an event with /newevent and gets a short join code to share with attendees — the creator is joined automatically.",
+    "Whoever organizes the passcode relay creates an event with /newevent — the creator is joined automatically, and gets a ready-to-paste invite message to forward to attendees.",
     "Every other attendee sends /join <code> to the bot.",
     'Found something? Just send it: "6 CIPHER" reports that position 6 is CIPHER. No command to remember.',
     "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's creator settles it with /resolve.",
@@ -81,7 +81,7 @@ const en: LandingContent = {
         { command: "/join <code>", description: "Join an event." },
         { command: "/leave", description: "Leave your current event." },
         { command: "/myevent", description: "Show which event you're in." },
-        { command: "/sharetext <code>", description: "Get a ready-to-paste invite message." },
+        { command: "/sharetext [code]", description: "(Re)get the invite message, defaulting to your current event." },
         { command: "/events", description: "List the events you've created." },
       ],
     },
@@ -125,7 +125,7 @@ const ca: LandingContent = {
   ],
   howHeading: "Com funciona",
   steps: [
-    "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent i obté un codi curt per compartir amb els assistents — qui el crea s'hi uneix automàticament.",
+    "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent — qui el crea s'hi uneix automàticament, i rep un text d'invitació llest per reenviar als assistents.",
     "La resta d'assistents envien /join <codi> al bot.",
     'Has trobat alguna cosa? Simplement l\'envies: "6 CIPHER" reporta que la posició 6 és CIPHER. No cal recordar cap comanda.',
     "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui ha creat l'esdeveniment ho resol amb /resolve.",
@@ -148,7 +148,7 @@ const ca: LandingContent = {
         { command: "/join <codi>", description: "Uneix-te a un esdeveniment." },
         { command: "/leave", description: "Surt de l'esdeveniment actual." },
         { command: "/myevent", description: "Mostra a quin esdeveniment estàs." },
-        { command: "/sharetext <codi>", description: "Obté un text d'invitació llest per compartir." },
+        { command: "/sharetext [codi]", description: "(Re)obté el text d'invitació, per defecte del teu esdeveniment actual." },
         { command: "/events", description: "Llista els esdeveniments que has creat." },
       ],
     },
@@ -192,7 +192,7 @@ const es: LandingContent = {
   ],
   howHeading: "Cómo funciona",
   steps: [
-    "Quien organiza el relevo de passcode crea un evento con /newevent y obtiene un código corto para compartir con los asistentes — quien lo crea se une automáticamente.",
+    "Quien organiza el relevo de passcode crea un evento con /newevent — quien lo crea se une automáticamente, y recibe un texto de invitación listo para reenviar a los asistentes.",
     "El resto de asistentes envía /join <código> al bot.",
     '¿Has encontrado algo? Simplemente lo envías: "6 CIPHER" reporta que la posición 6 es CIPHER. No hace falta recordar ningún comando.',
     "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien ha creado el evento lo resuelve con /resolve.",
@@ -215,7 +215,7 @@ const es: LandingContent = {
         { command: "/join <código>", description: "Únete a un evento." },
         { command: "/leave", description: "Sal del evento actual." },
         { command: "/myevent", description: "Muestra en qué evento estás." },
-        { command: "/sharetext <código>", description: "Obtén un texto de invitación listo para compartir." },
+        { command: "/sharetext [código]", description: "(Re)obtén el texto de invitación, por defecto de tu evento actual." },
         { command: "/events", description: "Lista los eventos que has creado." },
       ],
     },
@@ -259,7 +259,7 @@ const fr: LandingContent = {
   ],
   howHeading: "Comment ça marche",
   steps: [
-    "La personne qui organise le relais de passcode crée un événement avec /newevent et obtient un code court à partager avec les participants — la personne qui le crée y est inscrite automatiquement.",
+    "La personne qui organise le relais de passcode crée un événement avec /newevent — elle y est inscrite automatiquement, et reçoit un texte d'invitation prêt à transférer aux participants.",
     "Chaque autre participant envoie /join <code> au bot.",
     'Vous avez trouvé quelque chose ? Envoyez-le simplement : "6 CIPHER" signale que la position 6 est CIPHER. Pas besoin de retenir une commande.',
     "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui a créé l'événement tranche avec /resolve.",
@@ -282,7 +282,7 @@ const fr: LandingContent = {
         { command: "/join <code>", description: "Rejoindre un événement." },
         { command: "/leave", description: "Quitter l'événement actuel." },
         { command: "/myevent", description: "Affiche dans quel événement vous êtes." },
-        { command: "/sharetext <code>", description: "Obtient un texte d'invitation prêt à partager." },
+        { command: "/sharetext [code]", description: "(Re)obtient le texte d'invitation, par défaut de votre événement actuel." },
         { command: "/events", description: "Liste les événements que vous avez créés." },
       ],
     },

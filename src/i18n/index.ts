@@ -2,7 +2,12 @@ import { catalogs, type MessageKey } from "./catalog.js";
 import type { SupportedLanguage } from "../domain/language.js";
 
 export type { MessageKey } from "./catalog.js";
-export { SUPPORTED_LANGUAGES, resolveLanguage, type SupportedLanguage } from "../domain/language.js";
+export {
+  SUPPORTED_LANGUAGES,
+  resolveLanguage,
+  isSupportedLanguage,
+  type SupportedLanguage,
+} from "../domain/language.js";
 
 /**
  * Renders a user-facing message in the given language. Every string the

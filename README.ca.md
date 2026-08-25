@@ -27,9 +27,11 @@ recollir captures de pantalla manualment en un grup de xat.
 
 1. Qui organitza el relleu de passcode d'un IFS crea un esdeveniment amb
    `/newevent` i obté un codi curt per compartir amb els assistents (per
-   exemple, en un grup de WhatsApp) — qui crea l'esdeveniment s'hi uneix
-   automàticament, ja que ser l'organitzador no l'eximeix de caçar
-   portals també. Per defecte, es dona per fet que el passcode segueix
+   exemple, en un grup de WhatsApp) — el bot envia de seguida un text
+   d'invitació llest per enganxar amb aquest codi, i qui crea
+   l'esdeveniment s'hi uneix automàticament, ja que ser l'organitzador no
+   l'eximeix de caçar portals també. Per defecte, es dona per fet que el
+   passcode segueix
    el patró `XXX99*999XX` (tres lletres, dos números, una paraula
    sencera, tres números, dues lletres) — qui crea l'esdeveniment pot
    establir-ne un altre si aquell IFS fa servir un altre format. El nom
@@ -79,7 +81,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/start`, `/help` | tothom | Introducció i llista de comandes. |
 | `/language <codi>` | tothom | Estableix el teu idioma (`en`, `ca`, `es`, `fr`). |
 | `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés. |
-| `/sharetext <codi> [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi, opcionalment en un idioma diferent del teu. |
+| `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
 | `/leave` | participant | Surt de l'esdeveniment actual. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |

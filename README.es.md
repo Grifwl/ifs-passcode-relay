@@ -28,9 +28,11 @@ grupo de chat.
 
 1. Quien organiza el relevo de passcode de un IFS crea un evento con
    `/newevent` y obtiene un código corto para compartir con los
-   asistentes (por ejemplo, en un grupo de WhatsApp) — quien crea el
-   evento se une a él automáticamente, ya que ser el organizador no le
-   exime de cazar portales también. Por defecto, se da por hecho que el
+   asistentes (por ejemplo, en un grupo de WhatsApp) — el bot envía de
+   inmediato un texto de invitación listo para pegar con ese código, y
+   quien crea el evento se une a él automáticamente, ya que ser el
+   organizador no le exime de cazar portales también. Por defecto, se da
+   por hecho que el
    passcode sigue el patrón `XXX99*999XX` (tres letras, dos números, una
    palabra entera, tres números, dos letras) — quien crea el evento
    puede establecer otro patrón si ese IFS usa otro formato. El nombre
@@ -80,7 +82,7 @@ grupo de chat.
 | `/start`, `/help` | cualquiera | Introducción y lista de comandos. |
 | `/language <código>` | cualquiera | Establece tu idioma (`en`, `ca`, `es`, `fr`). |
 | `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso. |
-| `/sharetext <código> [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse, opcionalmente en un idioma distinto del tuyo. |
+| `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
 | `/join <código>` | cualquiera | Únete a un evento. |
 | `/leave` | participante | Sal del evento actual. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |

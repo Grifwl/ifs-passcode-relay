@@ -6,6 +6,7 @@ import { createEvent } from "../db/events.js";
 import { DEFAULT_PATTERN, isValidPattern } from "../domain/pattern.js";
 import { getParticipant, joinEvent } from "../db/participants.js";
 import { deliverStatus } from "../services/broadcast.js";
+import { renderShareText } from "../domain/shareText.js";
 
 export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
@@ -31,6 +32,11 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   }
 
   const event = await createEvent(env.DB, { name, pattern, createdBy: user.userId });
+
+  // Sent before the auto-join below, while the creator isn't a
+  // participant yet — same as anyone else sharing an event they haven't
+  // joined, the code is passed explicitly (see renderShareText).
+  await ctx.reply(renderShareText(user.language, event), { parse_mode: "HTML" });
 
   // The creator is also a participant from the moment the event exists —
   // being the organizer doesn't exempt them from hunting portals, and

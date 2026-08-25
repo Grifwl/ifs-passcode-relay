@@ -17,3 +17,8 @@ export function resolveLanguage(code: string | undefined): SupportedLanguage {
     ? (primary as SupportedLanguage)
     : "en";
 }
+
+/** Type guard for whether a free-form string is one of the bot's supported language codes. */
+export function isSupportedLanguage(code: string): code is SupportedLanguage {
+  return (SUPPORTED_LANGUAGES as readonly string[]).includes(code);
+}

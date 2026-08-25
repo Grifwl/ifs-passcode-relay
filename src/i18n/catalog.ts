@@ -13,7 +13,7 @@ const en = {
     "Commands:\n" +
     "/language <code> - set your language (en, ca, es, fr)\n" +
     "/newevent <name> [| <pattern>] - create an event\n" +
-    "/sharetext <code> [lang] - get an invite message to share\n" +
+    "/sharetext [code] [lang] - get an invite message to share (defaults to your current event)\n" +
     "/join <code> - join an event\n" +
     "/leave - leave your current event\n" +
     "/myevent - show which event you're in\n" +
@@ -34,10 +34,11 @@ const en = {
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
-    `You've been joined automatically. Share the code with attendees, or run /sharetext ${p.code} to get an invite message.`,
+    `You've been joined automatically.`,
 
-  "sharetext.usage": () => "Usage: /sharetext <code> [lang].",
-  "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open a chat with this bot and send /join ${p.code}.`,
+  "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot and send:`,
+  "sharetext.otherLanguages": (p) => `Need this in another language? Run /sharetext ${p.code} <lang> (en, ca, es, fr).`,
+  "sharetext.noCurrentEvent": () => "You're not in an event. Specify a code: /sharetext <code> [lang].",
 
   "join.usage": () => "Usage: /join <code>.",
   "join.confirmSwitch": (p) => `You're already in "${p.currentEventName}". Switch to "${p.newEventName}"?`,
@@ -127,7 +128,7 @@ const ca: Catalog = {
     "Comandes:\n" +
     "/language <codi> - estableix el teu idioma (en, ca, es, fr)\n" +
     "/newevent <nom> [| <patró>] - crea un esdeveniment\n" +
-    "/sharetext <codi> [idioma] - obté un text d'invitació per compartir\n" +
+    "/sharetext [codi] [idioma] - obté un text d'invitació per compartir (per defecte, el teu esdeveniment actual)\n" +
     "/join <codi> - uneix-te a un esdeveniment\n" +
     "/leave - surt de l'esdeveniment actual\n" +
     "/myevent - mostra a quin esdeveniment estàs\n" +
@@ -148,10 +149,12 @@ const ca: Catalog = {
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
-    `T'hi has unit automàticament. Comparteix el codi amb els assistents, o executa /sharetext ${p.code} per obtenir un text d'invitació.`,
+    `T'hi has unit automàticament.`,
 
-  "sharetext.usage": () => "Ús: /sharetext <codi> [idioma].",
-  "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre una conversa amb aquest bot i envia /join ${p.code}.`,
+  "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot i envia:`,
+  "sharetext.otherLanguages": (p) =>
+    `Ho vols en un altre idioma? Executa /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
+  "sharetext.noCurrentEvent": () => "No estàs en cap esdeveniment. Especifica un codi: /sharetext <codi> [idioma].",
 
   "join.usage": () => "Ús: /join <codi>.",
   "join.confirmSwitch": (p) => `Ja ets a "${p.currentEventName}". Vols canviar a "${p.newEventName}"?`,
@@ -239,7 +242,7 @@ const es: Catalog = {
     "Comandos:\n" +
     "/language <código> - establece tu idioma (en, ca, es, fr)\n" +
     "/newevent <nombre> [| <patrón>] - crea un evento\n" +
-    "/sharetext <código> [idioma] - obtén un texto de invitación para compartir\n" +
+    "/sharetext [código] [idioma] - obtén un texto de invitación para compartir (por defecto, tu evento actual)\n" +
     "/join <código> - únete a un evento\n" +
     "/leave - sal del evento actual\n" +
     "/myevent - muestra en qué evento estás\n" +
@@ -260,10 +263,12 @@ const es: Catalog = {
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
-    `Te has unido automáticamente. Comparte el código con los asistentes, o ejecuta /sharetext ${p.code} para obtener un texto de invitación.`,
+    `Te has unido automáticamente.`,
 
-  "sharetext.usage": () => "Uso: /sharetext <código> [idioma].",
-  "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre una conversación con este bot y envía /join ${p.code}.`,
+  "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot y envía:`,
+  "sharetext.otherLanguages": (p) =>
+    `¿Lo quieres en otro idioma? Ejecuta /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
+  "sharetext.noCurrentEvent": () => "No estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
 
   "join.usage": () => "Uso: /join <código>.",
   "join.confirmSwitch": (p) => `Ya estás en "${p.currentEventName}". ¿Quieres cambiar a "${p.newEventName}"?`,
@@ -351,7 +356,7 @@ const fr: Catalog = {
     "Commandes :\n" +
     "/language <code> - définit votre langue (en, ca, es, fr)\n" +
     "/newevent <nom> [| <modèle>] - crée un événement\n" +
-    "/sharetext <code> [langue] - obtient un texte d'invitation à partager\n" +
+    "/sharetext [code] [langue] - obtient un texte d'invitation à partager (par défaut, votre événement actuel)\n" +
     "/join <code> - rejoindre un événement\n" +
     "/leave - quitter l'événement actuel\n" +
     "/myevent - affiche dans quel événement vous êtes\n" +
@@ -372,10 +377,13 @@ const fr: Catalog = {
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
-    `Vous avez été inscrit automatiquement. Partagez le code avec les participants, ou lancez /sharetext ${p.code} pour obtenir un texte d'invitation.`,
+    `Vous avez été inscrit automatiquement.`,
 
-  "sharetext.usage": () => "Utilisation : /sharetext <code> [langue].",
-  "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez une discussion avec ce bot et envoyez /join ${p.code}.`,
+  "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot et envoyez :`,
+  "sharetext.otherLanguages": (p) =>
+    `Vous le voulez dans une autre langue ? Lancez /sharetext ${p.code} <langue> (en, ca, es, fr).`,
+  "sharetext.noCurrentEvent": () =>
+    "Vous n'êtes dans aucun événement. Indiquez un code : /sharetext <code> [langue].",
 
   "join.usage": () => "Utilisation : /join <code>.",
   "join.confirmSwitch": (p) => `Vous êtes déjà dans "${p.currentEventName}". Passer à "${p.newEventName}" ?`,

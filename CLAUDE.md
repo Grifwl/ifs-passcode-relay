@@ -332,12 +332,19 @@ language, e.g. `t("event.created", lang, { code, pattern })`. Every
 user-facing string must go through it — no hardcoded language in handler
 code.
 
-Event creation is special: the confirmation shown to the creator uses
-their own language, but the **shareable join text** (meant to be pasted
-into an external group chat) can be generated in a different language via
-`/sharetext <code> [lang]`, defaulting to the caller's own language when
-omitted. This is why share-text generation must be a separate, callable
-operation, not just a side effect of `/newevent`.
+Event creation is special: right after creating the event and *before*
+auto-joining the creator to it, `/newevent` automatically sends the
+**shareable join text** (meant to be pasted into an external group chat)
+in the creator's own language. That automatic message always names the
+code explicitly, since at that point the creator isn't a participant
+yet. The same text can be regenerated later, in a different language,
+via `/sharetext [code] [lang]` — `[lang]` defaults to the caller's own
+language, and `[code]` defaults to the caller's *current* event once
+they have one (a bare `/sharetext` or `/sharetext <lang>` both resolve
+the code that way). This is why share-text rendering
+(`domain/shareText.ts`) is a separate, callable operation, not just a
+side effect baked into `/newevent`'s handler — `/newevent` calls the
+same function `/sharetext` does.
 
 ## Command reference (developer-facing)
 
@@ -345,8 +352,8 @@ operation, not just a side effect of `/newevent`.
 |---|---|---|
 | `/start`, `/help` | anyone | Onboarding / command list. |
 | `/language <code>` | anyone | Set own interface language. |
-| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`), get its join code. |
-| `/sharetext <code> [lang]` | anyone | (Re)generate the shareable join text. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins the creator. |
+| `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
 | `/join <code>` | anyone | Join an event (confirmation prompt if already in one). |
 | `/leave` | participant | Leave the current event. |
 | `/myevent` | anyone | Show current event/role. |
