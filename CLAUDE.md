@@ -115,15 +115,16 @@ is ever supplied.
   from it.
   `id` (PK), `event_id`, `position` (slot index), `value`, `user_id`,
   `display_name_snapshot`, `created_at`.
-- **`passcode_candidates`** — distinct values reported for a position,
-  aggregated from `passcode_reports`, **excluding** reports from users
-  currently flagged as `troll` for that event (see Trust below). Kept
-  (never overwritten) so disagreements stay visible instead of being
-  silently lost.
-  `event_id`, `position`, `value`, `supporter_count` (distinct
-  non-troll users who reported it), `last_reported_at`. Primary key:
-  `(event_id, position, value)`. Recomputed from `passcode_reports`
-  whenever a report is added or a user's trust status changes.
+- **`passcode_candidates`** — a **SQL view**, not a stored table: distinct
+  values reported for a position, aggregated live from
+  `passcode_reports`, **excluding** reports from users currently flagged
+  `troll` for that event (see Trust below). Computed on every read rather
+  than maintained incrementally on write, since report volumes are small
+  enough that this can't meaningfully cost anything, and it removes an
+  entire class of bugs where a maintained aggregate silently drifts from
+  its source of truth.
+  Columns: `event_id`, `position`, `value`, `supporter_count` (distinct
+  non-troll users who reported it), `last_reported_at`.
 - **`passcode_resolutions`** — the canonical value for a position, set
   explicitly by the event's creator once they're confident which
   candidate is correct. While a position has no resolution, all of its
@@ -213,9 +214,10 @@ The event's creator can mark a participant's trust status with
 `/trust <user>` (trusted), `/troll <user>` (discard their contributions)
 or `/untrust <user>` (back to neutral/default), writing `event_trust`.
 
-- **`troll`** immediately recomputes `passcode_candidates`, excluding
-  that user's reports from candidates and variant generation from that
-  point on (and restoring them on `/untrust`). This is a pure exclusion,
+- **`troll`** excludes that user's reports from `passcode_candidates` and
+  variant generation immediately, since the view reads `event_trust` live
+  on every query (and restores them just as immediately on `/untrust`).
+  This is a pure exclusion,
   not a negative assertion: a troll's report is just left out of
   consideration, it does **not** mark the value they reported as wrong,
   since a troll can still happen to report a correct value by chance. A
@@ -329,6 +331,11 @@ accepted in any case and normalized on the way in.
   conflict expansion, variant capping, trust filtering, language
   fallback) lives in dedicated, unit-testable functions, not inline in
   handlers.
+- Never log a raw grammY `BotError` or `Context` (e.g. `console.error(err)`
+  from inside `bot.catch(...)`): `Context.api` carries the bot token in
+  plain text, so dumping the whole object leaks it into Worker logs.
+  Log a sanitized summary instead — e.g. the update id and
+  `err.error.message` — as `src/bot.ts`'s `bot.catch` handler does.
 - D1 schema changes go through `wrangler d1 migrations` files under
   `migrations/`, never hand-edited against a live database.
 
