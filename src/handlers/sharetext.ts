@@ -5,7 +5,7 @@ import { ensureUser } from "../session.js";
 import { t, isSupportedLanguage } from "../i18n/index.js";
 import { getEventByCode, getEventById } from "../db/events.js";
 import { getParticipant } from "../db/participants.js";
-import { renderShareText } from "../domain/shareText.js";
+import { renderShareText, renderShareTextNote } from "../domain/shareText.js";
 
 export async function handleShareText(ctx: Context, env: Env): Promise<void> {
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
@@ -57,5 +57,10 @@ export async function handleShareText(ctx: Context, env: Env): Promise<void> {
     return;
   }
 
+  // Two separate messages: the shareable block above is meant to be
+  // forwarded as-is, and the language note below is meant to stay with
+  // whoever ran this command — sending it separately means a plain
+  // Telegram forward of the first message won't drag the note along.
   await ctx.reply(renderShareText(lang, event), { parse_mode: "HTML" });
+  await ctx.reply(renderShareTextNote(lang), { parse_mode: "HTML" });
 }

@@ -344,7 +344,24 @@ they have one (a bare `/sharetext` or `/sharetext <lang>` both resolve
 the code that way). This is why share-text rendering
 (`domain/shareText.ts`) is a separate, callable operation, not just a
 side effect baked into `/newevent`'s handler — `/newevent` calls the
-same function `/sharetext` does.
+same functions `/sharetext` does.
+
+The share text is actually sent as **two separate messages**, both from
+`/sharetext` and from `/newevent`'s automatic copy: the shareable block
+itself (bot mention + `/join` code), meant to be forwarded or pasted
+as-is, followed by a second, italicized message noting how to get the
+same text in another language. Keeping the language note in its own
+message means it doesn't tag along if the first message is forwarded on
+its own — it's a note for whoever ran the command, not for whoever they
+share the invite with, which is also why it omits the code (whoever's
+reading it is assumed to already be a participant of that event, so a
+bare `/sharetext <lang>` already resolves via their current event).
+
+A participant who joins via a plain `/join <code>` doesn't get the
+share text automatically the way the creator does — they get a lighter
+nudge instead, right after joining, pointing them at `/sharetext` (with
+no code and no language mentioned) in case they want to help spread the
+word too.
 
 ## Command reference (developer-facing)
 

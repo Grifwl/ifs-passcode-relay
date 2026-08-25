@@ -4,13 +4,13 @@ import { escapeHtml } from "./html.js";
 import { BOT_USERNAME } from "./botInfo.js";
 
 /**
- * Renders the `/sharetext` invite message: an intro sentence in the
- * target language naming the bot by its `@username`, a tap-to-copy
- * `/join` block, and a trailer explaining how to regenerate the same
- * message in a different language. That trailer always names the code
- * explicitly — the rendered text is meant to be pasted into an external
- * chat, and whoever reads it there isn't a participant yet, so there's
- * no "current event" for them to default to (see `handleShareText`).
+ * Renders the shareable block of the `/sharetext` invite message: an
+ * intro sentence naming the bot by its `@username` and a tap-to-copy
+ * `/join` block. This is the part meant to be forwarded or pasted
+ * as-is into an external chat, so it deliberately carries nothing
+ * meant only for whoever ran the command — see `renderShareTextNote`
+ * for that, sent as a separate message precisely so it doesn't tag
+ * along if this block gets forwarded on its own.
  *
  * The bot's `@username` doesn't need an explicit `<a>` link: Telegram
  * auto-links any `@username` mention that appears as plain text in a
@@ -29,6 +29,20 @@ import { BOT_USERNAME } from "./botInfo.js";
 export function renderShareText(lang: SupportedLanguage, event: Pick<IfsEvent, "name" | "code">): string {
   const intro = escapeHtml(t(lang, "sharetext.text", { name: event.name, bot: BOT_USERNAME }));
   const joinCommand = `<code>/join ${escapeHtml(event.code)}</code>`;
-  const otherLanguages = escapeHtml(t(lang, "sharetext.otherLanguages", { code: event.code }));
-  return `${intro}\n\n${joinCommand}\n\n${otherLanguages}`;
+  return `${intro}\n\n${joinCommand}`;
+}
+
+/**
+ * Renders the follow-up note (sent as its own, italicized message —
+ * see `renderShareText`) explaining how to regenerate the invite text
+ * in another language. It deliberately omits the event code: whoever
+ * ran `/sharetext` — or is reading `/newevent`'s automatic copy — is
+ * necessarily a participant of that event by the time they'd act on
+ * this note (the creator via the auto-join right after, anyone else
+ * because sharing an event assumes being in it), so a bare
+ * `/sharetext <lang>` already resolves to it via their current event
+ * (see `handleShareText`).
+ */
+export function renderShareTextNote(lang: SupportedLanguage): string {
+  return `<i>${escapeHtml(t(lang, "sharetext.otherLanguages"))}</i>`;
 }

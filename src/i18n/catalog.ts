@@ -37,7 +37,7 @@ const en = {
     `You've been joined automatically.`,
 
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
-  "sharetext.otherLanguages": (p) => `Need this in another language? Run /sharetext ${p.code} <lang> (en, ca, es, fr).`,
+  "sharetext.otherLanguages": () => "Need this in another language? Run /sharetext <lang> (en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "You're not in an event. Specify a code: /sharetext <code> [lang].",
 
   "join.usage": () => "Usage: /join <code>.",
@@ -46,6 +46,7 @@ const en = {
   "join.confirmNoButton": () => "Cancel",
   "join.switched": (p) => `Switched to "${p.name}".`,
   "join.joined": (p) => `Joined "${p.name}". Report what you find as "<position> <value>", e.g. "6 CIPHER".`,
+  "join.shareHint": () => "Want to help others find this event? Run /sharetext to get an invite message to share.",
   "join.alreadyInThisEvent": (p) => `You're already in "${p.name}".`,
   "join.cancelled": (p) => `Cancelled — you're still in "${p.name}".`,
 
@@ -152,8 +153,7 @@ const ca: Catalog = {
     `T'hi has unit automàticament.`,
 
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
-  "sharetext.otherLanguages": (p) =>
-    `Ho vols en un altre idioma? Executa /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
+  "sharetext.otherLanguages": () => "Ho vols en un altre idioma? Executa /sharetext <idioma> (en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "No estàs en cap esdeveniment. Especifica un codi: /sharetext <codi> [idioma].",
 
   "join.usage": () => "Ús: /join <codi>.",
@@ -162,6 +162,7 @@ const ca: Catalog = {
   "join.confirmNoButton": () => "Cancel·la",
   "join.switched": (p) => `Has canviat a "${p.name}".`,
   "join.joined": (p) => `T'has unit a "${p.name}". Reporta el que trobis com a "<posició> <valor>", p.ex. "6 CIPHER".`,
+  "join.shareHint": () => "Vols ajudar a difondre l'esdeveniment? Executa /sharetext per obtenir un text d'invitació.",
   "join.alreadyInThisEvent": (p) => `Ja ets a "${p.name}".`,
   "join.cancelled": (p) => `Cancel·lat — segueixes a "${p.name}".`,
 
@@ -266,8 +267,7 @@ const es: Catalog = {
     `Te has unido automáticamente.`,
 
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
-  "sharetext.otherLanguages": (p) =>
-    `¿Lo quieres en otro idioma? Ejecuta /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
+  "sharetext.otherLanguages": () => "¿Lo quieres en otro idioma? Ejecuta /sharetext <idioma> (en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "No estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
 
   "join.usage": () => "Uso: /join <código>.",
@@ -276,6 +276,7 @@ const es: Catalog = {
   "join.confirmNoButton": () => "Cancelar",
   "join.switched": (p) => `Has cambiado a "${p.name}".`,
   "join.joined": (p) => `Te has unido a "${p.name}". Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 CIPHER".`,
+  "join.shareHint": () => "¿Quieres ayudar a difundir el evento? Ejecuta /sharetext para obtener un texto de invitación.",
   "join.alreadyInThisEvent": (p) => `Ya estás en "${p.name}".`,
   "join.cancelled": (p) => `Cancelado — sigues en "${p.name}".`,
 
@@ -380,8 +381,8 @@ const fr: Catalog = {
     `Vous avez été inscrit automatiquement.`,
 
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,
-  "sharetext.otherLanguages": (p) =>
-    `Vous le voulez dans une autre langue ? Lancez /sharetext ${p.code} <langue> (en, ca, es, fr).`,
+  "sharetext.otherLanguages": () =>
+    "Vous le voulez dans une autre langue ? Lancez /sharetext <langue> (en, ca, es, fr).",
   "sharetext.noCurrentEvent": () =>
     "Vous n'êtes dans aucun événement. Indiquez un code : /sharetext <code> [langue].",
 
@@ -391,6 +392,8 @@ const fr: Catalog = {
   "join.confirmNoButton": () => "Annuler",
   "join.switched": (p) => `Vous êtes passé à "${p.name}".`,
   "join.joined": (p) => `Vous avez rejoint "${p.name}". Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 CIPHER".`,
+  "join.shareHint": () =>
+    "Vous voulez aider à faire connaître l'événement ? Lancez /sharetext pour obtenir un texte d'invitation.",
   "join.alreadyInThisEvent": (p) => `Vous êtes déjà dans "${p.name}".`,
   "join.cancelled": (p) => `Annulé — vous êtes toujours dans "${p.name}".`,
 

@@ -40,8 +40,10 @@ group chat.
    e.g. `/newevent Barcelona 2026-08`, including the year and month,
    rather than a bare `/newevent Barcelona` that collides with every
    other Barcelona IFS.
-2. Every other attendee sends `/join <code>` to the bot. An agent can
-   only be actively contributing to one event at a time.
+2. Every other attendee sends `/join <code>` to the bot, which also
+   nudges them to run `/sharetext` themselves in case they want to help
+   spread the word too. An agent can only be actively contributing to
+   one event at a time.
 3. When you find a value, you just send its position and value: `6
    CIPHER` reports that position 6 (the word) is `CIPHER`; `7 3` reports
    that position 7 is the digit `3`. No need to remember a command.

@@ -44,8 +44,9 @@ grupo de chat.
    con el mismo nombre — por ejemplo, `/newevent Barcelona 2026-08`,
    incluyendo el año y el mes, en lugar de un simple `/newevent
    Barcelona` que choca con cualquier otro IFS de Barcelona.
-2. El resto de asistentes envía `/join <código>` al bot. Un agente solo
-   puede estar contribuyendo activamente a un evento a la vez.
+2. El resto de asistentes envía `/join <código>` al bot, que también les
+   invita a ejecutar `/sharetext` por si quieren ayudar a difundirlo. Un
+   agente solo puede estar contribuyendo activamente a un evento a la vez.
 3. Cuando encuentras un valor, simplemente envías su posición y el
    valor: `6 CIPHER` reporta que la posición 6 (la palabra) es `CIPHER`;
    `7 3` reporta que la posición 7 es el número `3`. No hace falta

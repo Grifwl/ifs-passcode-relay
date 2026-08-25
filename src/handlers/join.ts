@@ -52,6 +52,10 @@ export async function handleJoin(ctx: Context, env: Env): Promise<void> {
 
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
   await ctx.reply(t(user.language, "join.joined", { name: event.name }));
+  // A participant who joined via a plain code has no reason to already
+  // know /sharetext exists (unlike the creator, who gets it automatically
+  // — see handleNewEvent), so nudge them once, right after joining.
+  await ctx.reply(t(user.language, "join.shareHint"));
 
   const participant = await getParticipant(env.DB, user.userId);
   if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);
@@ -85,6 +89,7 @@ export async function handleJoinCallback(ctx: Context, env: Env): Promise<void> 
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
   await ctx.answerCallbackQuery();
   await ctx.editMessageText(t(user.language, "join.switched", { name: event.name }));
+  await ctx.reply(t(user.language, "join.shareHint"));
 
   const participant = await getParticipant(env.DB, user.userId);
   if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);

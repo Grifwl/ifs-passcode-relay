@@ -45,8 +45,9 @@ dans un groupe de discussion.
    Barcelona 2026-08`, en incluant l'année et le mois, plutôt qu'un
    simple `/newevent Barcelona` qui entre en collision avec n'importe
    quel autre IFS de Barcelone.
-2. Chaque autre participant envoie `/join <code>` au bot. Un agent ne
-   peut contribuer activement qu'à un seul événement à la fois.
+2. Chaque autre participant envoie `/join <code>` au bot, qui l'invite
+   aussi à lancer `/sharetext` s'il souhaite aider à le faire connaître.
+   Un agent ne peut contribuer activement qu'à un seul événement à la fois.
 3. Quand vous trouvez une valeur, vous envoyez simplement sa position et
    sa valeur : `6 CIPHER` signale que la position 6 (le mot) est
    `CIPHER` ; `7 3` signale que la position 7 est le chiffre `3`. Pas
