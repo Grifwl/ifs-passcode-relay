@@ -33,6 +33,10 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
 
   const event = await createEvent(env.DB, { name, pattern, createdBy: user.userId });
 
+  await ctx.reply(
+    t(user.language, "newevent.created", { name: event.name, code: event.code, pattern: event.pattern })
+  );
+
   // Sent before the auto-join below, while the creator isn't a
   // participant yet — same as anyone else sharing an event they haven't
   // joined, the code is passed explicitly (see renderShareText).
@@ -42,9 +46,6 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   // being the organizer doesn't exempt them from hunting portals, and
   // joinEvent already handles replacing any prior membership.
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
-  await ctx.reply(
-    t(user.language, "newevent.created", { name: event.name, code: event.code, pattern: event.pattern })
-  );
 
   const participant = await getParticipant(env.DB, user.userId);
   if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);
