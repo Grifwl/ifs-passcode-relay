@@ -28,20 +28,35 @@ grupo de chat.
 
 1. Quien organiza el relevo de passcode de un IFS crea un evento con
    `/newevent` y obtiene un código corto para compartir con los
-   asistentes (por ejemplo, en un grupo de WhatsApp).
+   asistentes (por ejemplo, en un grupo de WhatsApp). Por defecto, se da
+   por hecho que el passcode sigue el patrón `XXX99*999XX` (tres letras,
+   dos números, una palabra entera, tres números, dos letras) — quien
+   crea el evento puede establecer otro patrón si ese IFS usa otro
+   formato.
 2. Cada asistente envía `/join <código>` al bot. Un agente solo puede
    estar contribuyendo activamente a un evento a la vez.
-3. Cuando encuentras un carácter, simplemente lo envías: `5 A` reporta
-   que la posición 5 es `A`. No hace falta recordar ningún comando.
+3. Cuando encuentras un valor, simplemente envías su posición y el
+   valor: `6 CIPHER` reporta que la posición 6 (la palabra) es `CIPHER`;
+   `7 3` reporta que la posición 7 es el número `3`. No hace falta
+   recordar ningún comando. Las letras se muestran en mayúsculas, pero
+   las puedes escribir como quieras.
 4. El bot mantiene un único mensaje por participante actualizado con el
    estado actual del código, editándolo cada vez que alguien reporta
    algo nuevo — no inunda el chat con un mensaje nuevo por cada reporte.
 5. Si dos personas reportan valores distintos para la misma posición,
-   ambos se conservan y se muestran como posibilidades separadas hasta
-   que quien ha creado el evento resuelve la discrepancia con
-   `/resolve`.
-6. Cuando el evento termina, quien lo ha creado lo cierra con
-   `/closeevent`, congelando el resultado final.
+   ambos se conservan: el bot muestra cada posible código completo en un
+   bloque fácil de copiar, con cuántas personas lo respaldan — y, en los
+   menos respaldados, quién los ha reportado, para que quien ha creado
+   el evento pueda detectar un error o un troll. Si lo que envías no
+   encaja con la posición esperada, o contradice lo que ya hay, el bot
+   te pide confirmación antes de registrarlo.
+6. Quien ha creado el evento resuelve una discrepancia con `/resolve`, y
+   puede marcar a un participante como de confianza o como troll si hace
+   falta.
+7. Cuando el evento termina, quien lo ha creado lo cierra con
+   `/closeevent`, que envía el passcode final como un mensaje **nuevo**
+   a todos los participantes — no solo una edición — para que a nadie se
+   le escape aunque no lo haya estado siguiendo activamente.
 
 ### Referencia de comandos
 
@@ -49,17 +64,20 @@ grupo de chat.
 |---|---|---|
 | `/start`, `/help` | cualquiera | Introducción y lista de comandos. |
 | `/language <código>` | cualquiera | Establece tu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nombre> \| <longitud>` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso. |
+| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso. |
 | `/sharetext <código> [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse, opcionalmente en un idioma distinto del tuyo. |
 | `/join <código>` | cualquiera | Únete a un evento. |
 | `/leave` | participante | Sal del evento actual. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
-| `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el carácter encontrado en una posición. |
+| `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras. |
-| `/resolve <posición> <valor>` | creador del evento | Elige el valor correcto cuando hay discrepancia. |
+| `/resolve <posición> <valor \| @usuario>` | creador del evento | Elige el valor correcto cuando hay discrepancia. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
+| `/trust <usuario>` | creador del evento | Marca a un participante como de confianza. |
+| `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante. |
+| `/untrust <usuario>` | creador del evento | Quita la marca de confianza a un participante. |
 | `/kick <usuario>` | creador del evento | Expulsa a un participante del evento. |
-| `/closeevent` | creador del evento | Congela el evento y anuncia el código final. |
+| `/closeevent` | creador del evento | Congela el evento y anuncia el código final a todos. |
 | `/events` | cualquiera | Lista los eventos que has creado. |
 
 Cada jugador ve los mensajes del bot en su propio idioma, establecido una

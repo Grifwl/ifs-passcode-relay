@@ -26,20 +26,34 @@ group chat.
 
 1. Whoever organizes the passcode relay for a given IFS creates an event
    with `/newevent` and gets a short join code to share with attendees
-   (e.g. in a WhatsApp group).
+   (e.g. in a WhatsApp group). By default, the passcode is expected to
+   follow the pattern `XXX99*999XX` (three letters, two digits, one
+   whole word, three digits, two letters) — the creator can set a
+   different pattern if that IFS uses another shape.
 2. Each attendee sends `/join <code>` to the bot. An agent can only be
    actively contributing to one event at a time.
-3. When you find a character, you just send it: `5 A` reports that
-   position 5 is `A`. No need to remember a command.
+3. When you find a value, you just send its position and value: `6
+   CIPHER` reports that position 6 (the word) is `CIPHER`; `7 3` reports
+   that position 7 is the digit `3`. No need to remember a command.
+   Letters are shown in upper case, but you can type them however you
+   want.
 4. The bot keeps a single message per participant up to date with the
    current state of the code, editing it in place every time someone
    reports something new — it does not spam the chat with a new message
    per report.
 5. If two people report different values for the same position, both are
-   kept and shown as separate possibilities until the event's creator
-   resolves the disagreement with `/resolve`.
-6. When the event is over, its creator closes it with `/closeevent`,
-   freezing the final result.
+   kept: the bot shows every resulting full-code possibility in its own
+   easy-to-copy block, with how many people back each one — and, for the
+   least-backed ones, who reported them, so the event's creator can spot
+   a mistake or a troll. If what you send doesn't match the expected
+   position, or contradicts what's already there, the bot asks you to
+   confirm before recording it.
+6. The event's creator settles a disagreement with `/resolve`, and can
+   mark a participant as trusted or as a troll if needed.
+7. When the event is over, its creator closes it with `/closeevent`,
+   which sends the final passcode as a **new** message to every
+   participant — not just an edit — so nobody misses it even if they
+   weren't actively following along.
 
 ### Command reference
 
@@ -47,17 +61,20 @@ group chat.
 |---|---|---|
 | `/start`, `/help` | anyone | Introduction and command list. |
 | `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`). |
-| `/newevent <name> \| <length>` | anyone | Create a new IFS event and get its join code. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code. |
 | `/sharetext <code> [lang]` | anyone | Get ready-to-paste text inviting people to join, optionally in a different language than your own. |
 | `/join <code>` | anyone | Join an event. |
 | `/leave` | participant | Leave your current event. |
 | `/myevent` | anyone | Show which event you're in, if any. |
-| `<position> <value>` (or `/submit <position> <value>`) | participant | Report the character found at a position. |
+| `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand. |
-| `/resolve <position> <value>` | event creator | Pick the correct value when there's a disagreement. |
+| `/resolve <position> <value \| @user>` | event creator | Pick the correct value when there's a disagreement. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |
+| `/trust <user>` | event creator | Flag a participant as trusted. |
+| `/troll <user>` | event creator | Discard a participant's reports from consideration. |
+| `/untrust <user>` | event creator | Clear a participant's trust flag. |
 | `/kick <user>` | event creator | Remove a participant from the event. |
-| `/closeevent` | event creator | Freeze the event and announce the final code. |
+| `/closeevent` | event creator | Freeze the event and announce the final code to everyone. |
 | `/events` | anyone | List the events you've created. |
 
 Every player sees the bot's messages in their own language, set once with

@@ -27,20 +27,34 @@ recollir captures de pantalla manualment en un grup de xat.
 
 1. Qui organitza el relleu de passcode d'un IFS crea un esdeveniment amb
    `/newevent` i obté un codi curt per compartir amb els assistents (per
-   exemple, en un grup de WhatsApp).
+   exemple, en un grup de WhatsApp). Per defecte, es dona per fet que el
+   passcode segueix el patró `XXX99*999XX` (tres lletres, dos números,
+   una paraula sencera, tres números, dues lletres) — qui crea
+   l'esdeveniment pot establir-ne un altre si aquell IFS fa servir un
+   altre format.
 2. Cada assistent envia `/join <codi>` al bot. Un agent només pot estar
    contribuint activament a un esdeveniment alhora.
-3. Quan trobes un caràcter, simplement l'envies: `5 A` reporta que la
-   posició 5 és `A`. No cal recordar cap comanda.
+3. Quan trobes un valor, simplement envies la seva posició i el valor:
+   `6 CIPHER` reporta que la posició 6 (la paraula) és `CIPHER`; `7 3`
+   reporta que la posició 7 és el número `3`. No cal recordar cap
+   comanda. Les lletres es mostren en majúscules, però les pots escriure
+   com vulguis.
 4. El bot manté un únic missatge per participant actualitzat amb l'estat
    actual del codi, editant-lo cada cop que algú reporta alguna cosa
    nova — no inunda el xat amb un missatge nou per cada report.
 5. Si dues persones reporten valors diferents per a la mateixa posició,
-   totes dues es conserven i es mostren com a possibilitats separades
-   fins que qui ha creat l'esdeveniment resol la discrepància amb
-   `/resolve`.
-6. Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb
-   `/closeevent`, congelant el resultat final.
+   totes dues es conserven: el bot mostra cada possible codi complet en
+   un bloc fàcil de copiar, amb quantes persones el donen per bo — i, en
+   els menys donats per bons, qui els ha reportat, perquè qui ha creat
+   l'esdeveniment pugui detectar un error o un troll. Si el que envies
+   no encaixa amb la posició esperada, o contradiu el que ja hi ha, el
+   bot et demana confirmació abans de registrar-ho.
+6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve`, i
+   pot marcar un participant com a de confiança o com a troll si cal.
+7. Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb
+   `/closeevent`, que envia el passcode final com a missatge **nou** a
+   tots els participants — no només una edició — perquè a ningú se li
+   escapi encara que no hagi estat seguint-ho activament.
 
 ### Referència de comandes
 
@@ -48,17 +62,20 @@ recollir captures de pantalla manualment en un grup de xat.
 |---|---|---|
 | `/start`, `/help` | tothom | Introducció i llista de comandes. |
 | `/language <codi>` | tothom | Estableix el teu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> \| <longitud>` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés. |
+| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés. |
 | `/sharetext <codi> [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi, opcionalment en un idioma diferent del teu. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
 | `/leave` | participant | Surt de l'esdeveniment actual. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
-| `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el caràcter trobat en una posició. |
+| `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis. |
-| `/resolve <posició> <valor>` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància. |
+| `/resolve <posició> <valor \| @usuari>` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
+| `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança. |
+| `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant. |
+| `/untrust <usuari>` | creador de l'esdeveniment | Treu la marca de confiança d'un participant. |
 | `/kick <usuari>` | creador de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
-| `/closeevent` | creador de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final. |
+| `/closeevent` | creador de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que has creat. |
 
 Cada jugador veu els missatges del bot en el seu propi idioma, establert
