@@ -36,7 +36,7 @@ const en = {
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
     `You've been joined automatically.`,
 
-  "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.link} and send:`,
+  "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
   "sharetext.otherLanguages": (p) => `Need this in another language? Run /sharetext ${p.code} <lang> (en, ca, es, fr).`,
   "sharetext.noCurrentEvent": () => "You're not in an event. Specify a code: /sharetext <code> [lang].",
 
@@ -151,7 +151,7 @@ const ca: Catalog = {
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
     `T'hi has unit automàticament.`,
 
-  "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.link} i envia:`,
+  "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
   "sharetext.otherLanguages": (p) =>
     `Ho vols en un altre idioma? Executa /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
   "sharetext.noCurrentEvent": () => "No estàs en cap esdeveniment. Especifica un codi: /sharetext <codi> [idioma].",
@@ -265,7 +265,7 @@ const es: Catalog = {
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
     `Te has unido automáticamente.`,
 
-  "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.link} y envía:`,
+  "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
   "sharetext.otherLanguages": (p) =>
     `¿Lo quieres en otro idioma? Ejecuta /sharetext ${p.code} <idioma> (en, ca, es, fr).`,
   "sharetext.noCurrentEvent": () => "No estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
@@ -379,7 +379,7 @@ const fr: Catalog = {
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
     `Vous avez été inscrit automatiquement.`,
 
-  "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.link} et envoyez :`,
+  "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,
   "sharetext.otherLanguages": (p) =>
     `Vous le voulez dans une autre langue ? Lancez /sharetext ${p.code} <langue> (en, ca, es, fr).`,
   "sharetext.noCurrentEvent": () =>
