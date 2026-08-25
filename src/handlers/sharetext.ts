@@ -14,10 +14,14 @@ export async function handleShareText(ctx: Context, env: Env): Promise<void> {
   // Event codes are always 6 characters (see domain/codeGen.ts) and
   // language codes always 2, so a lone argument is unambiguous: /sharetext
   // <lang> means "my current event, in this language", while a second
-  // argument always means the first one is an explicit event code.
+  // argument always means the first one is an explicit event code. This
+  // is a length check, not a isSupportedLanguage() check — an
+  // unsupported-but-2-character value (e.g. "ru") must still land in the
+  // [lang] slot so it hits the "invalid language" error below, instead
+  // of being looked up as an event code and reported as not found.
   let codeArg = parts[0];
   let langArg = parts[1];
-  if (codeArg && !langArg && isSupportedLanguage(codeArg.toLowerCase())) {
+  if (codeArg && !langArg && codeArg.length === 2) {
     langArg = codeArg;
     codeArg = undefined;
   }
