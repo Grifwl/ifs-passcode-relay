@@ -413,6 +413,16 @@ accepted in any case and normalized on the way in.
   doesn't retry the same failing update forever.
 - D1 schema changes go through `wrangler d1 migrations` files under
   `migrations/`, never hand-edited against a live database.
+- `scripts/reset-db.sql` (`npm run db:reset:local` / `:remote`) wipes
+  every table for manual testing before real events exist; keep this
+  only usable pre-launch, not as a general-purpose prod reset tool.
+  `scripts/seed-fake-data.sql` (`npm run db:seed:local` / `:remote`)
+  inserts a `TESTER` event with fake reports (including a few
+  disagreeing positions) so a real account can `/join TESTER` and see
+  `/status` render discrepancies solo. Its fake users (negative ids)
+  deliberately get no `participants` row — see the script's own comment
+  for why a fake `chat_id` there would break real participants' live
+  updates.
 - **Any change to the bot's user-facing behavior** — a new command, a
   changed command signature, a changed flow, a changed rule around
   confirmations/trust/resolution/etc. — must be reflected in the same
