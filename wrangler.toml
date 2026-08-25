@@ -10,7 +10,7 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "ifs-passcode-relay"
-database_id = "REPLACE_WITH_OUTPUT_OF_WRANGLER_D1_CREATE"
+database_id = "d8aca9d6-3878-4063-be2b-778e4f504141"
 migrations_dir = "migrations"
 
 [observability]
