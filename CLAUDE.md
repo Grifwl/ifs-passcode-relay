@@ -37,6 +37,13 @@ different dates), each with its own passcode. A Telegram user (an
   mapped to the Worker via a route in `wrangler.toml`.
 - **Secrets**: `BOT_TOKEN` is set with `wrangler secret put BOT_TOKEN` in
   production; for local development it goes in `.dev.vars` (gitignored).
+- **Webhook verification**: `setWebhook` is called with a random
+  `secret_token`, also stored as the `TELEGRAM_WEBHOOK_SECRET` secret.
+  Telegram echoes it back on every update as the
+  `X-Telegram-Bot-Api-Secret-Token` header; the webhook handler must
+  reject any request where it doesn't match before doing anything else,
+  since the endpoint is otherwise a public, unauthenticated URL. See
+  `README.md`'s setup guide for the exact commands.
 
 ## Passcode pattern
 

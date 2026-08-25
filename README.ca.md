@@ -101,8 +101,93 @@ conflictes, arquitectura d'internacionalització) si vols contribuir-hi.
 - **Llenguatge:** TypeScript.
 - **Domini:** un subdomini de `grifwl.blue` (per decidir).
 
-Les instruccions d'instal·lació i desplegament s'afegiran aquí un cop
-existeixi una primera implementació.
+## Guia d'instal·lació
+
+Aquests són passos que es fan un sol cop per aixecar la infraestructura
+del bot — un cop per a tot el projecte, no un cop per IFS. Els passos 1,
+3 i 4 no requereixen que existeixi encara el codi de l'aplicació; els
+passos 2 i 5 necessiten un Worker desplegat, així que van al final, un
+cop comenci la implementació.
+
+### 1. Crear el bot de Telegram
+
+1. Obre una conversa amb [@BotFather](https://t.me/BotFather) a Telegram.
+2. Envia `/newbot`, tria un nom per mostrar i un nom d'usuari únic acabat
+   en `bot` (p.ex. `IfsPasscodeRelayBot`).
+3. BotFather respon amb un **token del bot** — tracta'l com una
+   contrasenya (qui el tingui pot enviar missatges fent-se passar pel
+   bot). Es guarda com a secret de Cloudflare al pas 4; mai es puja a
+   aquest repositori.
+4. Encara parlant amb BotFather, configura el perfil públic del bot:
+   - `/setuserpic` — puja una imatge de perfil.
+   - `/setdescription` — la descripció llarga que es mostra a la
+     pantalla buida del xat, abans que ningú hi hagi parlat.
+   - `/setabouttext` — la biografia curta de la pàgina de perfil.
+   - `/setcommands` — enganxa la llista de comandes (vegeu la taula de
+     referència més amunt) perquè Telegram les autocompleti en escriure;
+     cal mantenir-la sincronitzada cada cop que s'afegeixi o es tregui
+     una comanda.
+   - `/setjoingroups` → *Disable*. El bot està pensat per a xats privats
+     d'1 a 1 — el missatge d'estat en viu de cada participant s'edita in
+     situ, cosa que només té sentit en un xat amb ell i el bot tots
+     sols — així que l'ús en grups es queda desactivat.
+
+### 2. Crear el Worker de Cloudflare i la base de dades D1
+
+Cal un compte de Cloudflare amb la zona `grifwl.blue` ja afegida, i
+[wrangler](https://developers.cloudflare.com/workers/wrangler/) instal·lat
+(`npm install -g wrangler`, o fer servir `npx wrangler`).
+
+1. `wrangler login` per autenticar la CLI.
+2. `wrangler d1 create ifs-passcode-relay` crea la base de dades D1 i
+   mostra un `database_id` — guarda'l, anirà al binding
+   `[[d1_databases]]` (anomenat `DB`) de `wrangler.toml` un cop existeixi
+   el codi.
+3. Un cop existeixi l'esquelet de l'aplicació, `wrangler deploy` publica
+   el Worker per primer cop.
+
+### 3. Assignar el subdomini
+
+1. Al tauler de Cloudflare, dins la zona `grifwl.blue`, afegeix el
+   subdomini triat (p.ex. `ifs.grifwl.blue` — nom exacte encara per
+   decidir) com a [Custom
+   Domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+   del Worker (preferible a una simple Worker Route).
+2. Equivalentment, es pot declarar a `wrangler.toml` amb una entrada
+   `routes` fent servir `custom_domain = true` per a aquest hostname,
+   aplicada al següent `wrangler deploy`.
+
+### 4. Publicar el token del bot com a secret
+
+1. `wrangler secret put BOT_TOKEN` i enganxa el token del pas 1 quan es
+   demani — això el guarda xifrat a Cloudflare, exposat al Worker com a
+   `env.BOT_TOKEN`, i mai es puja al repositori.
+2. Per al desenvolupament local, posa el mateix valor a `.dev.vars` (ja
+   exclòs de git) com a `BOT_TOKEN=...`.
+3. Genera també una cadena aleatòria per fer servir com a secret del
+   webhook (p.ex. `openssl rand -hex 32`) i guarda-la de la mateixa
+   manera, com a `TELEGRAM_WEBHOOK_SECRET` — el Worker la fa servir per
+   rebutjar qualsevol petició que no vingui realment de Telegram (vegeu
+   el pas 5).
+
+### 5. Apuntar Telegram cap al Worker (webhook)
+
+Un cop el Worker estigui desplegat i accessible a la seva URL pública:
+
+```sh
+curl "https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=https://<subdomini>/telegram/webhook&secret_token=<TELEGRAM_WEBHOOK_SECRET>"
+```
+
+Telegram inclourà llavors aquest mateix secret a la capçalera
+`X-Telegram-Bot-Api-Secret-Token` de cada actualització que enviï; el
+Worker ha de comprovar que coincideix abans de processar res, i rebutjar
+la petició si no és així — això és el que evita que ningú altre pugui
+enviar actualitzacions falses a la URL pública del webhook. Comprova que
+el webhook està registrat amb:
+
+```sh
+curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
+```
 
 ## Llicència
 

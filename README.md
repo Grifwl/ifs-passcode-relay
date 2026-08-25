@@ -100,8 +100,88 @@ looking to contribute.
 - **Language:** TypeScript.
 - **Domain:** a subdomain of `grifwl.blue` (to be decided).
 
-Setup and deployment instructions will be added here once the initial
-implementation lands.
+## Setup guide
+
+These are one-time steps to stand up the bot infrastructure — done once
+for the whole project, not once per IFS event. Steps 1, 3 and 4 don't
+require the application code to exist; steps 2 and 5 need a deployed
+Worker, so they come last once implementation starts.
+
+### 1. Create the Telegram bot
+
+1. Open a chat with [@BotFather](https://t.me/BotFather) on Telegram.
+2. Send `/newbot`, choose a display name and a unique username ending in
+   `bot` (e.g. `IfsPasscodeRelayBot`).
+3. BotFather replies with a **bot token** — treat it like a password
+   (whoever has it can send messages as the bot). It's stored as a
+   Cloudflare secret in step 4 below, never committed to this repo.
+4. Still talking to BotFather, set up the bot's public profile:
+   - `/setuserpic` — upload a profile picture.
+   - `/setdescription` — the long description shown on the bot's empty
+     chat screen, before anyone has talked to it.
+   - `/setabouttext` — the short bio shown on its profile page.
+   - `/setcommands` — paste the command list (see the reference table
+     above) so Telegram autocompletes them while typing; keep this in
+     sync whenever a command is added or removed.
+   - `/setjoingroups` → *Disable*. The bot is built around private 1:1
+     chats — each participant's live status message is edited in place,
+     which only makes sense in a chat with just them and the bot — so
+     group usage stays off.
+
+### 2. Create the Cloudflare Worker and D1 database
+
+Requires a Cloudflare account with the `grifwl.blue` zone already added,
+and [wrangler](https://developers.cloudflare.com/workers/wrangler/)
+installed (`npm install -g wrangler`, or use `npx wrangler`).
+
+1. `wrangler login` to authenticate the CLI.
+2. `wrangler d1 create ifs-passcode-relay` creates the D1 database and
+   prints a `database_id` — keep it, it goes into `wrangler.toml`'s
+   `[[d1_databases]]` binding (named `DB`) once the code exists.
+3. Once the application skeleton exists, `wrangler deploy` publishes the
+   Worker for the first time.
+
+### 3. Assign the subdomain
+
+1. In the Cloudflare dashboard, under the `grifwl.blue` zone, add the
+   chosen subdomain (e.g. `ifs.grifwl.blue` — exact name still to be
+   decided) as a [Custom
+   Domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+   for the Worker (preferred over a plain Worker Route).
+2. Equivalently, this can be declared in `wrangler.toml` with a `routes`
+   entry using `custom_domain = true` for that hostname, applied on the
+   next `wrangler deploy`.
+
+### 4. Publish the bot token as a secret
+
+1. `wrangler secret put BOT_TOKEN` and paste the token from step 1 when
+   prompted — this stores it encrypted on Cloudflare, exposed to the
+   Worker as `env.BOT_TOKEN`, and never committed to the repo.
+2. For local development, put the same value in `.dev.vars` (already
+   gitignored) as `BOT_TOKEN=...`.
+3. Also generate a random string to use as a webhook secret (e.g.
+   `openssl rand -hex 32`) and store it the same way, as
+   `TELEGRAM_WEBHOOK_SECRET` — the Worker uses it to reject any request
+   that isn't actually from Telegram (see step 5).
+
+### 5. Point Telegram at the Worker (webhook)
+
+Once the Worker is deployed and reachable at its public URL:
+
+```sh
+curl "https://api.telegram.org/bot<BOT_TOKEN>/setWebhook?url=https://<subdomain>/telegram/webhook&secret_token=<TELEGRAM_WEBHOOK_SECRET>"
+```
+
+Telegram then includes that same secret in an
+`X-Telegram-Bot-Api-Secret-Token` header on every update it delivers;
+the Worker must check it matches before processing anything, and reject
+the request otherwise — this is what stops anyone else from POSTing fake
+updates to the public webhook URL. Verify the webhook is registered
+with:
+
+```sh
+curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
+```
 
 ## License
 
