@@ -28,8 +28,16 @@ different dates), each with its own passcode. A Telegram user (an
   delivers updates via **webhook**, not polling.
 - **Bot framework**: [grammY](https://grammy.dev), using its Cloudflare
   Workers adapter (`webhookCallback(bot, "cloudflare-mod")`).
-- **HTTP routing**: [Hono](https://hono.dev), minimal — the only real
-  route is the webhook endpoint; a health-check route may be added.
+- **HTTP routing**: [Hono](https://hono.dev). `POST /telegram/webhook` is
+  the bot; `GET /` serves the public landing page (`src/landing.ts`),
+  language-negotiated from the `Accept-Language` header via the same
+  `resolveLanguage()` used for Telegram users; `GET /favicon.ico`
+  redirects to `/logo.png`.
+- **Static assets**: `public/` (currently just `logo.png`, used as the
+  landing page's header image and favicon) is served directly by
+  Cloudflare via `wrangler.toml`'s `[assets]` block — any request whose
+  path matches a file there never reaches the Worker's `fetch` handler
+  at all, so routes like `/` stay fully dynamic.
 - **Database**: Cloudflare D1 (managed SQLite), accessed through the `DB`
   binding declared in `wrangler.toml`. All state lives in D1 — a Worker
   invocation must not rely on in-memory state surviving between requests.

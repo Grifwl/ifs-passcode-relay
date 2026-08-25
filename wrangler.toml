@@ -7,6 +7,13 @@ routes = [
   { pattern = "ifspasscoderelay.grifwl.blue", custom_domain = true }
 ]
 
+# Static files (currently just logo.png) served directly by Cloudflare
+# for any request path that matches a file here — the Worker's own
+# fetch handler only ever sees paths that don't match one of these, so
+# routes like "/" stay dynamic (see src/index.ts).
+[assets]
+directory = "./public"
+
 [[d1_databases]]
 binding = "DB"
 database_name = "ifs-passcode-relay"

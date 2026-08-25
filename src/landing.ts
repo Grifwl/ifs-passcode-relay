@@ -1,0 +1,549 @@
+import type { SupportedLanguage } from "./domain/language.js";
+
+const BOT_URL = "https://t.me/ifs_relay_bot";
+const REPO_URL = "https://github.com/Grifwl/ifs-passcode-relay";
+
+interface CommandRow {
+  command: string;
+  description: string;
+}
+
+interface CommandGroup {
+  heading: string;
+  rows: CommandRow[];
+}
+
+interface LandingContent {
+  htmlLang: string;
+  metaDescription: string;
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  ctaLabel: string;
+  navAbout: string;
+  navHowItWorks: string;
+  navCommands: string;
+  aboutHeading: string;
+  aboutBody: string[];
+  howHeading: string;
+  steps: string[];
+  commandsHeading: string;
+  commandsIntro: string;
+  commandGroups: CommandGroup[];
+  footerLanguages: string;
+  footerSource: string;
+}
+
+const en: LandingContent = {
+  htmlLang: "en",
+  metaDescription:
+    "A Telegram bot that lets Ingress First Saturday attendees collaboratively assemble their event's passcode in real time.",
+  eyebrow: "For Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Build your event's passcode together, in real time — no more screenshots in a group chat.",
+  ctaLabel: "Open @ifs_relay_bot in Telegram",
+  navAbout: "What is this",
+  navHowItWorks: "How it works",
+  navCommands: "Commands",
+  aboutHeading: "What is this?",
+  aboutBody: [
+    "Ingress First Saturday is a recurring in-person event for the mobile game Ingress. During it, players are given the images of a set of portals; visiting each one in the field and inspecting its media reveals one character. Concatenating the characters in the right order produces a passcode redeemable in the in-game store for an IFS item pack.",
+    "This bot lets everyone attending a specific IFS report the character they found and the position it belongs to, and keeps a live, shared view of the code as it fills in. Several IFS events can run at once — each with its own code and its own group of participants.",
+  ],
+  howHeading: "How it works",
+  steps: [
+    "Whoever organizes the passcode relay creates an event with /newevent and gets a short join code to share with attendees.",
+    "Each attendee sends /join <code> to the bot.",
+    'Found something? Just send it: "6 CIPHER" reports that position 6 is CIPHER. No command to remember.',
+    "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's creator settles it with /resolve.",
+    "When the event is over, its creator closes it with /closeevent, which sends the final passcode to every participant.",
+  ],
+  commandsHeading: "Commands",
+  commandsIntro: "Every player sees these in their own language, set once with /language.",
+  commandGroups: [
+    {
+      heading: "Getting started",
+      rows: [
+        { command: "/start, /help", description: "Introduction and command list." },
+        { command: "/language <code>", description: "Set your language (en, ca, es, fr)." },
+      ],
+    },
+    {
+      heading: "Events",
+      rows: [
+        { command: "/newevent <name>", description: "Create a new IFS event and get its join code." },
+        { command: "/join <code>", description: "Join an event." },
+        { command: "/leave", description: "Leave your current event." },
+        { command: "/myevent", description: "Show which event you're in." },
+        { command: "/sharetext <code>", description: "Get a ready-to-paste invite message." },
+        { command: "/events", description: "List the events you've created." },
+      ],
+    },
+    {
+      heading: "Reporting the code",
+      rows: [
+        { command: '"<position> <value>"', description: "Report the value found at a position." },
+        { command: "/status", description: "Show the current state of the code on demand." },
+      ],
+    },
+    {
+      heading: "For the event's creator",
+      rows: [
+        { command: "/resolve <position> <value>", description: "Pick the correct value when there's a disagreement." },
+        { command: "/unresolve <position>", description: "Reopen a resolved position." },
+        { command: "/trust, /troll, /untrust <user>", description: "Moderate a participant's contributions." },
+        { command: "/kick <user>", description: "Remove a participant from the event." },
+        { command: "/closeevent", description: "Freeze the event and announce the final code to everyone." },
+      ],
+    },
+  ],
+  footerLanguages: "Available in English, Català, Castellano and Français.",
+  footerSource: "Source on GitHub",
+};
+
+const ca: LandingContent = {
+  htmlLang: "ca",
+  metaDescription:
+    "Un bot de Telegram que permet als assistents a un Ingress First Saturday construir el passcode de l'esdeveniment en temps real.",
+  eyebrow: "Per a l'Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Construeix el passcode del teu esdeveniment entre tots, en temps real — sense captures de pantalla en un grup de xat.",
+  ctaLabel: "Obre @ifs_relay_bot a Telegram",
+  navAbout: "Què és això",
+  navHowItWorks: "Com funciona",
+  navCommands: "Comandes",
+  aboutHeading: "Què és això?",
+  aboutBody: [
+    "Ingress First Saturday és un esdeveniment presencial recurrent del joc mòbil Ingress. Durant l'esdeveniment, es mostren als jugadors les imatges d'una sèrie de portals; visitar-los sobre el terreny i inspeccionar-ne el contingut multimèdia revela un caràcter. Concatenant els caràcters en l'ordre correcte s'obté un passcode bescanviable a la botiga del joc per un paquet d'objectes de l'IFS.",
+    "Aquest bot permet a tothom qui assisteix a un IFS concret reportar quin caràcter ha trobat i a quina posició correspon, i manté una vista compartida i en viu del codi a mesura que s'omple. Poden haver-hi diversos IFS en marxa alhora — cadascun amb el seu propi codi i el seu propi grup de participants.",
+  ],
+  howHeading: "Com funciona",
+  steps: [
+    "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent i obté un codi curt per compartir amb els assistents.",
+    "Cada assistent envia /join <codi> al bot.",
+    'Has trobat alguna cosa? Simplement l\'envies: "6 CIPHER" reporta que la posició 6 és CIPHER. No cal recordar cap comanda.',
+    "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui ha creat l'esdeveniment ho resol amb /resolve.",
+    "Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb /closeevent, que envia el passcode final a tots els participants.",
+  ],
+  commandsHeading: "Comandes",
+  commandsIntro: "Cada jugador les veu en el seu propi idioma, establert un cop amb /language.",
+  commandGroups: [
+    {
+      heading: "Per començar",
+      rows: [
+        { command: "/start, /help", description: "Introducció i llista de comandes." },
+        { command: "/language <codi>", description: "Estableix el teu idioma (en, ca, es, fr)." },
+      ],
+    },
+    {
+      heading: "Esdeveniments",
+      rows: [
+        { command: "/newevent <nom>", description: "Crea un nou esdeveniment IFS i n'obté el codi d'accés." },
+        { command: "/join <codi>", description: "Uneix-te a un esdeveniment." },
+        { command: "/leave", description: "Surt de l'esdeveniment actual." },
+        { command: "/myevent", description: "Mostra a quin esdeveniment estàs." },
+        { command: "/sharetext <codi>", description: "Obté un text d'invitació llest per compartir." },
+        { command: "/events", description: "Llista els esdeveniments que has creat." },
+      ],
+    },
+    {
+      heading: "Reportar el codi",
+      rows: [
+        { command: '"<posició> <valor>"', description: "Reporta el valor trobat en una posició." },
+        { command: "/status", description: "Mostra l'estat actual del codi quan ho vulguis." },
+      ],
+    },
+    {
+      heading: "Per a qui crea l'esdeveniment",
+      rows: [
+        { command: "/resolve <posició> <valor>", description: "Tria el valor correcte quan hi ha discrepància." },
+        { command: "/unresolve <posició>", description: "Reobre una posició resolta." },
+        { command: "/trust, /troll, /untrust <usuari>", description: "Modera les aportacions d'un participant." },
+        { command: "/kick <usuari>", description: "Expulsa un participant de l'esdeveniment." },
+        { command: "/closeevent", description: "Congela l'esdeveniment i anuncia el codi final a tothom." },
+      ],
+    },
+  ],
+  footerLanguages: "Disponible en català, anglès, castellà i francès.",
+  footerSource: "Codi font a GitHub",
+};
+
+const es: LandingContent = {
+  htmlLang: "es",
+  metaDescription:
+    "Un bot de Telegram que permite a los asistentes a un Ingress First Saturday construir el passcode del evento en tiempo real.",
+  eyebrow: "Para el Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Construye el passcode de tu evento entre todos, en tiempo real — sin capturas de pantalla en un grupo de chat.",
+  ctaLabel: "Abre @ifs_relay_bot en Telegram",
+  navAbout: "Qué es esto",
+  navHowItWorks: "Cómo funciona",
+  navCommands: "Comandos",
+  aboutHeading: "¿Qué es esto?",
+  aboutBody: [
+    "Ingress First Saturday es un evento presencial recurrente del juego móvil Ingress. Durante el evento, se muestran a los jugadores las imágenes de una serie de portales; visitarlos sobre el terreno e inspeccionar su contenido multimedia revela un carácter. Concatenando los caracteres en el orden correcto se obtiene un passcode canjeable en la tienda del juego por un paquete de objetos del IFS.",
+    "Este bot permite a todos los asistentes a un IFS concreto reportar qué carácter han encontrado y en qué posición corresponde, y mantiene una vista compartida y en vivo del código a medida que se completa. Puede haber varios IFS en marcha a la vez — cada uno con su propio código y su propio grupo de participantes.",
+  ],
+  howHeading: "Cómo funciona",
+  steps: [
+    "Quien organiza el relevo de passcode crea un evento con /newevent y obtiene un código corto para compartir con los asistentes.",
+    "Cada asistente envía /join <código> al bot.",
+    '¿Has encontrado algo? Simplemente lo envías: "6 CIPHER" reporta que la posición 6 es CIPHER. No hace falta recordar ningún comando.',
+    "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien ha creado el evento lo resuelve con /resolve.",
+    "Cuando el evento termina, quien lo ha creado lo cierra con /closeevent, que envía el passcode final a todos los participantes.",
+  ],
+  commandsHeading: "Comandos",
+  commandsIntro: "Cada jugador los ve en su propio idioma, establecido una vez con /language.",
+  commandGroups: [
+    {
+      heading: "Para empezar",
+      rows: [
+        { command: "/start, /help", description: "Introducción y lista de comandos." },
+        { command: "/language <código>", description: "Establece tu idioma (en, ca, es, fr)." },
+      ],
+    },
+    {
+      heading: "Eventos",
+      rows: [
+        { command: "/newevent <nombre>", description: "Crea un nuevo evento IFS y obtiene su código de acceso." },
+        { command: "/join <código>", description: "Únete a un evento." },
+        { command: "/leave", description: "Sal del evento actual." },
+        { command: "/myevent", description: "Muestra en qué evento estás." },
+        { command: "/sharetext <código>", description: "Obtén un texto de invitación listo para compartir." },
+        { command: "/events", description: "Lista los eventos que has creado." },
+      ],
+    },
+    {
+      heading: "Reportar el código",
+      rows: [
+        { command: '"<posición> <valor>"', description: "Reporta el valor encontrado en una posición." },
+        { command: "/status", description: "Muestra el estado actual del código cuando quieras." },
+      ],
+    },
+    {
+      heading: "Para quien crea el evento",
+      rows: [
+        { command: "/resolve <posición> <valor>", description: "Elige el valor correcto cuando hay discrepancia." },
+        { command: "/unresolve <posición>", description: "Reabre una posición resuelta." },
+        { command: "/trust, /troll, /untrust <usuario>", description: "Modera las aportaciones de un participante." },
+        { command: "/kick <usuario>", description: "Expulsa a un participante del evento." },
+        { command: "/closeevent", description: "Congela el evento y anuncia el código final a todos." },
+      ],
+    },
+  ],
+  footerLanguages: "Disponible en español, inglés, catalán y francés.",
+  footerSource: "Código fuente en GitHub",
+};
+
+const fr: LandingContent = {
+  htmlLang: "fr",
+  metaDescription:
+    "Un bot Telegram qui permet aux participants d'un Ingress First Saturday de construire le passcode de l'événement en temps réel.",
+  eyebrow: "Pour l'Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Construisez le passcode de votre événement à plusieurs, en temps réel — plus de captures d'écran dans un groupe.",
+  ctaLabel: "Ouvrir @ifs_relay_bot dans Telegram",
+  navAbout: "De quoi s'agit-il",
+  navHowItWorks: "Comment ça marche",
+  navCommands: "Commandes",
+  aboutHeading: "De quoi s'agit-il ?",
+  aboutBody: [
+    "Ingress First Saturday est un événement en présentiel récurrent du jeu mobile Ingress. Pendant l'événement, les joueurs reçoivent les images d'une série de portails ; les visiter sur le terrain et examiner leur contenu multimédia révèle un caractère. En concaténant les caractères dans le bon ordre, on obtient un passcode échangeable dans la boutique du jeu contre un pack d'objets IFS.",
+    "Ce bot permet à tous les participants d'un IFS donné de signaler le caractère trouvé et la position correspondante, et maintient une vue partagée et en direct du code au fur et à mesure qu'il se complète. Plusieurs IFS peuvent se dérouler en même temps — chacun avec son propre code et son propre groupe de participants.",
+  ],
+  howHeading: "Comment ça marche",
+  steps: [
+    "La personne qui organise le relais de passcode crée un événement avec /newevent et obtient un code court à partager avec les participants.",
+    "Chaque participant envoie /join <code> au bot.",
+    'Vous avez trouvé quelque chose ? Envoyez-le simplement : "6 CIPHER" signale que la position 6 est CIPHER. Pas besoin de retenir une commande.',
+    "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui a créé l'événement tranche avec /resolve.",
+    "Une fois l'événement terminé, son créateur le clôture avec /closeevent, ce qui envoie le passcode final à tous les participants.",
+  ],
+  commandsHeading: "Commandes",
+  commandsIntro: "Chaque joueur les voit dans sa propre langue, définie une fois avec /language.",
+  commandGroups: [
+    {
+      heading: "Pour commencer",
+      rows: [
+        { command: "/start, /help", description: "Introduction et liste des commandes." },
+        { command: "/language <code>", description: "Définit votre langue (en, ca, es, fr)." },
+      ],
+    },
+    {
+      heading: "Événements",
+      rows: [
+        { command: "/newevent <nom>", description: "Crée un nouvel événement IFS et obtient son code d'accès." },
+        { command: "/join <code>", description: "Rejoindre un événement." },
+        { command: "/leave", description: "Quitter l'événement actuel." },
+        { command: "/myevent", description: "Affiche dans quel événement vous êtes." },
+        { command: "/sharetext <code>", description: "Obtient un texte d'invitation prêt à partager." },
+        { command: "/events", description: "Liste les événements que vous avez créés." },
+      ],
+    },
+    {
+      heading: "Signaler le code",
+      rows: [
+        { command: '"<position> <valeur>"', description: "Signale la valeur trouvée à une position." },
+        { command: "/status", description: "Affiche l'état actuel du code à la demande." },
+      ],
+    },
+    {
+      heading: "Pour la personne qui crée l'événement",
+      rows: [
+        { command: "/resolve <position> <valeur>", description: "Choisit la valeur correcte en cas de désaccord." },
+        { command: "/unresolve <position>", description: "Rouvre une position résolue." },
+        { command: "/trust, /troll, /untrust <utilisateur>", description: "Modère les contributions d'un participant." },
+        { command: "/kick <utilisateur>", description: "Exclut un participant de l'événement." },
+        { command: "/closeevent", description: "Fige l'événement et annonce le code final à tout le monde." },
+      ],
+    },
+  ],
+  footerLanguages: "Disponible en français, anglais, catalan et espagnol.",
+  footerSource: "Code source sur GitHub",
+};
+
+const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr };
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function renderCommand(command: string): string {
+  // The literal "<position> <value>" rows use angle brackets as part of
+  // the example itself, not a placeholder to escape differently — plain
+  // escaping handles both cases correctly.
+  return escapeHtml(command);
+}
+
+/** Renders the public landing page served at "/", in the given language. */
+export function renderLandingPage(lang: SupportedLanguage): string {
+  const c = content[lang];
+
+  const stepsHtml = c.steps.map((step, i) => `<li><span class="step-num">${i + 1}</span><span>${escapeHtml(step)}</span></li>`).join("\n");
+
+  const groupsHtml = c.commandGroups
+    .map(
+      (group) => `
+      <div class="command-group">
+        <h3>${escapeHtml(group.heading)}</h3>
+        <dl>
+          ${group.rows
+            .map(
+              (row) => `
+          <div class="command-row">
+            <dt><code>${renderCommand(row.command)}</code></dt>
+            <dd>${escapeHtml(row.description)}</dd>
+          </div>`
+            )
+            .join("\n")}
+        </dl>
+      </div>`
+    )
+    .join("\n");
+
+  const aboutHtml = c.aboutBody.map((p) => `<p>${escapeHtml(p)}</p>`).join("\n");
+
+  return `<!doctype html>
+<html lang="${c.htmlLang}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(c.title)}</title>
+<meta name="description" content="${escapeHtml(c.metaDescription)}">
+<link rel="icon" type="image/png" href="/logo.png">
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --bg-alt: #ffffff;
+    --text: #1c1a17;
+    --text-muted: #63594d;
+    --accent: #0f7a5c;
+    --accent-contrast: #ffffff;
+    --border: #e4ddd3;
+    --code-bg: #efe9e0;
+    --shadow: 0 1px 3px rgba(28, 26, 23, 0.06), 0 8px 24px rgba(28, 26, 23, 0.05);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #171512;
+      --bg-alt: #201d19;
+      --text: #f3efe9;
+      --text-muted: #ab9f8e;
+      --accent: #35c990;
+      --accent-contrast: #0c1512;
+      --border: #332e28;
+      --code-bg: #2a251f;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  header.hero {
+    padding: 64px 0 48px;
+    text-align: center;
+  }
+  header.hero img.logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .tagline {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    max-width: 46ch;
+    margin: 0 auto 28px;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+  }
+  nav.toc {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 8px 0 40px;
+    font-size: 0.95rem;
+  }
+  nav.toc a { text-decoration: none; color: var(--text-muted); }
+  nav.toc a:hover { color: var(--accent); }
+  section { padding: 40px 0; border-top: 1px solid var(--border); }
+  section h2 { font-size: 1.5rem; margin: 0 0 20px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+  .steps li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    align-items: start;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .commands-intro { color: var(--text-muted); margin-top: -8px; }
+  .command-group { margin-top: 28px; }
+  .command-group h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+  }
+  .command-group dl { margin: 0; }
+  .command-row {
+    display: grid;
+    grid-template-columns: minmax(140px, 260px) 1fr;
+    gap: 12px 20px;
+    padding: 10px 0;
+    border-top: 1px solid var(--border);
+  }
+  .command-row:first-of-type { border-top: none; }
+  .command-row dt, .command-row dd { margin: 0; }
+  .command-row code {
+    font-family: var(--font-mono);
+    background: var(--code-bg);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .command-row dd { color: var(--text-muted); }
+  @media (max-width: 520px) {
+    .command-row { grid-template-columns: 1fr; }
+    .command-row code { white-space: normal; }
+  }
+  footer {
+    padding: 32px 0 64px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  footer a { color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <img class="logo" src="/logo.png" alt="${escapeHtml(c.title)}">
+      <p class="eyebrow">${escapeHtml(c.eyebrow)}</p>
+      <h1>${escapeHtml(c.title)}</h1>
+      <p class="tagline">${escapeHtml(c.tagline)}</p>
+      <a class="cta" href="${BOT_URL}">${escapeHtml(c.ctaLabel)}</a>
+    </header>
+
+    <nav class="toc">
+      <a href="#about">${escapeHtml(c.navAbout)}</a>
+      <a href="#how">${escapeHtml(c.navHowItWorks)}</a>
+      <a href="#commands">${escapeHtml(c.navCommands)}</a>
+    </nav>
+
+    <section id="about">
+      <h2>${escapeHtml(c.aboutHeading)}</h2>
+      ${aboutHtml}
+    </section>
+
+    <section id="how">
+      <h2>${escapeHtml(c.howHeading)}</h2>
+      <ol class="steps">
+        ${stepsHtml}
+      </ol>
+    </section>
+
+    <section id="commands">
+      <h2>${escapeHtml(c.commandsHeading)}</h2>
+      <p class="commands-intro">${escapeHtml(c.commandsIntro)}</p>
+      ${groupsHtml}
+    </section>
+
+    <footer>
+      <p>${escapeHtml(c.footerLanguages)}</p>
+      <p><a href="${REPO_URL}">${escapeHtml(c.footerSource)}</a></p>
+    </footer>
+  </div>
+</body>
+</html>
+`;
+}

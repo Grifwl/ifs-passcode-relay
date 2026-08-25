@@ -2,10 +2,19 @@ import { Hono } from "hono";
 import { webhookCallback } from "grammy";
 import type { Env } from "./env.js";
 import { createBot } from "./bot.js";
+import { renderLandingPage } from "./landing.js";
+import { resolveLanguage } from "./domain/language.js";
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.get("/", (c) => c.text("ifs-passcode-relay is running"));
+app.get("/", (c) => {
+  const preferred = c.req.header("Accept-Language")?.split(",")[0]?.trim();
+  return c.html(renderLandingPage(resolveLanguage(preferred)));
+});
+
+// Browsers request this opportunistically; the actual favicon is
+// logo.png (served as a static asset, see wrangler.toml's [assets]).
+app.get("/favicon.ico", (c) => c.redirect("/logo.png", 302));
 
 app.post("/telegram/webhook", async (c) => {
   const bot = createBot(c.env);
