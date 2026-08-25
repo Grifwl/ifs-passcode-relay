@@ -15,6 +15,10 @@
     "typecheck": "tsc --noEmit",
     "db:migrate:local": "wrangler d1 migrations apply ifs-passcode-relay --local",
     "db:migrate:remote": "wrangler d1 migrations apply ifs-passcode-relay --remote",
+    "db:reset:local": "wrangler d1 execute ifs-passcode-relay --local --file=scripts/reset-db.sql",
+    "db:reset:remote": "wrangler d1 execute ifs-passcode-relay --remote --file=scripts/reset-db.sql",
+    "db:seed:local": "wrangler d1 execute ifs-passcode-relay --local --file=scripts/seed-fake-data.sql",
+    "db:seed:remote": "wrangler d1 execute ifs-passcode-relay --remote --file=scripts/seed-fake-data.sql",
     "bot:set-commands": "node scripts/set-commands.mjs"
   },
   "dependencies": {
