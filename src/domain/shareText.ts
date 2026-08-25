@@ -16,7 +16,10 @@ import { BOT_USERNAME } from "./botInfo.js";
  * auto-links any `@username` mention that appears as plain text in a
  * message, the same way `domain/displayName.ts` relies on for
  * participant names, so it's just interpolated like any other text and
- * the whole result can be escaped as one block.
+ * the whole result can be escaped as one block. This also sidesteps an
+ * `<a href="...">` link's other side effect — Telegram renders a link
+ * preview card under the message for those, which a plain `@mention`
+ * doesn't trigger, keeping the pasted-elsewhere invite text compact.
  *
  * Used both by `/sharetext` itself and by `/newevent`, which sends this
  * automatically right after creating an event — at that point the
