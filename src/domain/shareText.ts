@@ -28,6 +28,10 @@ export function renderShareText(lang: SupportedLanguage, event: Pick<IfsEvent, "
   const link = `<a href="${BOT_URL}">${escapeHtml(BOT_USERNAME)}</a>`;
   const intro = t(lang, "sharetext.text", { name: escapeHtml(event.name), link });
   const joinCommand = `<code>/join ${escapeHtml(event.code)}</code>`;
-  const otherLanguages = t(lang, "sharetext.otherLanguages", { code: escapeHtml(event.code) });
+  // Unlike `intro`, this template has no raw-HTML param to preserve — it
+  // has a literal "<lang>"/"<idioma>"/"<langue>" placeholder in its
+  // static text, which Telegram's HTML parser would otherwise choke on
+  // as an unrecognized tag, so the whole rendered string is escaped.
+  const otherLanguages = escapeHtml(t(lang, "sharetext.otherLanguages", { code: event.code }));
   return `${intro}\n\n${joinCommand}\n\n${otherLanguages}`;
 }
