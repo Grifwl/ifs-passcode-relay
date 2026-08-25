@@ -26,12 +26,21 @@ group chat.
 
 1. Whoever organizes the passcode relay for a given IFS creates an event
    with `/newevent` and gets a short join code to share with attendees
-   (e.g. in a WhatsApp group). By default, the passcode is expected to
-   follow the pattern `XXX99*999XX` (three letters, two digits, one
-   whole word, three digits, two letters) — the creator can set a
-   different pattern if that IFS uses another shape.
-2. Each attendee sends `/join <code>` to the bot. An agent can only be
-   actively contributing to one event at a time.
+   (e.g. in a WhatsApp group) — the creator is joined to the event
+   automatically, since being the organizer doesn't exempt them from
+   hunting portals too. By default, the passcode is expected to follow
+   the pattern `XXX99*999XX` (three letters, two digits, one whole word,
+   three digits, two letters) — the creator can set a different pattern
+   if that IFS uses another shape. The event's name doesn't need to be
+   unique: running `/newevent` twice with the exact same name is not an
+   error, it just creates two separate events with two different join
+   codes. Since attendees only see the name when picking which code to
+   join, make it specific enough to tell same-named IFS events apart —
+   e.g. `/newevent Barcelona 2026-08`, including the year and month,
+   rather than a bare `/newevent Barcelona` that collides with every
+   other Barcelona IFS.
+2. Every other attendee sends `/join <code>` to the bot. An agent can
+   only be actively contributing to one event at a time.
 3. When you find a value, you just send its position and value: `6
    CIPHER` reports that position 6 (the word) is `CIPHER`; `7 3` reports
    that position 7 is the digit `3`. No need to remember a command.

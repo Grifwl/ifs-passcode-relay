@@ -110,7 +110,15 @@ is ever supplied.
 - **`events`** — an IFS event.
   `id` (PK), `code` (unique short join code, e.g. `7KPQ2M`), `name`,
   `pattern` (e.g. `XXX99*999XX`, see above), `status`
-  (`active`|`closed`), `created_by` (user id), `created_at`.
+  (`active`|`closed`), `created_by` (user id), `created_at`. Only `code`
+  is unique — `name` is not, so running `/newevent` twice with the exact
+  same name is expected to succeed and simply produces two independent
+  events with two different join codes, not a conflict. Since the name
+  is the only thing participants see when deciding which code to join,
+  it should be specific enough to tell same-named IFS events apart —
+  e.g. include the event's year and month, as in `Barcelona 2026-08`
+  rather than a bare `Barcelona` that collides with every other
+  Barcelona IFS ever run.
 - **`participants`** — an agent currently attending exactly one event.
   Row is deleted on `/leave`, on `/kick`, or replaced when the agent joins
   a different event.

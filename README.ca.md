@@ -27,13 +27,22 @@ recollir captures de pantalla manualment en un grup de xat.
 
 1. Qui organitza el relleu de passcode d'un IFS crea un esdeveniment amb
    `/newevent` i obté un codi curt per compartir amb els assistents (per
-   exemple, en un grup de WhatsApp). Per defecte, es dona per fet que el
-   passcode segueix el patró `XXX99*999XX` (tres lletres, dos números,
-   una paraula sencera, tres números, dues lletres) — qui crea
-   l'esdeveniment pot establir-ne un altre si aquell IFS fa servir un
-   altre format.
-2. Cada assistent envia `/join <codi>` al bot. Un agent només pot estar
-   contribuint activament a un esdeveniment alhora.
+   exemple, en un grup de WhatsApp) — qui crea l'esdeveniment s'hi uneix
+   automàticament, ja que ser l'organitzador no l'eximeix de caçar
+   portals també. Per defecte, es dona per fet que el passcode segueix
+   el patró `XXX99*999XX` (tres lletres, dos números, una paraula
+   sencera, tres números, dues lletres) — qui crea l'esdeveniment pot
+   establir-ne un altre si aquell IFS fa servir un altre format. El nom
+   de l'esdeveniment no cal que sigui únic: fer `/newevent` dues vegades
+   amb exactament el mateix nom no és un error, simplement crea dos
+   esdeveniments separats amb dos codis d'accés diferents. Com que els
+   assistents només veuen el nom a l'hora de triar quin codi seguir,
+   val la pena que sigui prou específic per distingir esdeveniments IFS
+   amb el mateix nom — per exemple, `/newevent Barcelona 2026-08`,
+   incloent-hi l'any i el mes, en lloc d'un simple `/newevent Barcelona`
+   que col·lisiona amb qualsevol altre IFS de Barcelona.
+2. La resta d'assistents envien `/join <codi>` al bot. Un agent només pot
+   estar contribuint activament a un esdeveniment alhora.
 3. Quan trobes un valor, simplement envies la seva posició i el valor:
    `6 CIPHER` reporta que la posició 6 (la paraula) és `CIPHER`; `7 3`
    reporta que la posició 7 és el número `3`. No cal recordar cap

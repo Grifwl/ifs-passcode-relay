@@ -28,13 +28,22 @@ grupo de chat.
 
 1. Quien organiza el relevo de passcode de un IFS crea un evento con
    `/newevent` y obtiene un código corto para compartir con los
-   asistentes (por ejemplo, en un grupo de WhatsApp). Por defecto, se da
-   por hecho que el passcode sigue el patrón `XXX99*999XX` (tres letras,
-   dos números, una palabra entera, tres números, dos letras) — quien
-   crea el evento puede establecer otro patrón si ese IFS usa otro
-   formato.
-2. Cada asistente envía `/join <código>` al bot. Un agente solo puede
-   estar contribuyendo activamente a un evento a la vez.
+   asistentes (por ejemplo, en un grupo de WhatsApp) — quien crea el
+   evento se une a él automáticamente, ya que ser el organizador no le
+   exime de cazar portales también. Por defecto, se da por hecho que el
+   passcode sigue el patrón `XXX99*999XX` (tres letras, dos números, una
+   palabra entera, tres números, dos letras) — quien crea el evento
+   puede establecer otro patrón si ese IFS usa otro formato. El nombre
+   del evento no necesita ser único: hacer `/newevent` dos veces con
+   exactamente el mismo nombre no es un error, simplemente crea dos
+   eventos separados con dos códigos de acceso distintos. Como los
+   asistentes solo ven el nombre a la hora de elegir qué código seguir,
+   conviene que sea lo bastante específico para distinguir eventos IFS
+   con el mismo nombre — por ejemplo, `/newevent Barcelona 2026-08`,
+   incluyendo el año y el mes, en lugar de un simple `/newevent
+   Barcelona` que choca con cualquier otro IFS de Barcelona.
+2. El resto de asistentes envía `/join <código>` al bot. Un agente solo
+   puede estar contribuyendo activamente a un evento a la vez.
 3. Cuando encuentras un valor, simplemente envías su posición y el
    valor: `6 CIPHER` reporta que la posición 6 (la palabra) es `CIPHER`;
    `7 3` reporta que la posición 7 es el número `3`. No hace falta

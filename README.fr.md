@@ -28,13 +28,24 @@ dans un groupe de discussion.
 
 1. La personne qui organise le relais de passcode d'un IFS crée un
    événement avec `/newevent` et obtient un code court à partager avec
-   les participants (par exemple dans un groupe WhatsApp). Par défaut,
-   le passcode est censé suivre le modèle `XXX99*999XX` (trois lettres,
-   deux chiffres, un mot entier, trois chiffres, deux lettres) — la
-   personne qui crée l'événement peut définir un autre modèle si cet IFS
-   utilise un format différent.
-2. Chaque participant envoie `/join <code>` au bot. Un agent ne peut
-   contribuer activement qu'à un seul événement à la fois.
+   les participants (par exemple dans un groupe WhatsApp) — la personne
+   qui crée l'événement y est automatiquement inscrite, car être
+   l'organisateur ne dispense pas de chasser des portails aussi. Par
+   défaut, le passcode est censé suivre le modèle `XXX99*999XX` (trois
+   lettres, deux chiffres, un mot entier, trois chiffres, deux lettres)
+   — la personne qui crée l'événement peut définir un autre modèle si
+   cet IFS utilise un format différent. Le nom de l'événement n'a pas
+   besoin d'être unique : lancer `/newevent` deux fois avec exactement
+   le même nom n'est pas une erreur, cela crée simplement deux
+   événements distincts avec deux codes d'accès différents. Comme les
+   participants ne voient que le nom au moment de choisir quel code
+   rejoindre, mieux vaut qu'il soit assez précis pour distinguer des
+   événements IFS portant le même nom — par exemple `/newevent
+   Barcelona 2026-08`, en incluant l'année et le mois, plutôt qu'un
+   simple `/newevent Barcelona` qui entre en collision avec n'importe
+   quel autre IFS de Barcelone.
+2. Chaque autre participant envoie `/join <code>` au bot. Un agent ne
+   peut contribuer activement qu'à un seul événement à la fois.
 3. Quand vous trouvez une valeur, vous envoyez simplement sa position et
    sa valeur : `6 CIPHER` signale que la position 6 (le mot) est
    `CIPHER` ; `7 3` signale que la position 7 est le chiffre `3`. Pas

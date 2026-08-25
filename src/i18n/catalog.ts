@@ -34,8 +34,7 @@ const en = {
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
-    `Share the code with attendees, or run /sharetext ${p.code} to get an invite message. ` +
-    `Use /join ${p.code} yourself if you're also hunting portals.`,
+    `You've been joined automatically. Share the code with attendees, or run /sharetext ${p.code} to get an invite message.`,
 
   "sharetext.usage": () => "Usage: /sharetext <code> [lang].",
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open a chat with this bot and send /join ${p.code}.`,
@@ -149,8 +148,7 @@ const ca: Catalog = {
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
-    `Comparteix el codi amb els assistents, o executa /sharetext ${p.code} per obtenir un text d'invitació. ` +
-    `Fes /join ${p.code} tu mateix si també vas a caçar portals.`,
+    `T'hi has unit automàticament. Comparteix el codi amb els assistents, o executa /sharetext ${p.code} per obtenir un text d'invitació.`,
 
   "sharetext.usage": () => "Ús: /sharetext <codi> [idioma].",
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre una conversa amb aquest bot i envia /join ${p.code}.`,
@@ -262,8 +260,7 @@ const es: Catalog = {
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
-    `Comparte el código con los asistentes, o ejecuta /sharetext ${p.code} para obtener un texto de invitación. ` +
-    `Haz /join ${p.code} tú mismo si también vas a cazar portales.`,
+    `Te has unido automáticamente. Comparte el código con los asistentes, o ejecuta /sharetext ${p.code} para obtener un texto de invitación.`,
 
   "sharetext.usage": () => "Uso: /sharetext <código> [idioma].",
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre una conversación con este bot y envía /join ${p.code}.`,
@@ -375,8 +372,7 @@ const fr: Catalog = {
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
-    `Partagez le code avec les participants, ou lancez /sharetext ${p.code} pour obtenir un texte d'invitation. ` +
-    `Faites /join ${p.code} vous-même si vous chassez aussi des portails.`,
+    `Vous avez été inscrit automatiquement. Partagez le code avec les participants, ou lancez /sharetext ${p.code} pour obtenir un texte d'invitation.`,
 
   "sharetext.usage": () => "Utilisation : /sharetext <code> [langue].",
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez une discussion avec ce bot et envoyez /join ${p.code}.`,
