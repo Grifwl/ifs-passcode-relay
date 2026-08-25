@@ -381,6 +381,13 @@ accepted in any case and normalized on the way in.
   doesn't retry the same failing update forever.
 - D1 schema changes go through `wrangler d1 migrations` files under
   `migrations/`, never hand-edited against a live database.
+- **Any change to the bot's user-facing behavior** — a new command, a
+  changed command signature, a changed flow, a changed rule around
+  confirmations/trust/resolution/etc. — must be reflected in the same
+  change: every README (`README.md`, `README.ca.md`, `README.es.md`,
+  `README.fr.md`) **and** the landing page (`src/landing.ts`). None of
+  these are optional follow-ups; a behavior change isn't done until all
+  of them agree with the code.
 
 ## Status
 
