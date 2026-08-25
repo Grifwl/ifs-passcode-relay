@@ -49,7 +49,10 @@ group chat.
    position, or contradicts what's already there, the bot asks you to
    confirm before recording it.
 6. The event's creator settles a disagreement with `/resolve`, and can
-   mark a participant as trusted or as a troll if needed.
+   mark a participant as trusted or as a troll if needed. Marking
+   someone a troll, for that event only, discards the rest of their
+   reports and stops sending them further updates — including the final
+   passcode when the event closes.
 7. When the event is over, its creator closes it with `/closeevent`,
    which sends the final passcode as a **new** message to every
    participant — not just an edit — so nobody misses it even if they
@@ -71,7 +74,7 @@ group chat.
 | `/resolve <position> <value \| @user>` | event creator | Pick the correct value when there's a disagreement. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |
 | `/trust <user>` | event creator | Flag a participant as trusted. |
-| `/troll <user>` | event creator | Discard a participant's reports from consideration. |
+| `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |
 | `/untrust <user>` | event creator | Clear a participant's trust flag. |
 | `/kick <user>` | event creator | Remove a participant from the event. |
 | `/closeevent` | event creator | Freeze the event and announce the final code to everyone. |

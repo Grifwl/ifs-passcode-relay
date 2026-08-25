@@ -52,7 +52,9 @@ grupo de chat.
    te pide confirmación antes de registrarlo.
 6. Quien ha creado el evento resuelve una discrepancia con `/resolve`, y
    puede marcar a un participante como de confianza o como troll si hace
-   falta.
+   falta. Marcar a alguien como troll, solo para ese evento, descarta el
+   resto de sus aportaciones y deja de enviarle actualizaciones —
+   tampoco recibirá el passcode final cuando se cierre el evento.
 7. Cuando el evento termina, quien lo ha creado lo cierra con
    `/closeevent`, que envía el passcode final como un mensaje **nuevo**
    a todos los participantes — no solo una edición — para que a nadie se
@@ -74,7 +76,7 @@ grupo de chat.
 | `/resolve <posición> <valor \| @usuario>` | creador del evento | Elige el valor correcto cuando hay discrepancia. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
 | `/trust <usuario>` | creador del evento | Marca a un participante como de confianza. |
-| `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante. |
+| `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
 | `/untrust <usuario>` | creador del evento | Quita la marca de confianza a un participante. |
 | `/kick <usuario>` | creador del evento | Expulsa a un participante del evento. |
 | `/closeevent` | creador del evento | Congela el evento y anuncia el código final a todos. |

@@ -53,7 +53,10 @@ dans un groupe de discussion.
    vous demande confirmation avant de l'enregistrer.
 6. La personne qui a créé l'événement résout un désaccord avec
    `/resolve`, et peut marquer un participant comme fiable ou comme
-   troll si besoin.
+   troll si besoin. Marquer quelqu'un comme troll, pour cet événement
+   uniquement, écarte le reste de ses contributions et arrête de lui
+   envoyer des mises à jour — il ne recevra pas non plus le passcode
+   final à la clôture de l'événement.
 7. Une fois l'événement terminé, son créateur le clôture avec
    `/closeevent`, ce qui envoie le passcode final comme **nouveau**
    message à tous les participants — pas seulement une modification —
@@ -75,7 +78,7 @@ dans un groupe de discussion.
 | `/resolve <position> <valeur \| @utilisateur>` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord. |
 | `/unresolve <position>` | créateur de l'événement | Rouvre une position résolue. |
 | `/trust <utilisateur>` | créateur de l'événement | Marque un participant comme fiable. |
-| `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant. |
+| `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
 | `/untrust <utilisateur>` | créateur de l'événement | Retire le marquage de fiabilité d'un participant. |
 | `/kick <utilisateur>` | créateur de l'événement | Exclut un participant de l'événement. |
 | `/closeevent` | créateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |

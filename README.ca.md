@@ -51,6 +51,9 @@ recollir captures de pantalla manualment en un grup de xat.
    bot et demana confirmació abans de registrar-ho.
 6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve`, i
    pot marcar un participant com a de confiança o com a troll si cal.
+   Marcar algú com a troll, només per a aquell esdeveniment, descarta la
+   resta de les seves aportacions i deixa d'enviar-li actualitzacions —
+   tampoc rebrà el passcode final quan es tanqui l'esdeveniment.
 7. Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb
    `/closeevent`, que envia el passcode final com a missatge **nou** a
    tots els participants — no només una edició — perquè a ningú se li
@@ -72,7 +75,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/resolve <posició> <valor \| @usuari>` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
 | `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança. |
-| `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant. |
+| `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
 | `/untrust <usuari>` | creador de l'esdeveniment | Treu la marca de confiança d'un participant. |
 | `/kick <usuari>` | creador de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
 | `/closeevent` | creador de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |

@@ -204,7 +204,20 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   point on (and restoring them on `/untrust`). This is a pure exclusion,
   not a negative assertion: a troll's report is just left out of
   consideration, it does **not** mark the value they reported as wrong,
-  since a troll can still happen to report a correct value by chance.
+  since a troll can still happen to report a correct value by chance. A
+  troll keeps their `participants` row (they are not implicitly kicked,
+  see below) and can still technically send reports, but from the
+  moment they're flagged: they stop being included in the live
+  status-message broadcast (their own message is simply left un-edited
+  from then on) and they are skipped when `/closeevent` pushes the final
+  passcode to everyone — a troll gets neither further live updates nor
+  the final result. `/untrust` reverses all of this (candidates,
+  broadcasts) going forward, but does not retroactively resend broadcasts
+  that were skipped while they were flagged.
+  This status is scoped to a single `(event_id, user_id)` pair in
+  `event_trust` — it never carries over to another event, past or
+  future; the same agent starts neutral every time they join a
+  different event, even one run by the same creator.
 - **`trusted`** does **not** bulk-accept anything and must not trigger
   any automatic resolution. It is purely an advisory signal (surfaced in
   the candidate listing, see Rendering combinations) that this
@@ -215,27 +228,35 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   point at a specific report instead of retyping its value, and is
   equally usable for any participant, trusted or not.
 
-Trust is independent from participation: `/kick <user>` removes someone
-from `participants` (stops them receiving live updates and stops future
-submissions, since submitting requires being a current participant), but
-does not by itself change how their past reports are weighed — a creator
-who wants both effects calls both commands.
+Trust status and event membership remain separate concerns: marking
+someone `troll` silences broadcasts to them and discounts their reports,
+but leaves their `participants` row in place, so they still occupy their
+one-event-at-a-time slot until they `/leave` or the creator explicitly
+`/kick`s them. `/kick <user>` is the only thing that actually removes
+someone from `participants` (freeing their slot and blocking further
+submissions, since submitting requires being a current participant) — a
+creator who wants a troll gone entirely, not just silenced, calls both
+commands.
 
 ## Live updates
 
 When an agent joins an event, the bot sends them a status message and
 stores its `message_id` in `participants.status_message_id`. Every time
 the passcode state changes (a new candidate, a resolution), the bot edits
-that same message for every current participant of the event instead of
-sending a new message — this is what keeps the chat usable during an
-hour-long event with dozens of reports.
+that same message for every current participant of the event **except
+those currently flagged `troll`**, who are skipped entirely — this is
+what keeps the chat usable during an hour-long event with dozens of
+reports, and what makes a `troll` flag actually silence someone instead
+of just being a note in a database.
 
 This in-place edit is not a reliable way to make sure everyone actually
 *sees* the final passcode, though: in a 1:1 chat, every report a
 participant sends is itself a new outgoing message, which pushes the
 bot's single edited status message further up their own scrollback each
 time — an active participant can easily bury it without noticing. For
-that reason, `/closeevent` does not merely edit; see below.
+that reason, `/closeevent` sends a brand new message to every
+participant instead of editing — again except anyone flagged `troll`,
+who receives neither this nor any further live update.
 
 ## Internationalization
 
@@ -274,7 +295,7 @@ operation, not just a side effect of `/newevent`.
 | `/resolve <position> <value \| @user>` | creator | Fix the canonical value for a position, optionally by pointing at who reported it. |
 | `/unresolve <position>` | creator | Reopen a resolved position. |
 | `/trust <user>` | creator | Flag a participant as trusted. |
-| `/troll <user>` | creator | Discard a participant's contributions from candidates. |
+| `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
 | `/untrust <user>` | creator | Clear a participant's trust flag back to neutral. |
 | `/kick <user>` | creator | Remove a participant from the event. |
 | `/closeevent` | creator | Requires every position resolved; pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
