@@ -197,11 +197,23 @@ once; the confirmation message names whichever apply.
 
 The event's creator can mark a participant's trust status with
 `/trust <user>` (trusted), `/troll <user>` (discard their contributions)
-or `/untrust <user>` (back to neutral/default). This writes
-`event_trust` and immediately recomputes `passcode_candidates` for the
-event (a newly-trolled user's reports are excluded from candidates and
-variant generation from that point on; a newly-untrolled user's reports
-are restored).
+or `/untrust <user>` (back to neutral/default), writing `event_trust`.
+
+- **`troll`** immediately recomputes `passcode_candidates`, excluding
+  that user's reports from candidates and variant generation from that
+  point on (and restoring them on `/untrust`). This is a pure exclusion,
+  not a negative assertion: a troll's report is just left out of
+  consideration, it does **not** mark the value they reported as wrong,
+  since a troll can still happen to report a correct value by chance.
+- **`trusted`** does **not** bulk-accept anything and must not trigger
+  any automatic resolution. It is purely an advisory signal (surfaced in
+  the candidate listing, see Rendering combinations) that this
+  participant has generally been reliable — the creator still evaluates
+  and resolves position by position, since the same trusted agent can be
+  right about one position and wrong about another. Its only functional
+  effect is convenience: `/resolve <position> @user` lets the creator
+  point at a specific report instead of retyping its value, and is
+  equally usable for any participant, trusted or not.
 
 Trust is independent from participation: `/kick <user>` removes someone
 from `participants` (stops them receiving live updates and stops future
