@@ -90,7 +90,7 @@ group chat.
 |---|---|---|
 | `/start`, `/help` | anyone | Introduction and command list. |
 | `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`). |
-| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event. |
 | `/leave` | participant | Leave your current event. |

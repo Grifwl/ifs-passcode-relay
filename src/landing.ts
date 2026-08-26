@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from "./domain/language.js";
 import { BOT_URL } from "./domain/botInfo.js";
+import { DEFAULT_PATTERN } from "./domain/pattern.js";
 
 const REPO_URL = "https://github.com/Grifwl/ifs-passcode-relay";
 
@@ -77,7 +78,10 @@ const en: LandingContent = {
     {
       heading: "Events",
       rows: [
-        { command: "/newevent <name>", description: "Create a new IFS event and get its join code; joins you automatically and marks you trusted." },
+        {
+          command: "/newevent <name> [| <pattern>]",
+          description: `Create a new IFS event and get its join code; joins you automatically and marks you trusted. The pattern is optional (default ${DEFAULT_PATTERN}); to set your own, type the name, then a "|", then the pattern using X for a letter, 9 for a digit and * for a whole word, e.g. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
         { command: "/join <code>", description: "Join an event." },
         { command: "/leave", description: "Leave your current event." },
         { command: "/myevent", description: "Show which event you're in." },
@@ -145,7 +149,10 @@ const ca: LandingContent = {
     {
       heading: "Esdeveniments",
       rows: [
-        { command: "/newevent <nom>", description: "Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança." },
+        {
+          command: "/newevent <nom> [| <patró>]",
+          description: `Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. El patró és opcional (per defecte ${DEFAULT_PATTERN}); per posar-ne un de propi, escriu el nom, després un "|", i després el patró fent servir X per a una lletra, 9 per a un número i * per a una paraula sencera, p. ex. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
         { command: "/join <codi>", description: "Uneix-te a un esdeveniment." },
         { command: "/leave", description: "Surt de l'esdeveniment actual." },
         { command: "/myevent", description: "Mostra a quin esdeveniment estàs." },
@@ -213,7 +220,10 @@ const es: LandingContent = {
     {
       heading: "Eventos",
       rows: [
-        { command: "/newevent <nombre>", description: "Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza." },
+        {
+          command: "/newevent <nombre> [| <patrón>]",
+          description: `Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. El patrón es opcional (por defecto ${DEFAULT_PATTERN}); para poner uno propio, escribe el nombre, luego un "|", y luego el patrón usando X para una letra, 9 para un número y * para una palabra entera, p. ej. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
         { command: "/join <código>", description: "Únete a un evento." },
         { command: "/leave", description: "Sal del evento actual." },
         { command: "/myevent", description: "Muestra en qué evento estás." },
@@ -281,7 +291,10 @@ const fr: LandingContent = {
     {
       heading: "Événements",
       rows: [
-        { command: "/newevent <nom>", description: "Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable." },
+        {
+          command: "/newevent <nom> [| <modèle>]",
+          description: `Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Le modèle est optionnel (par défaut ${DEFAULT_PATTERN}) ; pour en définir un, tapez le nom, puis un « | », puis le modèle en utilisant X pour une lettre, 9 pour un chiffre et * pour un mot entier, ex. « /newevent Barcelona 2026-08 | XXX99*999XX ».`,
+        },
         { command: "/join <code>", description: "Rejoindre un événement." },
         { command: "/leave", description: "Quitter l'événement actuel." },
         { command: "/myevent", description: "Affiche dans quel événement vous êtes." },

@@ -31,7 +31,9 @@ const en = {
   "language.invalid": (p) => `"${p.code}" isn't a supported language. Supported: en, ca, es, fr.`,
   "language.set": () => "Your language is now set to English.",
 
-  "newevent.usage": (p) => `Usage: /newevent <name> or /newevent <name> | <pattern>. Default pattern: ${p.defaultPattern}.`,
+  "newevent.usage": (p) =>
+    `Usage: /newevent <name> or /newevent <name> | <pattern>. Default pattern: ${p.defaultPattern}. ` +
+    `The "|" separates the name from the pattern, e.g.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
@@ -158,7 +160,9 @@ const ca: Catalog = {
   "language.invalid": (p) => `"${p.code}" no és un idioma suportat. Suportats: en, ca, es, fr.`,
   "language.set": () => "El teu idioma ara és el català.",
 
-  "newevent.usage": (p) => `Ús: /newevent <nom> o /newevent <nom> | <patró>. Patró per defecte: ${p.defaultPattern}.`,
+  "newevent.usage": (p) =>
+    `Ús: /newevent <nom> o /newevent <nom> | <patró>. Patró per defecte: ${p.defaultPattern}. ` +
+    `El "|" separa el nom del patró, p. ex.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
@@ -283,7 +287,9 @@ const es: Catalog = {
   "language.invalid": (p) => `"${p.code}" no es un idioma soportado. Soportados: en, ca, es, fr.`,
   "language.set": () => "Tu idioma ahora es el español.",
 
-  "newevent.usage": (p) => `Uso: /newevent <nombre> o /newevent <nombre> | <patrón>. Patrón por defecto: ${p.defaultPattern}.`,
+  "newevent.usage": (p) =>
+    `Uso: /newevent <nombre> o /newevent <nombre> | <patrón>. Patrón por defecto: ${p.defaultPattern}. ` +
+    `El "|" separa el nombre del patrón, p. ej.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
@@ -408,7 +414,9 @@ const fr: Catalog = {
   "language.invalid": (p) => `"${p.code}" n'est pas une langue gérée. Langues gérées : en, ca, es, fr.`,
   "language.set": () => "Votre langue est maintenant le français.",
 
-  "newevent.usage": (p) => `Utilisation : /newevent <nom> ou /newevent <nom> | <modèle>. Modèle par défaut : ${p.defaultPattern}.`,
+  "newevent.usage": (p) =>
+    `Utilisation : /newevent <nom> ou /newevent <nom> | <modèle>. Modèle par défaut : ${p.defaultPattern}. ` +
+    `Le « | » sépare le nom du modèle, ex. : /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +

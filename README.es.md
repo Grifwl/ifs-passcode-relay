@@ -93,7 +93,7 @@ grupo de chat.
 |---|---|---|
 | `/start`, `/help` | cualquiera | Introducción y lista de comandos. |
 | `/language <código>` | cualquiera | Establece tu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. |
+| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. Aquí la `\|` separa el nombre del patrón, no significa "elige uno u otro" — p. ej. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
 | `/join <código>` | cualquiera | Únete a un evento. |
 | `/leave` | participante | Sal del evento actual. |

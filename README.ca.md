@@ -92,7 +92,7 @@ recollir captures de pantalla manualment en un grup de xat.
 |---|---|---|
 | `/start`, `/help` | tothom | Introducció i llista de comandes. |
 | `/language <codi>` | tothom | Estableix el teu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. |
+| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Aquí la `\|` separa el nom del patró, no vol dir "tria l'un o l'altre" — p. ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
 | `/leave` | participant | Surt de l'esdeveniment actual. |

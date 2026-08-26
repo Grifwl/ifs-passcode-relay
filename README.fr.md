@@ -98,7 +98,7 @@ dans un groupe de discussion.
 |---|---|---|
 | `/start`, `/help` | tout le monde | Introduction et liste des commandes. |
 | `/language <code>` | tout le monde | Définit votre langue (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. |
+| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Ici, le `\|` sépare le nom du modèle, il ne veut pas dire « choisissez l'un ou l'autre » — ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement. |
 | `/leave` | participant | Quitter l'événement actuel. |
