@@ -69,7 +69,8 @@ grupo de chat.
 6. Quien ha creado el evento resuelve una discrepancia con `/resolve
    <posición> <valor>` — o, escrito solo como `/resolve <posición>`, el
    bot lista los valores reportados para esa posición con cuánta gente
-   respalda cada uno, y muestra un botón por valor (el más respaldado
+   respalda cada uno — y, si alguno de esos apoyos es de confianza,
+   cuántos lo son — y muestra un botón por valor (el más respaldado
    primero) para resolverla con un solo toque. Escribir `/resolve` solo,
    sin argumentos, repasa en cambio todas las posiciones todavía en
    discrepancia una por una: al resolver la que se muestra con sus
@@ -97,10 +98,10 @@ grupo de chat.
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras. |
-| `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados como botones para resolver. |
+| `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
 | `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
-| `/trust <usuario>` | creador del evento | Marca a un participante como de confianza. |
+| `/trust <usuario>` | creador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
 | `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
 | `/untrust <usuario>` | creador del evento | Quita la marca de confianza a un participante. |
 | `/kick <usuario>` | creador del evento | Expulsa a un participante del evento. |

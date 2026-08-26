@@ -67,8 +67,9 @@ group chat.
 6. The event's creator settles a disagreement with `/resolve <position>
    <value>` — or, run as just `/resolve <position>`, the bot lists the
    values reported for that position with how many people back each
-   one, and shows a button per value (most-backed first) to resolve it
-   with a single tap. Running bare `/resolve`, with no arguments,
+   one — and, if any of those supporters is flagged trusted, how many
+   of them are — and shows a button per value (most-backed first) to
+   resolve it with a single tap. Running bare `/resolve`, with no arguments,
    instead walks through every position still in disagreement one at a
    time: resolve the one shown via its buttons and the bot immediately
    sends the next, until it reports there are no more left. The creator
@@ -94,10 +95,10 @@ group chat.
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand. |
-| `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values as tap-to-resolve buttons. |
+| `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |
-| `/trust <user>` | event creator | Flag a participant as trusted. |
+| `/trust <user>` | event creator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
 | `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |
 | `/untrust <user>` | event creator | Clear a participant's trust flag. |
 | `/kick <user>` | event creator | Remove a participant from the event. |

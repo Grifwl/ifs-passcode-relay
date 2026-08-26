@@ -18,6 +18,11 @@
 -- 16-variant cap, enough to see supporter counts and the flagged
 -- minority name.
 --
+-- test_agent_b is also flagged 'trusted', so /resolve <position>'s
+-- candidate listing shows the trusted-supporter breakdown (e.g. "2 (1)")
+-- on positions 3, 5 and 6, where test_agent_b is one of the value's
+-- supporters.
+--
 -- Usage:
 --   npm run db:seed:remote   -- the live, deployed database
 --   npm run db:seed:local    -- the local `wrangler dev` simulation
@@ -69,3 +74,6 @@ INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_s
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 9, '6', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 10, 'Y', -9002, '@test_agent_a');
+
+INSERT INTO event_trust (event_id, user_id, status, set_by)
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), -9003, 'trusted', -9001);

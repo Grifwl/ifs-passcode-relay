@@ -68,8 +68,9 @@ recollir captures de pantalla manualment en un grup de xat.
 6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve
    <posició> <valor>` — o, escrit només com `/resolve <posició>`, el bot
    llista els valors reportats per aquella posició amb quanta gent en
-   dona cadascun per bo, i mostra un botó per valor (el més donat per
-   bo primer) per resoldre-la amb un sol toc. Escriure `/resolve` tot
+   dona cadascun per bo — i, si algun d'aquests suports és de confiança,
+   quants ho són — i mostra un botó per valor (el més donat per bo
+   primer) per resoldre-la amb un sol toc. Escriure `/resolve` tot
    sol, sense arguments, repassa en canvi totes les posicions encara en
    discrepància una per una: en resoldre la que es mostra amb els seus
    botons, el bot envia de seguida la següent, fins que avisa que ja no
@@ -96,10 +97,10 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis. |
-| `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats com a botons per resoldre. |
+| `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
 | `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
-| `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança. |
+| `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança, perquè el seu suport es destaqui a la llista de candidats de `/resolve`. |
 | `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
 | `/untrust <usuari>` | creador de l'esdeveniment | Treu la marca de confiança d'un participant. |
 | `/kick <usuari>` | creador de l'esdeveniment | Expulsa un participant de l'esdeveniment. |

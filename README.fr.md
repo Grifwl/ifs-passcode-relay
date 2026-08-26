@@ -72,8 +72,9 @@ dans un groupe de discussion.
 6. La personne qui a créé l'événement résout un désaccord avec
    `/resolve <position> <valeur>` — ou, tapé simplement comme
    `/resolve <position>`, le bot liste les valeurs signalées pour cette
-   position avec le nombre de personnes qui confirment chacune, et
-   affiche un bouton par valeur (la plus confirmée en premier) pour la
+   position avec le nombre de personnes qui confirment chacune — et, si
+   l'un de ces soutiens est fiable, combien le sont — et affiche un
+   bouton par valeur (la plus confirmée en premier) pour la
    résoudre d'un seul geste. Taper `/resolve` seul, sans argument,
    parcourt à la place toutes les positions encore en désaccord une par
    une : résoudre celle affichée via ses boutons envoie aussitôt la
@@ -101,10 +102,10 @@ dans un groupe de discussion.
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande. |
-| `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées sous forme de boutons à résoudre. |
+| `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
 | `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une. |
 | `/unresolve <position>` | créateur de l'événement | Rouvre une position résolue. |
-| `/trust <utilisateur>` | créateur de l'événement | Marque un participant comme fiable. |
+| `/trust <utilisateur>` | créateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
 | `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
 | `/untrust <utilisateur>` | créateur de l'événement | Retire le marquage de fiabilité d'un participant. |
 | `/kick <utilisateur>` | créateur de l'événement | Exclut un participant de l'événement. |

@@ -4,17 +4,24 @@ export interface CandidateRow {
   position: number;
   value: string;
   supporterCount: number;
+  /** How many of this value's supporters are flagged 'trusted' for the event. */
+  trustedCount: number;
 }
 
 /** Distinct candidate values reported for every position of an event, excluding trolled users. */
 export async function getCandidates(db: D1Database, eventId: number): Promise<CandidateRow[]> {
   const { results } = await db
     .prepare(
-      "SELECT position, value, supporter_count FROM passcode_candidates WHERE event_id = ? ORDER BY position, value"
+      "SELECT position, value, supporter_count, trusted_count FROM passcode_candidates WHERE event_id = ? ORDER BY position, value"
     )
     .bind(eventId)
-    .all<{ position: number; value: string; supporter_count: number }>();
-  return results.map((r) => ({ position: r.position, value: r.value, supporterCount: r.supporter_count }));
+    .all<{ position: number; value: string; supporter_count: number; trusted_count: number }>();
+  return results.map((r) => ({
+    position: r.position,
+    value: r.value,
+    supporterCount: r.supporter_count,
+    trustedCount: r.trusted_count,
+  }));
 }
 
 /** Candidate values reported at one position, excluding trolled users, most-supported first. */
@@ -25,11 +32,16 @@ export async function getCandidatesAtPosition(
 ): Promise<CandidateRow[]> {
   const { results } = await db
     .prepare(
-      "SELECT position, value, supporter_count FROM passcode_candidates WHERE event_id = ? AND position = ? ORDER BY supporter_count DESC, value"
+      "SELECT position, value, supporter_count, trusted_count FROM passcode_candidates WHERE event_id = ? AND position = ? ORDER BY supporter_count DESC, value"
     )
     .bind(eventId, position)
-    .all<{ position: number; value: string; supporter_count: number }>();
-  return results.map((r) => ({ position: r.position, value: r.value, supporterCount: r.supporter_count }));
+    .all<{ position: number; value: string; supporter_count: number; trusted_count: number }>();
+  return results.map((r) => ({
+    position: r.position,
+    value: r.value,
+    supporterCount: r.supporter_count,
+    trustedCount: r.trusted_count,
+  }));
 }
 
 /** A single user's most recent report at a position, if any (regardless of trust status). */

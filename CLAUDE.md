@@ -143,7 +143,8 @@ is ever supplied.
   entire class of bugs where a maintained aggregate silently drifts from
   its source of truth.
   Columns: `event_id`, `position`, `value`, `supporter_count` (distinct
-  non-troll users who reported it), `last_reported_at`.
+  non-troll users who reported it), `trusted_count` (of those, how many
+  are flagged `trusted` for the event), `last_reported_at`.
 - **`passcode_resolutions`** — the canonical value for a position, set
   explicitly by the event's creator once they're confident which
   candidate is correct. While a position has no resolution, all of its
@@ -183,6 +184,15 @@ each one's supporter count, ordered most- to least-supported, and
 attaches one inline button per candidate in that same order so the
 creator can resolve with a tap instead of retyping the value. If the
 position has no candidates yet, the bot says so and shows no buttons.
+Alongside the total supporter count, a candidate whose supporters
+include at least one participant flagged `trusted` for the event also
+shows how many of them are trusted (e.g. `5 (2)` for 5 total
+supporters, 2 of them trusted) — both in the listing text and on the
+button label — so the creator can weigh a value backed by trusted
+agents over an equally-supported one that isn't, without having to
+cross-reference `/trust` status by hand. This is `/trust`'s only
+functional effect on `/resolve` beyond the `@user` convenience already
+described above; it never causes automatic resolution.
 Since `passcode_candidates` doesn't take resolution status into
 account, this also works on an already-resolved position, letting the
 creator switch it to a different reported value without an
@@ -313,13 +323,17 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   different event, even one run by the same creator.
 - **`trusted`** does **not** bulk-accept anything and must not trigger
   any automatic resolution. It is purely an advisory signal (surfaced in
-  the candidate listing, see Rendering combinations) that this
-  participant has generally been reliable — the creator still evaluates
-  and resolves position by position, since the same trusted agent can be
-  right about one position and wrong about another. Its only functional
-  effect is convenience: `/resolve <position> @user` lets the creator
-  point at a specific report instead of retyping its value, and is
-  equally usable for any participant, trusted or not.
+  the candidate listing, see Rendering combinations, and in `/resolve`'s
+  candidate listing, see Conflict handling) that this participant has
+  generally been reliable — the creator still evaluates and resolves
+  position by position, since the same trusted agent can be right about
+  one position and wrong about another. Its functional effects are: (1)
+  `/resolve <position> @user` lets the creator point at a specific
+  report instead of retyping its value, equally usable for any
+  participant, trusted or not; and (2) `/resolve`'s candidate listing
+  additionally breaks down each candidate's supporter count by how many
+  of them are trusted, letting the creator weigh trusted backing when
+  two candidates are otherwise equally supported.
 
 Trust status and event membership remain separate concerns: marking
 someone `troll` silences broadcasts to them and discounts their reports,

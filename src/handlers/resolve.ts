@@ -43,16 +43,21 @@ function renderCandidates(
       ? t(lang, "resolve.allHeader", { count: opts.conflictCount, position })
       : t(lang, "resolve.candidatesHeader", { position });
 
+  const hasTrusted = sorted.some((c) => c.trustedCount > 0);
   const lines = [
     header,
-    ...sorted.map((c) => t(lang, "resolve.candidateLine", { value: c.value, count: c.supporterCount })),
+    ...sorted.map((c) =>
+      t(lang, "resolve.candidateLine", { value: c.value, count: c.supporterCount, trustedCount: c.trustedCount })
+    ),
+    ...(hasTrusted ? [t(lang, "resolve.trustedLegend")] : []),
     "",
     t(lang, "resolve.candidatesPrompt"),
   ];
 
   const keyboard = new InlineKeyboard();
   for (const c of sorted) {
-    keyboard.text(`${c.value} (${c.supporterCount})`, `${opts.callbackPrefix}${event.id}:${position}:${c.value}`);
+    const label = c.trustedCount > 0 ? `${c.value} (${c.supporterCount} · ${c.trustedCount}✓)` : `${c.value} (${c.supporterCount})`;
+    keyboard.text(label, `${opts.callbackPrefix}${event.id}:${position}:${c.value}`);
   }
 
   return { text: lines.join("\n"), keyboard };
