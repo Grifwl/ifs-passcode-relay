@@ -177,6 +177,39 @@ from the combinatorial expansion; `/unresolve <position>` reopens it.
 This command doubles as the position-locking moderation tool — there is
 no separate "lock" command, since resolving *is* locking.
 
+Calling `/resolve <position>` with no value or `@user` instead lists
+that position's current candidates (from `passcode_candidates`) with
+each one's supporter count, ordered most- to least-supported, and
+attaches one inline button per candidate in that same order so the
+creator can resolve with a tap instead of retyping the value. If the
+position has no candidates yet, the bot says so and shows no buttons.
+Since `passcode_candidates` doesn't take resolution status into
+account, this also works on an already-resolved position, letting the
+creator switch it to a different reported value without an
+`/unresolve` round-trip first. The button's `callback_data` carries the
+event id, position and value directly (`resolve:<eventId>:<position>:
+<value>`, mirroring `/submit`'s confirmation buttons) and re-checks
+that the tapper is still the event's creator before acting, since the
+button persists in the chat after being sent.
+
+Calling `/resolve` with **no arguments at all** starts a walkthrough of
+every position genuinely in disagreement — unresolved *and* with more
+than one live candidate, not merely unfilled (see
+`domain/passcode.ts`'s `getConflictingPositions`). It sends the same
+candidate-listing message as `/resolve <position>` for the first such
+position (lowest position number first), but with its buttons tagged
+`resolveall:<eventId>:<position>:<value>` instead of `resolve:...`.
+Resolving via one of those buttons immediately sends the next
+position still in disagreement the same way, and so on, until none are
+left, at which point the bot says so instead of sending another
+candidate listing. There is no stored "which position are we up to"
+state for this — each step recomputes the current conflict list from
+D1 from scratch, so it stays correct even if new reports arrive
+mid-walkthrough (a position resolved this way, or newly reported into
+by someone else, simply won't reappear in the next recomputation). If
+there is nothing in disagreement when `/resolve` is run bare, it says
+so immediately instead of listing anything.
+
 Because the number of unresolved positions with more than one candidate
 must be kept from exploding combinatorially in the rendered message,
 implementation must cap the number of rendered variants (suggested cap:
@@ -394,7 +427,8 @@ word too.
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts). |
-| `/resolve <position> <value \| @user>` | creator | Fix the canonical value for a position, optionally by pointing at who reported it. |
+| `/resolve <position> [<value \| @user>]` | creator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
+| `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next. |
 | `/unresolve <position>` | creator | Reopen a resolved position. |
 | `/trust <user>` | creator | Flag a participant as trusted. |
 | `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |

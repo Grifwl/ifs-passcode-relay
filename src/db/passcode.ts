@@ -17,6 +17,21 @@ export async function getCandidates(db: D1Database, eventId: number): Promise<Ca
   return results.map((r) => ({ position: r.position, value: r.value, supporterCount: r.supporter_count }));
 }
 
+/** Candidate values reported at one position, excluding trolled users, most-supported first. */
+export async function getCandidatesAtPosition(
+  db: D1Database,
+  eventId: number,
+  position: number
+): Promise<CandidateRow[]> {
+  const { results } = await db
+    .prepare(
+      "SELECT position, value, supporter_count FROM passcode_candidates WHERE event_id = ? AND position = ? ORDER BY supporter_count DESC, value"
+    )
+    .bind(eventId, position)
+    .all<{ position: number; value: string; supporter_count: number }>();
+  return results.map((r) => ({ position: r.position, value: r.value, supporterCount: r.supporter_count }));
+}
+
 /** A single user's most recent report at a position, if any (regardless of trust status). */
 export async function getOwnReport(
   db: D1Database,

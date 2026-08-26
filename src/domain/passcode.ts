@@ -58,6 +58,19 @@ export function buildSlotStates(slots: Slot[], resolutions: ResolutionRow[], can
   }));
 }
 
+/**
+ * Positions still unresolved with more than one live candidate — i.e.
+ * genuinely "in disagreement" rather than merely unfilled — in ascending
+ * position order. Used by the `/resolve` walkthrough (no arguments) to
+ * find what still needs the creator's attention.
+ */
+export function getConflictingPositions(slots: SlotState[]): number[] {
+  return slots
+    .filter((s) => s.resolvedValue === null && s.candidates.length > 1)
+    .map((s) => s.position)
+    .sort((a, b) => a - b);
+}
+
 function slotBranches(slot: SlotState): BranchOption[] {
   if (slot.resolvedValue !== null) {
     return [{ position: slot.position, value: slot.resolvedValue, supporterCount: null }];

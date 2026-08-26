@@ -95,7 +95,8 @@ const en: LandingContent = {
     {
       heading: "For the event's creator",
       rows: [
-        { command: "/resolve <position> <value>", description: "Pick the correct value when there's a disagreement." },
+        { command: "/resolve <position> [<value>]", description: "Pick the correct value when there's a disagreement; with no value, lists reported values as tap-to-resolve buttons." },
+        { command: "/resolve", description: "Walk through every position still in disagreement, one at a time." },
         { command: "/unresolve <position>", description: "Reopen a resolved position." },
         { command: "/trust, /troll, /untrust <user>", description: "Moderate a participant's contributions." },
         { command: "/kick <user>", description: "Remove a participant from the event." },
@@ -162,7 +163,8 @@ const ca: LandingContent = {
     {
       heading: "Per a qui crea l'esdeveniment",
       rows: [
-        { command: "/resolve <posició> <valor>", description: "Tria el valor correcte quan hi ha discrepància." },
+        { command: "/resolve <posició> [<valor>]", description: "Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats com a botons per resoldre." },
+        { command: "/resolve", description: "Repassa totes les posicions encara en discrepància, una per una." },
         { command: "/unresolve <posició>", description: "Reobre una posició resolta." },
         { command: "/trust, /troll, /untrust <usuari>", description: "Modera les aportacions d'un participant." },
         { command: "/kick <usuari>", description: "Expulsa un participant de l'esdeveniment." },
@@ -229,7 +231,8 @@ const es: LandingContent = {
     {
       heading: "Para quien crea el evento",
       rows: [
-        { command: "/resolve <posición> <valor>", description: "Elige el valor correcto cuando hay discrepancia." },
+        { command: "/resolve <posición> [<valor>]", description: "Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados como botones para resolver." },
+        { command: "/resolve", description: "Repasa todas las posiciones todavía en discrepancia, una por una." },
         { command: "/unresolve <posición>", description: "Reabre una posición resuelta." },
         { command: "/trust, /troll, /untrust <usuario>", description: "Modera las aportaciones de un participante." },
         { command: "/kick <usuario>", description: "Expulsa a un participante del evento." },
@@ -296,7 +299,8 @@ const fr: LandingContent = {
     {
       heading: "Pour la personne qui crée l'événement",
       rows: [
-        { command: "/resolve <position> <valeur>", description: "Choisit la valeur correcte en cas de désaccord." },
+        { command: "/resolve <position> [<valeur>]", description: "Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées sous forme de boutons à résoudre." },
+        { command: "/resolve", description: "Parcourt toutes les positions encore en désaccord, une par une." },
         { command: "/unresolve <position>", description: "Rouvre une position résolue." },
         { command: "/trust, /troll, /untrust <utilisateur>", description: "Modère les contributions d'un participant." },
         { command: "/kick <utilisateur>", description: "Exclut un participant de l'événement." },

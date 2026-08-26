@@ -65,8 +65,16 @@ recollir captures de pantalla manualment en un grup de xat.
    anterior és diferent: no cal confirmació, el teu valor anterior en
    aquella posició se substitueix directament — i si era l'única cosa
    que mantenia una discrepància, la discrepància desapareix a l'acte.
-6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve`, i
-   pot marcar un participant com a de confiança o com a troll si cal.
+6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve
+   <posició> <valor>` — o, escrit només com `/resolve <posició>`, el bot
+   llista els valors reportats per aquella posició amb quanta gent en
+   dona cadascun per bo, i mostra un botó per valor (el més donat per
+   bo primer) per resoldre-la amb un sol toc. Escriure `/resolve` tot
+   sol, sense arguments, repassa en canvi totes les posicions encara en
+   discrepància una per una: en resoldre la que es mostra amb els seus
+   botons, el bot envia de seguida la següent, fins que avisa que ja no
+   en queda cap. Qui ha creat l'esdeveniment també pot marcar un
+   participant com a de confiança o com a troll si cal.
    Marcar algú com a troll, només per a aquell esdeveniment, descarta la
    resta de les seves aportacions i deixa d'enviar-li actualitzacions —
    tampoc rebrà el passcode final quan es tanqui l'esdeveniment.
@@ -88,7 +96,8 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis. |
-| `/resolve <posició> <valor \| @usuari>` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància. |
+| `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats com a botons per resoldre. |
+| `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
 | `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança. |
 | `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |

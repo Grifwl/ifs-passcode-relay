@@ -19,7 +19,8 @@ const en = {
     "/myevent - show which event you're in\n" +
     '"<position> <value>" or /submit - report a value\n' +
     "/status - show the current code\n" +
-    "/resolve <position> <value|@user> - settle a disagreement (creator)\n" +
+    "/resolve <position> [<value|@user>] - settle a disagreement, or list current candidates as buttons (creator)\n" +
+    "/resolve - go through every position still in disagreement, one at a time (creator)\n" +
     "/unresolve <position> - reopen a resolved position (creator)\n" +
     "/trust, /troll, /untrust <@user> - moderate a participant (creator)\n" +
     "/kick <@user> - remove a participant (creator)\n" +
@@ -88,9 +89,16 @@ const en = {
   "submit.confirmNoButton": () => "Discard",
   "submit.cancelled": () => "Discarded — nothing recorded.",
 
-  "resolve.usage": () => "Usage: /resolve <position> <value> or /resolve <position> @user.",
+  "resolve.usage": () =>
+    "Usage: /resolve <position> <value>, /resolve <position> @user, /resolve <position> to list current candidates, or /resolve alone to go through every position in disagreement.",
   "resolve.userNoReport": (p) => `That user hasn't reported anything at position ${p.position}.`,
   "resolve.done": (p) => `Position ${p.position} resolved to "${p.value}".`,
+  "resolve.noCandidates": (p) => `No one has reported anything at position ${p.position} yet.`,
+  "resolve.candidatesHeader": (p) => `Position ${p.position} — reported values:`,
+  "resolve.candidateLine": (p) => `"${p.value}" — ${p.count}`,
+  "resolve.candidatesPrompt": () => "Tap a button below to resolve to that value.",
+  "resolve.allHeader": (p) => `${p.count} positions still in disagreement. Next: position ${p.position} — reported values:`,
+  "resolve.allDone": () => "No positions are currently in disagreement.",
 
   "unresolve.usage": () => "Usage: /unresolve <position>.",
   "unresolve.notResolved": (p) => `Position ${p.position} isn't resolved.`,
@@ -137,7 +145,8 @@ const ca: Catalog = {
     "/myevent - mostra a quin esdeveniment estàs\n" +
     '"<posició> <valor>" o /submit - reporta un valor\n' +
     "/status - mostra el codi actual\n" +
-    "/resolve <posició> <valor|@usuari> - resol una discrepància (creador)\n" +
+    "/resolve <posició> [<valor|@usuari>] - resol una discrepància, o llista els valors reportats com a botons (creador)\n" +
+    "/resolve - repassa totes les posicions encara en discrepància, una per una (creador)\n" +
     "/unresolve <posició> - reobre una posició resolta (creador)\n" +
     "/trust, /troll, /untrust <@usuari> - modera un participant (creador)\n" +
     "/kick <@usuari> - expulsa un participant (creador)\n" +
@@ -207,9 +216,16 @@ const ca: Catalog = {
   "submit.confirmNoButton": () => "Descarta",
   "submit.cancelled": () => "Descartat — no s'ha registrat res.",
 
-  "resolve.usage": () => "Ús: /resolve <posició> <valor> o /resolve <posició> @usuari.",
+  "resolve.usage": () =>
+    "Ús: /resolve <posició> <valor>, /resolve <posició> @usuari, /resolve <posició> per llistar els valors reportats, o /resolve tot sol per repassar totes les posicions en discrepància.",
   "resolve.userNoReport": (p) => `Aquest usuari no ha reportat res a la posició ${p.position}.`,
   "resolve.done": (p) => `Posició ${p.position} resolta com a "${p.value}".`,
+  "resolve.noCandidates": (p) => `Ningú ha reportat res a la posició ${p.position} encara.`,
+  "resolve.candidatesHeader": (p) => `Posició ${p.position} — valors reportats:`,
+  "resolve.candidateLine": (p) => `"${p.value}" — ${p.count}`,
+  "resolve.candidatesPrompt": () => "Toca un botó a sota per resoldre amb aquell valor.",
+  "resolve.allHeader": (p) => `${p.count} posicions encara en discrepància. Següent: posició ${p.position} — valors reportats:`,
+  "resolve.allDone": () => "Ara mateix no hi ha cap posició en discrepància.",
 
   "unresolve.usage": () => "Ús: /unresolve <posició>.",
   "unresolve.notResolved": (p) => `La posició ${p.position} no està resolta.`,
@@ -253,7 +269,8 @@ const es: Catalog = {
     "/myevent - muestra en qué evento estás\n" +
     '"<posición> <valor>" o /submit - reporta un valor\n' +
     "/status - muestra el código actual\n" +
-    "/resolve <posición> <valor|@usuario> - resuelve una discrepancia (creador)\n" +
+    "/resolve <posición> [<valor|@usuario>] - resuelve una discrepancia, o lista los valores reportados como botones (creador)\n" +
+    "/resolve - repasa todas las posiciones todavía en discrepancia, una por una (creador)\n" +
     "/unresolve <posición> - reabre una posición resuelta (creador)\n" +
     "/trust, /troll, /untrust <@usuario> - modera a un participante (creador)\n" +
     "/kick <@usuario> - expulsa a un participante (creador)\n" +
@@ -323,9 +340,16 @@ const es: Catalog = {
   "submit.confirmNoButton": () => "Descartar",
   "submit.cancelled": () => "Descartado — no se ha registrado nada.",
 
-  "resolve.usage": () => "Uso: /resolve <posición> <valor> o /resolve <posición> @usuario.",
+  "resolve.usage": () =>
+    "Uso: /resolve <posición> <valor>, /resolve <posición> @usuario, /resolve <posición> para listar los valores reportados, o /resolve solo para repasar todas las posiciones en discrepancia.",
   "resolve.userNoReport": (p) => `Ese usuario no ha reportado nada en la posición ${p.position}.`,
   "resolve.done": (p) => `Posición ${p.position} resuelta como "${p.value}".`,
+  "resolve.noCandidates": (p) => `Nadie ha reportado nada en la posición ${p.position} todavía.`,
+  "resolve.candidatesHeader": (p) => `Posición ${p.position} — valores reportados:`,
+  "resolve.candidateLine": (p) => `"${p.value}" — ${p.count}`,
+  "resolve.candidatesPrompt": () => "Toca un botón debajo para resolver con ese valor.",
+  "resolve.allHeader": (p) => `${p.count} posiciones todavía en discrepancia. Siguiente: posición ${p.position} — valores reportados:`,
+  "resolve.allDone": () => "Ahora mismo no hay ninguna posición en discrepancia.",
 
   "unresolve.usage": () => "Uso: /unresolve <posición>.",
   "unresolve.notResolved": (p) => `La posición ${p.position} no está resuelta.`,
@@ -369,7 +393,8 @@ const fr: Catalog = {
     "/myevent - affiche dans quel événement vous êtes\n" +
     '"<position> <valeur>" ou /submit - signaler une valeur\n' +
     "/status - affiche le code actuel\n" +
-    "/resolve <position> <valeur|@utilisateur> - règle un désaccord (créateur)\n" +
+    "/resolve <position> [<valeur|@utilisateur>] - règle un désaccord, ou liste les valeurs signalées sous forme de boutons (créateur)\n" +
+    "/resolve - parcourt toutes les positions encore en désaccord, une par une (créateur)\n" +
     "/unresolve <position> - rouvre une position résolue (créateur)\n" +
     "/trust, /troll, /untrust <@utilisateur> - modère un participant (créateur)\n" +
     "/kick <@utilisateur> - exclut un participant (créateur)\n" +
@@ -444,9 +469,16 @@ const fr: Catalog = {
   "submit.confirmNoButton": () => "Ignorer",
   "submit.cancelled": () => "Ignoré — rien n'a été enregistré.",
 
-  "resolve.usage": () => "Utilisation : /resolve <position> <valeur> ou /resolve <position> @utilisateur.",
+  "resolve.usage": () =>
+    "Utilisation : /resolve <position> <valeur>, /resolve <position> @utilisateur, /resolve <position> pour lister les valeurs signalées, ou /resolve seul pour parcourir toutes les positions en désaccord.",
   "resolve.userNoReport": (p) => `Cet utilisateur n'a rien signalé à la position ${p.position}.`,
   "resolve.done": (p) => `Position ${p.position} résolue à "${p.value}".`,
+  "resolve.noCandidates": (p) => `Personne n'a encore rien signalé à la position ${p.position}.`,
+  "resolve.candidatesHeader": (p) => `Position ${p.position} — valeurs signalées :`,
+  "resolve.candidateLine": (p) => `« ${p.value} » — ${p.count}`,
+  "resolve.candidatesPrompt": () => "Touchez un bouton ci-dessous pour résoudre avec cette valeur.",
+  "resolve.allHeader": (p) => `${p.count} positions encore en désaccord. Suivante : position ${p.position} — valeurs signalées :`,
+  "resolve.allDone": () => "Aucune position n'est actuellement en désaccord.",
 
   "unresolve.usage": () => "Utilisation : /unresolve <position>.",
   "unresolve.notResolved": (p) => `La position ${p.position} n'est pas résolue.`,

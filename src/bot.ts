@@ -10,7 +10,7 @@ import { handleLeave } from "./handlers/leave.js";
 import { handleMyEvent } from "./handlers/myevent.js";
 import { handleSubmit, handleSubmitCallback } from "./handlers/submit.js";
 import { handleStatus } from "./handlers/status.js";
-import { handleResolve } from "./handlers/resolve.js";
+import { handleResolve, handleResolveCallback } from "./handlers/resolve.js";
 import { handleUnresolve } from "./handlers/unresolve.js";
 import { handleTrust, handleTroll, handleUntrust } from "./handlers/trust.js";
 import { handleKick } from "./handlers/kick.js";
@@ -63,6 +63,7 @@ export function createBot(env: Env): Bot {
     if (data.startsWith("join:")) return handleJoinCallback(ctx, env);
     if (data.startsWith("submit:")) return handleSubmitCallback(ctx, env);
     if (data.startsWith("sharetext:")) return handleShareTextCallback(ctx, env);
+    if (data.startsWith("resolve:") || data.startsWith("resolveall:")) return handleResolveCallback(ctx, env);
     return ctx.answerCallbackQuery();
   });
 

@@ -64,8 +64,15 @@ group chat.
    confirmation needed, your previous value there is simply replaced —
    and if that was the only thing keeping a position in disagreement,
    the disagreement resolves itself right away.
-6. The event's creator settles a disagreement with `/resolve`, and can
-   mark a participant as trusted or as a troll if needed. Marking
+6. The event's creator settles a disagreement with `/resolve <position>
+   <value>` — or, run as just `/resolve <position>`, the bot lists the
+   values reported for that position with how many people back each
+   one, and shows a button per value (most-backed first) to resolve it
+   with a single tap. Running bare `/resolve`, with no arguments,
+   instead walks through every position still in disagreement one at a
+   time: resolve the one shown via its buttons and the bot immediately
+   sends the next, until it reports there are no more left. The creator
+   can also mark a participant as trusted or as a troll if needed. Marking
    someone a troll, for that event only, discards the rest of their
    reports and stops sending them further updates — including the final
    passcode when the event closes.
@@ -87,7 +94,8 @@ group chat.
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand. |
-| `/resolve <position> <value \| @user>` | event creator | Pick the correct value when there's a disagreement. |
+| `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values as tap-to-resolve buttons. |
+| `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |
 | `/trust <user>` | event creator | Flag a participant as trusted. |
 | `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |

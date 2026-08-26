@@ -66,9 +66,17 @@ grupo de chat.
    no hace falta confirmación, tu valor anterior en esa posición se
    sustituye directamente — y si era lo único que mantenía una
    discrepancia, la discrepancia desaparece al instante.
-6. Quien ha creado el evento resuelve una discrepancia con `/resolve`, y
-   puede marcar a un participante como de confianza o como troll si hace
-   falta. Marcar a alguien como troll, solo para ese evento, descarta el
+6. Quien ha creado el evento resuelve una discrepancia con `/resolve
+   <posición> <valor>` — o, escrito solo como `/resolve <posición>`, el
+   bot lista los valores reportados para esa posición con cuánta gente
+   respalda cada uno, y muestra un botón por valor (el más respaldado
+   primero) para resolverla con un solo toque. Escribir `/resolve` solo,
+   sin argumentos, repasa en cambio todas las posiciones todavía en
+   discrepancia una por una: al resolver la que se muestra con sus
+   botones, el bot envía enseguida la siguiente, hasta que avisa de que
+   ya no queda ninguna. Quien ha creado el
+   evento también puede marcar a un participante como de confianza o
+   como troll si hace falta. Marcar a alguien como troll, solo para ese evento, descarta el
    resto de sus aportaciones y deja de enviarle actualizaciones —
    tampoco recibirá el passcode final cuando se cierre el evento.
 7. Cuando el evento termina, quien lo ha creado lo cierra con
@@ -89,7 +97,8 @@ grupo de chat.
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras. |
-| `/resolve <posición> <valor \| @usuario>` | creador del evento | Elige el valor correcto cuando hay discrepancia. |
+| `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados como botones para resolver. |
+| `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
 | `/trust <usuario>` | creador del evento | Marca a un participante como de confianza. |
 | `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
