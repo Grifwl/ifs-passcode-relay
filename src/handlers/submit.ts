@@ -2,7 +2,7 @@ import type { Context } from "grammy";
 import { InlineKeyboard } from "grammy";
 import type { Env } from "../env.js";
 import { ensureUser } from "../session.js";
-import { t } from "../i18n/index.js";
+import { t, type SupportedLanguage } from "../i18n/index.js";
 import { getParticipant } from "../db/participants.js";
 import { getEventById } from "../db/events.js";
 import {
@@ -46,7 +46,7 @@ export async function handleSubmit(ctx: Context, env: Env, rawText: string): Pro
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
 
   const parsed = parseSubmissionText(rawText);
-  if (!parsed || !VALUE_PATTERN.test(parsed.value)) {
+  if (!parsed || (parsed.value !== null && !VALUE_PATTERN.test(parsed.value))) {
     await ctx.reply(t(user.language, "submit.usage"));
     return;
   }
@@ -65,6 +65,11 @@ export async function handleSubmit(ctx: Context, env: Env, rawText: string): Pro
   const slots = parsePattern(event.pattern);
   if (parsed.position < 1 || parsed.position > slots.length) {
     await ctx.reply(t(user.language, "common.invalidPosition", { max: slots.length }));
+    return;
+  }
+
+  if (parsed.value === null) {
+    await handleRemoveOwnReport(ctx, env, user.language, event, parsed.position, user.userId);
     return;
   }
 
@@ -119,8 +124,38 @@ export async function handleSubmit(ctx: Context, env: Env, rawText: string): Pro
 
   await recordAndBroadcast(ctx, env, event, parsed.position, value, displayName, user.userId);
   await ctx.reply(
-    t(user.language, own ? "submit.selfCorrected" : "submit.recorded", { position: parsed.position, value })
+    own
+      ? t(user.language, "submit.selfCorrected", { position: parsed.position, value, previous: own.value })
+      : t(user.language, "submit.recorded", { position: parsed.position, value })
   );
+}
+
+/**
+ * Removes the caller's own report at a position, leaving it unfilled
+ * again — for the case where a value was reported to the wrong
+ * position by mistake, or the reporter no longer trusts the value they
+ * previously sent. The removed value is echoed back in the response so
+ * it can be resubmitted immediately if the removal itself was the
+ * mistake.
+ */
+async function handleRemoveOwnReport(
+  ctx: Context,
+  env: Env,
+  language: SupportedLanguage,
+  event: IfsEvent,
+  position: number,
+  userId: number
+): Promise<void> {
+  const own = await getOwnReport(env.DB, event.id, position, userId);
+  if (!own) {
+    await ctx.reply(t(language, "submit.nothingToRemove", { position }));
+    return;
+  }
+
+  await deleteOwnReports(env.DB, event.id, position, userId);
+  await broadcastPasscodeUpdate(ctx.api, env.DB, event);
+
+  await ctx.reply(t(language, "submit.selfRemoved", { position, value: own.value }));
 }
 
 export async function handleSubmitCallback(ctx: Context, env: Env): Promise<void> {
@@ -154,5 +189,9 @@ export async function handleSubmitCallback(ctx: Context, env: Env): Promise<void
   await recordAndBroadcast(ctx, env, event, position, value, displayName, user.userId);
 
   await ctx.answerCallbackQuery();
-  await ctx.editMessageText(t(user.language, own ? "submit.selfCorrected" : "submit.recorded", { position, value }));
+  await ctx.editMessageText(
+    own
+      ? t(user.language, "submit.selfCorrected", { position, value, previous: own.value })
+      : t(user.language, "submit.recorded", { position, value })
+  );
 }

@@ -268,10 +268,38 @@ user's own** most recent report at that position, if any:
   disagreement (e.g. they were the sole supporter of a minority
   candidate), the disagreement disappears immediately as a side effect —
   the event's creator does **not** need to `/resolve` it.
+  The acknowledgement for a self-correction names **both** the new value
+  and the one it replaced, so an agent who corrects the wrong position by
+  mistake can immediately undo it by resubmitting the previous value
+  shown back to them, without having to remember it themselves.
 
 Only once this self-correction case doesn't apply (i.e. the user has no
 prior report at that position, or is resubmitting the same value someone
 *else* already reported) do the confirmation rules below kick in.
+
+### Removing your own report
+
+Sending just a position with **no value** — either the bare
+`<position>` shorthand or `/submit <position>` with nothing after it —
+removes the caller's own most recent report at that position, if one
+exists, instead of recording anything. This covers two situations a
+plain resubmission can't: reporting to the wrong position by mistake
+(the fix above already lets you overwrite a position you *did* mean to
+report to, but not un-report one you didn't), and simply not knowing a
+position's value yet and wanting it to stop showing your guess as a
+candidate.
+
+The removal is unconditional — no Sí/No confirmation, unlike the
+conflict/type-mismatch cases above — since it only ever touches the
+caller's own report. The acknowledgement names the value that was
+removed, the same way a self-correction's acknowledgement names the
+value it replaced, so removing the wrong position by mistake is itself
+undoable by resubmitting that value. If the caller has no report at that
+position, the bot says so instead. Removing a report from an already
+**resolved** position doesn't touch the resolution — resolutions and
+reports are independent, so the position stays resolved to whatever
+`/resolve` last set, and other participants' own reports there, if any,
+are unaffected.
 
 ### Confirmation on conflicting or pattern-breaking input
 
@@ -459,6 +487,7 @@ word too.
 | `/leave` | participant | Leave the current event. |
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
+| `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
 | `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | creator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next. |

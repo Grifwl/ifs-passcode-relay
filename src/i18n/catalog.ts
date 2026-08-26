@@ -18,6 +18,7 @@ const en = {
     "/leave - leave your current event\n" +
     "/myevent - show which event you're in\n" +
     '"<position> <value>" or /submit - report a value\n' +
+    '"<position>" alone (no value) - remove your own report at that position\n' +
     "/status - show the current code\n" +
     "/resolve <position> [<value|@user>] - settle a disagreement, or list current candidates as buttons (creator)\n" +
     "/resolve - go through every position still in disagreement, one at a time (creator)\n" +
@@ -77,9 +78,14 @@ const en = {
   "common.userNotFound": () => "Couldn't find that participant. Use their @username or the name shown in /status.",
   "common.invalidPosition": (p) => `Position must be a number between 1 and ${p.max}.`,
 
-  "submit.usage": () => 'Send it as "<position> <value>", or /submit <position> <value>.',
+  "submit.usage": () =>
+    'Send it as "<position> <value>" (or /submit <position> <value>) to report a value, ' +
+    'or just "<position>" with no value to remove your own report there.',
   "submit.recorded": (p) => `Recorded: position ${p.position} = "${p.value}".`,
-  "submit.selfCorrected": (p) => `Updated: position ${p.position} is now "${p.value}" (replaced your previous report).`,
+  "submit.selfCorrected": (p) =>
+    `Updated: position ${p.position} is now "${p.value}" (it was "${p.previous}").`,
+  "submit.selfRemoved": (p) => `Removed: your value "${p.value}" for position ${p.position} is no longer reported.`,
+  "submit.nothingToRemove": (p) => `You hadn't reported anything at position ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Already recorded: position ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
     `Position ${p.position} is already confirmed as "${p.value}" by the event's creator. Noted anyway.`,
@@ -147,6 +153,7 @@ const ca: Catalog = {
     "/leave - surt de l'esdeveniment actual\n" +
     "/myevent - mostra a quin esdeveniment estàs\n" +
     '"<posició> <valor>" o /submit - reporta un valor\n' +
+    '"<posició>" sola (sense valor) - elimina el teu report en aquella posició\n' +
     "/status - mostra el codi actual\n" +
     "/resolve <posició> [<valor|@usuari>] - resol una discrepància, o llista els valors reportats com a botons (creador)\n" +
     "/resolve - repassa totes les posicions encara en discrepància, una per una (creador)\n" +
@@ -207,9 +214,14 @@ const ca: Catalog = {
   "common.userNotFound": () => "No s'ha trobat aquest participant. Fes servir el seu @usuari o el nom que surt a /status.",
   "common.invalidPosition": (p) => `La posició ha de ser un número entre 1 i ${p.max}.`,
 
-  "submit.usage": () => 'Envia-ho com a "<posició> <valor>", o /submit <posició> <valor>.',
+  "submit.usage": () =>
+    'Envia-ho com a "<posició> <valor>" (o /submit <posició> <valor>) per reportar un valor, ' +
+    'o només "<posició>" sense valor per eliminar el teu report en aquella posició.',
   "submit.recorded": (p) => `Registrat: posició ${p.position} = "${p.value}".`,
-  "submit.selfCorrected": (p) => `Actualitzat: la posició ${p.position} ara és "${p.value}" (s'ha substituït el teu report anterior).`,
+  "submit.selfCorrected": (p) =>
+    `Actualitzat: la posició ${p.position} ara és "${p.value}" (abans era "${p.previous}").`,
+  "submit.selfRemoved": (p) => `Eliminat: el teu valor "${p.value}" per a la posició ${p.position} ja no consta.`,
+  "submit.nothingToRemove": (p) => `No havies reportat res a la posició ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Ja estava registrat: posició ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
     `La posició ${p.position} ja està confirmada com a "${p.value}" per qui ha creat l'esdeveniment. Igualment queda anotat.`,
@@ -274,6 +286,7 @@ const es: Catalog = {
     "/leave - sal del evento actual\n" +
     "/myevent - muestra en qué evento estás\n" +
     '"<posición> <valor>" o /submit - reporta un valor\n' +
+    '"<posición>" sola (sin valor) - elimina tu reporte en esa posición\n' +
     "/status - muestra el código actual\n" +
     "/resolve <posición> [<valor|@usuario>] - resuelve una discrepancia, o lista los valores reportados como botones (creador)\n" +
     "/resolve - repasa todas las posiciones todavía en discrepancia, una por una (creador)\n" +
@@ -334,9 +347,14 @@ const es: Catalog = {
   "common.userNotFound": () => "No se ha encontrado a ese participante. Usa su @usuario o el nombre que aparece en /status.",
   "common.invalidPosition": (p) => `La posición debe ser un número entre 1 y ${p.max}.`,
 
-  "submit.usage": () => 'Envíalo como "<posición> <valor>", o /submit <posición> <valor>.',
+  "submit.usage": () =>
+    'Envíalo como "<posición> <valor>" (o /submit <posición> <valor>) para reportar un valor, ' +
+    'o solo "<posición>" sin valor para eliminar tu reporte en esa posición.',
   "submit.recorded": (p) => `Registrado: posición ${p.position} = "${p.value}".`,
-  "submit.selfCorrected": (p) => `Actualizado: la posición ${p.position} ahora es "${p.value}" (se ha sustituido tu reporte anterior).`,
+  "submit.selfCorrected": (p) =>
+    `Actualizado: la posición ${p.position} ahora es "${p.value}" (antes era "${p.previous}").`,
+  "submit.selfRemoved": (p) => `Eliminado: tu valor "${p.value}" para la posición ${p.position} ya no consta.`,
+  "submit.nothingToRemove": (p) => `No habías reportado nada en la posición ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Ya estaba registrado: posición ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
     `La posición ${p.position} ya está confirmada como "${p.value}" por quien ha creado el evento. Igualmente queda anotado.`,
@@ -401,6 +419,7 @@ const fr: Catalog = {
     "/leave - quitter l'événement actuel\n" +
     "/myevent - affiche dans quel événement vous êtes\n" +
     '"<position> <valeur>" ou /submit - signaler une valeur\n' +
+    '"<position>" seule (sans valeur) - supprime votre signalement à cette position\n' +
     "/status - affiche le code actuel\n" +
     "/resolve <position> [<valeur|@utilisateur>] - règle un désaccord, ou liste les valeurs signalées sous forme de boutons (créateur)\n" +
     "/resolve - parcourt toutes les positions encore en désaccord, une par une (créateur)\n" +
@@ -465,10 +484,14 @@ const fr: Catalog = {
     "Ce participant est introuvable. Utilisez son @utilisateur ou le nom affiché dans /status.",
   "common.invalidPosition": (p) => `La position doit être un nombre entre 1 et ${p.max}.`,
 
-  "submit.usage": () => 'Envoyez-la sous la forme "<position> <valeur>", ou /submit <position> <valeur>.',
+  "submit.usage": () =>
+    'Envoyez-la sous la forme "<position> <valeur>" (ou /submit <position> <valeur>) pour signaler une valeur, ' +
+    'ou juste "<position>" sans valeur pour supprimer votre signalement à cette position.',
   "submit.recorded": (p) => `Enregistré : position ${p.position} = "${p.value}".`,
   "submit.selfCorrected": (p) =>
-    `Mis à jour : la position ${p.position} est maintenant "${p.value}" (votre précédent signalement a été remplacé).`,
+    `Mis à jour : la position ${p.position} est maintenant "${p.value}" (c'était "${p.previous}").`,
+  "submit.selfRemoved": (p) => `Supprimé : votre valeur "${p.value}" pour la position ${p.position} n'est plus signalée.`,
+  "submit.nothingToRemove": (p) => `Vous n'aviez rien signalé à la position ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Déjà enregistré : position ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
     `La position ${p.position} est déjà confirmée comme "${p.value}" par la personne qui a créé l'événement. C'est noté quand même.`,

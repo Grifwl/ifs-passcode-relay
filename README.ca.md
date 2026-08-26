@@ -65,8 +65,15 @@ recollir captures de pantalla manualment en un grup de xat.
    contradiu el que **algú altre** ja ha reportat, el bot et demana
    confirmació abans de registrar-ho. Corregir el teu **propi** report
    anterior és diferent: no cal confirmació, el teu valor anterior en
-   aquella posició se substitueix directament — i si era l'única cosa
-   que mantenia una discrepància, la discrepància desapareix a l'acte.
+   aquella posició se substitueix directament — i el bot et diu quin era
+   aquest valor anterior, per si la correcció mateixa ha estat un error
+   i el vols tornar a enviar. Si era l'única cosa que mantenia una
+   discrepància, la discrepància desapareix a l'acte.
+   Has enviat un valor a la posició equivocada, o encara no la coneixes
+   de veritat? Envia només el número de posició, sense res després (o
+   `/submit <posició>`), per eliminar el teu report en aquella posició —
+   sense confirmació, i el bot et diu quin valor ha eliminat per si
+   també ho vols desfer.
 6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve
    <posició> <valor>` — o, escrit només com `/resolve <posició>`, el bot
    llista els valors reportats per aquella posició amb quanta gent en
@@ -98,6 +105,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/leave` | participant | Surt de l'esdeveniment actual. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
+| `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
 | `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una. |

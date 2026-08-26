@@ -69,9 +69,17 @@ dans un groupe de discussion.
    autre personne** a déjà signalé, le bot vous demande confirmation
    avant de l'enregistrer. Corriger votre **propre** signalement
    précédent est différent : aucune confirmation nécessaire, votre
-   ancienne valeur à cette position est simplement remplacée — et si
-   c'était la seule chose qui maintenait un désaccord, le désaccord
-   disparaît aussitôt.
+   ancienne valeur à cette position est simplement remplacée — et le bot
+   vous indique quelle était cette ancienne valeur, au cas où la
+   correction elle-même serait une erreur et que vous vouliez la
+   renvoyer. Si c'était la seule chose qui maintenait un désaccord, le
+   désaccord disparaît aussitôt.
+   Vous avez envoyé une valeur à la mauvaise position, ou vous ne la
+   connaissez pas encore vraiment ? Envoyez juste le numéro de position,
+   sans rien après (ou `/submit <position>`), pour supprimer votre
+   signalement à cette position — sans confirmation, et le bot indique
+   quelle valeur il a supprimée au cas où vous voudriez aussi annuler
+   ça.
 6. La personne qui a créé l'événement résout un désaccord avec
    `/resolve <position> <valeur>` — ou, tapé simplement comme
    `/resolve <position>`, le bot liste les valeurs signalées pour cette
@@ -104,6 +112,7 @@ dans un groupe de discussion.
 | `/leave` | participant | Quitter l'événement actuel. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
+| `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
 | `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
 | `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
 | `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une. |

@@ -66,8 +66,15 @@ grupo de chat.
    **otra persona** ya ha reportado, el bot te pide confirmación antes
    de registrarlo. Corregir tu **propio** reporte anterior es distinto:
    no hace falta confirmación, tu valor anterior en esa posición se
-   sustituye directamente — y si era lo único que mantenía una
-   discrepancia, la discrepancia desaparece al instante.
+   sustituye directamente — y el bot te dice cuál era ese valor
+   anterior, por si la propia corrección ha sido un error y quieres
+   volver a enviarlo. Si era lo único que mantenía una discrepancia, la
+   discrepancia desaparece al instante.
+   ¿Has enviado un valor a la posición equivocada, o todavía no la
+   conoces de verdad? Envía solo el número de posición, sin nada
+   después (o `/submit <posición>`), para eliminar tu reporte en esa
+   posición — sin confirmación, y el bot te dice qué valor ha eliminado
+   por si también quieres deshacerlo.
 6. Quien ha creado el evento resuelve una discrepancia con `/resolve
    <posición> <valor>` — o, escrito solo como `/resolve <posición>`, el
    bot lista los valores reportados para esa posición con cuánta gente
@@ -99,6 +106,7 @@ grupo de chat.
 | `/leave` | participante | Sal del evento actual. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
+| `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
 | `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
 | `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una. |

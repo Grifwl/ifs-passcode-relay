@@ -20,6 +20,17 @@ interface CommandGroup {
   rows: CommandRow[];
 }
 
+/**
+ * A "How it works" step. Plain steps are a single sentence; a step can
+ * also carry `subitems` (e.g. reporting a new value vs. correcting vs.
+ * removing your own report all live under one step, since they're all
+ * facets of "reporting the code").
+ */
+interface Step {
+  text: string;
+  subitems?: string[];
+}
+
 interface LandingContent {
   htmlLang: string;
   metaDescription: string;
@@ -33,7 +44,7 @@ interface LandingContent {
   aboutHeading: string;
   aboutBody: string[];
   howHeading: string;
-  steps: string[];
+  steps: Step[];
   commandsHeading: string;
   commandsIntro: string;
   commandGroups: CommandGroup[];
@@ -59,11 +70,18 @@ const en: LandingContent = {
   ],
   howHeading: "How it works",
   steps: [
-    "Whoever organizes the passcode relay creates an event with /newevent — the creator is joined automatically, and gets a ready-to-paste invite message to forward to attendees.",
-    "Every other attendee sends /join <code> to the bot, which also invites them to run /sharetext and help spread the word.",
-    'Found something? Just send it: "6 GLYPH" reports that position 6 is GLYPH. No command to remember.',
-    "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's creator settles it with /resolve.",
-    "When the event is over, its creator closes it with /closeevent, which sends the final passcode to every participant.",
+    { text: "Whoever organizes the passcode relay creates an event with /newevent — the creator is joined automatically, and gets a ready-to-paste invite message to forward to attendees." },
+    { text: "Every other attendee sends /join <code> to the bot, which also invites them to run /sharetext and help spread the word." },
+    {
+      text: "Found something? Report it by sending its position and value, no command needed:",
+      subitems: [
+        '"6 GLYPH" records that position 6 is GLYPH.',
+        "Made a mistake and want to correct your own report? Resend the same position with the right value — no confirmation needed, and the bot reminds you what the old value was in case you want to undo it.",
+        'Reported to the wrong position, or don\'t actually know it yet? Send just the position with nothing after it, e.g. "6", to remove your own report there.',
+      ],
+    },
+    { text: "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's creator settles it with /resolve." },
+    { text: "When the event is over, its creator closes it with /closeevent, which sends the final passcode to every participant." },
   ],
   commandsHeading: "Commands",
   commandsIntro: "Every player sees these in their own language, set once with /language.",
@@ -93,6 +111,7 @@ const en: LandingContent = {
       heading: "Reporting the code",
       rows: [
         { command: '"<position> <value>"', description: "Report the value found at a position." },
+        { command: '"<position>" (no value)', description: "Remove your own report at that position, if any." },
         {
           command: "/status",
           description: "Show the current state of the code on demand, and move future live updates to this new message.",
@@ -133,11 +152,18 @@ const ca: LandingContent = {
   ],
   howHeading: "Com funciona",
   steps: [
-    "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent — qui el crea s'hi uneix automàticament, i rep un text d'invitació llest per reenviar als assistents.",
-    "La resta d'assistents envien /join <codi> al bot, que també els convida a executar /sharetext per ajudar a difondre'l.",
-    'Has trobat alguna cosa? Simplement l\'envies: "6 GLYPH" reporta que la posició 6 és GLYPH. No cal recordar cap comanda.',
-    "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui ha creat l'esdeveniment ho resol amb /resolve.",
-    "Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb /closeevent, que envia el passcode final a tots els participants.",
+    { text: "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent — qui el crea s'hi uneix automàticament, i rep un text d'invitació llest per reenviar als assistents." },
+    { text: "La resta d'assistents envien /join <codi> al bot, que també els convida a executar /sharetext per ajudar a difondre'l." },
+    {
+      text: "Has trobat alguna cosa? Reporta-ho enviant la posició i el valor, sense cap comanda:",
+      subitems: [
+        '"6 GLYPH" registra que la posició 6 és GLYPH.',
+        "T'has equivocat i vols corregir el teu propi report? Torna a enviar la mateixa posició amb el valor correcte — no cal confirmació, i el bot et recorda quin era el valor anterior per si el vols desfer.",
+        'Has reportat a la posició equivocada, o encara no la coneixes de veritat? Envia només la posició sense res després, p. ex. "6", per eliminar el teu report allà.',
+      ],
+    },
+    { text: "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui ha creat l'esdeveniment ho resol amb /resolve." },
+    { text: "Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb /closeevent, que envia el passcode final a tots els participants." },
   ],
   commandsHeading: "Comandes",
   commandsIntro: "Cada jugador les veu en el seu propi idioma, establert un cop amb /language.",
@@ -167,6 +193,7 @@ const ca: LandingContent = {
       heading: "Reportar el codi",
       rows: [
         { command: '"<posició> <valor>"', description: "Reporta el valor trobat en una posició." },
+        { command: '"<posició>" (sense valor)', description: "Elimina el teu propi report en aquella posició, si n'hi ha." },
         {
           command: "/status",
           description: "Mostra l'estat actual del codi quan ho vulguis, i trasllada aquí les properes actualitzacions en directe.",
@@ -207,11 +234,18 @@ const es: LandingContent = {
   ],
   howHeading: "Cómo funciona",
   steps: [
-    "Quien organiza el relevo de passcode crea un evento con /newevent — quien lo crea se une automáticamente, y recibe un texto de invitación listo para reenviar a los asistentes.",
-    "El resto de asistentes envía /join <código> al bot, que también les invita a ejecutar /sharetext para ayudar a difundirlo.",
-    '¿Has encontrado algo? Simplemente lo envías: "6 GLYPH" reporta que la posición 6 es GLYPH. No hace falta recordar ningún comando.',
-    "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien ha creado el evento lo resuelve con /resolve.",
-    "Cuando el evento termina, quien lo ha creado lo cierra con /closeevent, que envía el passcode final a todos los participantes.",
+    { text: "Quien organiza el relevo de passcode crea un evento con /newevent — quien lo crea se une automáticamente, y recibe un texto de invitación listo para reenviar a los asistentes." },
+    { text: "El resto de asistentes envía /join <código> al bot, que también les invita a ejecutar /sharetext para ayudar a difundirlo." },
+    {
+      text: "¿Has encontrado algo? Repórtalo enviando la posición y el valor, sin ningún comando:",
+      subitems: [
+        '"6 GLYPH" registra que la posición 6 es GLYPH.',
+        "¿Te has equivocado y quieres corregir tu propio reporte? Vuelve a enviar la misma posición con el valor correcto — no hace falta confirmación, y el bot te recuerda cuál era el valor anterior por si quieres deshacerlo.",
+        '¿Has reportado en la posición equivocada, o todavía no la conoces de verdad? Envía solo la posición sin nada después, p. ej. "6", para eliminar tu reporte ahí.',
+      ],
+    },
+    { text: "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien ha creado el evento lo resuelve con /resolve." },
+    { text: "Cuando el evento termina, quien lo ha creado lo cierra con /closeevent, que envía el passcode final a todos los participantes." },
   ],
   commandsHeading: "Comandos",
   commandsIntro: "Cada jugador los ve en su propio idioma, establecido una vez con /language.",
@@ -241,6 +275,7 @@ const es: LandingContent = {
       heading: "Reportar el código",
       rows: [
         { command: '"<posición> <valor>"', description: "Reporta el valor encontrado en una posición." },
+        { command: '"<posición>" (sin valor)', description: "Elimina tu propio reporte en esa posición, si existe." },
         {
           command: "/status",
           description: "Muestra el estado actual del código cuando quieras, y traslada aquí las próximas actualizaciones en directo.",
@@ -281,11 +316,18 @@ const fr: LandingContent = {
   ],
   howHeading: "Comment ça marche",
   steps: [
-    "La personne qui organise le relais de passcode crée un événement avec /newevent — elle y est inscrite automatiquement, et reçoit un texte d'invitation prêt à transférer aux participants.",
-    "Chaque autre participant envoie /join <code> au bot, qui l'invite aussi à lancer /sharetext pour aider à le faire connaître.",
-    'Vous avez trouvé quelque chose ? Envoyez-le simplement : "6 GLYPH" signale que la position 6 est GLYPH. Pas besoin de retenir une commande.',
-    "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui a créé l'événement tranche avec /resolve.",
-    "Une fois l'événement terminé, son créateur le clôture avec /closeevent, ce qui envoie le passcode final à tous les participants.",
+    { text: "La personne qui organise le relais de passcode crée un événement avec /newevent — elle y est inscrite automatiquement, et reçoit un texte d'invitation prêt à transférer aux participants." },
+    { text: "Chaque autre participant envoie /join <code> au bot, qui l'invite aussi à lancer /sharetext pour aider à le faire connaître." },
+    {
+      text: "Vous avez trouvé quelque chose ? Signalez-le en envoyant la position et la valeur, sans aucune commande :",
+      subitems: [
+        '« 6 GLYPH » signale que la position 6 est GLYPH.',
+        "Une erreur et vous voulez corriger votre propre signalement ? Renvoyez simplement la même position avec la bonne valeur — aucune confirmation nécessaire, et le bot vous rappelle quelle était l'ancienne valeur au cas où vous voudriez l'annuler.",
+        'Vous avez signalé la mauvaise position, ou vous ne la connaissez pas encore vraiment ? Envoyez juste la position sans rien après, ex. « 6 », pour supprimer votre signalement à cet endroit.',
+      ],
+    },
+    { text: "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui a créé l'événement tranche avec /resolve." },
+    { text: "Une fois l'événement terminé, son créateur le clôture avec /closeevent, ce qui envoie le passcode final à tous les participants." },
   ],
   commandsHeading: "Commandes",
   commandsIntro: "Chaque joueur les voit dans sa propre langue, définie une fois avec /language.",
@@ -315,6 +357,7 @@ const fr: LandingContent = {
       heading: "Signaler le code",
       rows: [
         { command: '"<position> <valeur>"', description: "Signale la valeur trouvée à une position." },
+        { command: '"<position>" (sans valeur)', description: "Supprime votre propre signalement à cette position, s'il existe." },
         {
           command: "/status",
           description: "Affiche l'état actuel du code à la demande, et y déplace les prochaines mises à jour en direct.",
@@ -354,7 +397,14 @@ function renderCommand(command: string): string {
 export function renderLandingPage(lang: SupportedLanguage): string {
   const c = content[lang];
 
-  const stepsHtml = c.steps.map((step, i) => `<li><span class="step-num">${i + 1}</span><span>${escapeHtml(step)}</span></li>`).join("\n");
+  const stepsHtml = c.steps
+    .map((step, i) => {
+      const subitemsHtml = step.subitems
+        ? `<ul class="substeps">${step.subitems.map((item) => `<li>${escapeHtml(item)}</li>`).join("\n")}</ul>`
+        : "";
+      return `<li><span class="step-num">${i + 1}</span><span>${escapeHtml(step.text)}${subitemsHtml}</span></li>`;
+    })
+    .join("\n");
 
   const groupsHtml = c.commandGroups
     .map(
@@ -497,6 +547,15 @@ export function renderLandingPage(lang: SupportedLanguage): string {
     color: var(--accent-contrast);
     font-weight: 700;
     font-size: 0.9rem;
+  }
+  .substeps {
+    list-style: disc;
+    margin: 10px 0 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 6px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
   }
   .commands-intro { color: var(--text-muted); margin-top: -8px; }
   .command-group { margin-top: 28px; }

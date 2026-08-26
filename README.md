@@ -64,8 +64,15 @@ group chat.
    *else* already reported, the bot asks you to confirm before recording
    it. Correcting your **own** earlier report is different: no
    confirmation needed, your previous value there is simply replaced —
-   and if that was the only thing keeping a position in disagreement,
-   the disagreement resolves itself right away.
+   and the bot tells you what that previous value was, in case the
+   correction itself was a mistake and you want to send it right back.
+   If that old value was the only thing keeping a position in
+   disagreement, the disagreement resolves itself right away.
+   Sent a value to the wrong position, or don't actually know it yet?
+   Send just the position number with nothing after it (or
+   `/submit <position>`) to remove your own report there — no
+   confirmation, and the bot names the value it removed so you can undo
+   that too if needed.
 6. The event's creator settles a disagreement with `/resolve <position>
    <value>` — or, run as just `/resolve <position>`, the bot lists the
    values reported for that position with how many people back each
@@ -96,6 +103,7 @@ group chat.
 | `/leave` | participant | Leave your current event. |
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
+| `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
 | `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time. |
