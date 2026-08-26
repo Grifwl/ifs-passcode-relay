@@ -36,6 +36,26 @@ export async function deliverStatus(
 }
 
 /**
+ * Sends a brand-new status message and makes it the new live-update
+ * target for this participant, replacing whatever message id was
+ * stored before. Used by `/status` so a participant can pull the live
+ * view back down to the bottom of their chat once the original message
+ * has scrolled out of easy reach, instead of being stuck editing a
+ * message buried far above.
+ */
+export async function refreshStatusMessage(
+  api: Api,
+  db: D1Database,
+  event: IfsEvent,
+  participant: Participant,
+  lang: SupportedLanguage
+): Promise<void> {
+  const text = await renderStatus(db, event, lang);
+  const sent = await api.sendMessage(participant.chatId, text, { parse_mode: "HTML" });
+  await setStatusMessageId(db, participant.userId, sent.message_id);
+}
+
+/**
  * Updates every current participant's live status message after the
  * passcode state changes, skipping anyone currently flagged `troll` for
  * this event (see CLAUDE.md "Live updates" and "Trust & moderation").

@@ -104,7 +104,7 @@ dans un groupe de discussion.
 | `/leave` | participant | Quitter l'événement actuel. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
-| `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande. |
+| `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
 | `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
 | `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une. |
 | `/unresolve <position>` | créateur de l'événement | Rouvre une position résolue. |

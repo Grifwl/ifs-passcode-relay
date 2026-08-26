@@ -368,6 +368,16 @@ that reason, `/closeevent` sends a brand new message to every
 participant instead of editing — again except anyone flagged `troll`,
 who receives neither this nor any further live update.
 
+A participant can pull the live view back down themselves at any time
+by running `/status` (or `/code`): rather than sending a disconnected,
+one-off snapshot, it sends a brand new message and re-points
+`participants.status_message_id` at it, so every future live update
+edits *that* message from then on. The old message is left as it was
+(now just a stale snapshot) and stops being touched. This is what makes
+`/status` useful mid-event even for someone who already has a live
+status message — it doesn't just show the state, it relocates where
+future updates land.
+
 ## Internationalization
 
 Every user has an independent, persistent language preference
@@ -449,7 +459,7 @@ word too.
 | `/leave` | participant | Leave the current event. |
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
-| `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts). |
+| `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | creator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next. |
 | `/unresolve <position>` | creator | Reopen a resolved position. |

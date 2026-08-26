@@ -93,7 +93,10 @@ const en: LandingContent = {
       heading: "Reporting the code",
       rows: [
         { command: '"<position> <value>"', description: "Report the value found at a position." },
-        { command: "/status", description: "Show the current state of the code on demand." },
+        {
+          command: "/status",
+          description: "Show the current state of the code on demand, and move future live updates to this new message.",
+        },
       ],
     },
     {
@@ -164,7 +167,10 @@ const ca: LandingContent = {
       heading: "Reportar el codi",
       rows: [
         { command: '"<posició> <valor>"', description: "Reporta el valor trobat en una posició." },
-        { command: "/status", description: "Mostra l'estat actual del codi quan ho vulguis." },
+        {
+          command: "/status",
+          description: "Mostra l'estat actual del codi quan ho vulguis, i trasllada aquí les properes actualitzacions en directe.",
+        },
       ],
     },
     {
@@ -235,7 +241,10 @@ const es: LandingContent = {
       heading: "Reportar el código",
       rows: [
         { command: '"<posición> <valor>"', description: "Reporta el valor encontrado en una posición." },
-        { command: "/status", description: "Muestra el estado actual del código cuando quieras." },
+        {
+          command: "/status",
+          description: "Muestra el estado actual del código cuando quieras, y traslada aquí las próximas actualizaciones en directo.",
+        },
       ],
     },
     {
@@ -306,7 +315,10 @@ const fr: LandingContent = {
       heading: "Signaler le code",
       rows: [
         { command: '"<position> <valeur>"', description: "Signale la valeur trouvée à une position." },
-        { command: "/status", description: "Affiche l'état actuel du code à la demande." },
+        {
+          command: "/status",
+          description: "Affiche l'état actuel du code à la demande, et y déplace les prochaines mises à jour en direct.",
+        },
       ],
     },
     {

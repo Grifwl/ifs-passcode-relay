@@ -4,7 +4,7 @@ import { ensureUser } from "../session.js";
 import { t } from "../i18n/index.js";
 import { getParticipant } from "../db/participants.js";
 import { getEventById } from "../db/events.js";
-import { renderStatus } from "../services/passcodeView.js";
+import { refreshStatusMessage } from "../services/broadcast.js";
 
 export async function handleStatus(ctx: Context, env: Env): Promise<void> {
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
@@ -16,6 +16,5 @@ export async function handleStatus(ctx: Context, env: Env): Promise<void> {
     return;
   }
 
-  const text = await renderStatus(env.DB, event, user.language);
-  await ctx.reply(text, { parse_mode: "HTML" });
+  await refreshStatusMessage(ctx.api, env.DB, event, participant!, user.language);
 }

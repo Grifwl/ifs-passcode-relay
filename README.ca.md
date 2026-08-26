@@ -98,7 +98,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/leave` | participant | Surt de l'esdeveniment actual. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
-| `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis. |
+| `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
 | `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |

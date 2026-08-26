@@ -96,7 +96,7 @@ group chat.
 | `/leave` | participant | Leave your current event. |
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
-| `/status` (or `/code`) | participant | Show the current state of the code on demand. |
+| `/status` (or `/code`) | participant | Show the current state of the code on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
 | `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |

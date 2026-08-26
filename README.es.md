@@ -99,7 +99,7 @@ grupo de chat.
 | `/leave` | participante | Sal del evento actual. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
-| `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras. |
+| `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
 | `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
 | `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
