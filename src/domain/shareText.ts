@@ -1,7 +1,12 @@
-import { t, type SupportedLanguage } from "../i18n/index.js";
+import { InlineKeyboard } from "grammy";
+import { t, SUPPORTED_LANGUAGES, type SupportedLanguage } from "../i18n/index.js";
 import type { IfsEvent } from "./types.js";
 import { escapeHtml } from "./html.js";
 import { BOT_USERNAME } from "./botInfo.js";
+
+/** Prefix for the language-switch buttons attached to `renderShareTextNote`'s message. */
+const SHARETEXT_CALLBACK_PREFIX = "sharetext:";
+const SHARETEXT_CALLBACK_PATTERN = /^sharetext:(\d+):(en|ca|es|fr)$/;
 
 /**
  * Renders the shareable block of the `/sharetext` invite message: an
@@ -40,15 +45,46 @@ export function renderShareText(lang: SupportedLanguage, event: Pick<IfsEvent, "
 
 /**
  * Renders the follow-up note (sent as its own, italicized message —
- * see `renderShareText`) explaining how to regenerate the invite text
- * in another language. It deliberately omits the event code: whoever
- * ran `/sharetext` — or is reading `/newevent`'s automatic copy — is
- * necessarily a participant of that event by the time they'd act on
- * this note (the creator via the auto-join right after, anyone else
- * because sharing an event assumes being in it), so a bare
- * `/sharetext <lang>` already resolves to it via their current event
- * (see `handleShareText`).
+ * see `renderShareText`) pointing at the language-switch buttons
+ * attached to it by `buildShareTextLanguageKeyboard`. Kept as a
+ * separate message for the same reason as before: it shouldn't tag
+ * along if the shareable block gets forwarded on its own.
  */
 export function renderShareTextNote(lang: SupportedLanguage): string {
   return `<i>${escapeHtml(t(lang, "sharetext.otherLanguages"))}</i>`;
+}
+
+/**
+ * Builds the inline keyboard attached to `renderShareTextNote`'s
+ * message: one button per supported language other than the one the
+ * note is currently written in, each labelled with that language's
+ * name translated into `lang` (mirroring the landing page's
+ * `footerLanguages`, which does the same). Tapping one re-sends the
+ * whole invite (shareable block + a fresh note with its own keyboard,
+ * this time excluding the newly picked language) in that language —
+ * see `handleShareTextCallback`.
+ *
+ * The event id is encoded directly in each button's `callback_data`
+ * (fits the pattern already used for `/submit`'s confirmation buttons,
+ * see CLAUDE.md "Confirmation on conflicting or pattern-breaking
+ * input") rather than resolved from the tapping user's *current* event
+ * at callback time, so a language switch always regenerates the invite
+ * for the event this specific note was about — even if the tapper has
+ * since left it or joined another one.
+ */
+export function buildShareTextLanguageKeyboard(lang: SupportedLanguage, eventId: number): InlineKeyboard {
+  const keyboard = new InlineKeyboard();
+  for (const candidate of SUPPORTED_LANGUAGES) {
+    if (candidate === lang) continue;
+    keyboard.text(t(lang, "language.name", { code: candidate }), `${SHARETEXT_CALLBACK_PREFIX}${eventId}:${candidate}`);
+    keyboard.row();
+  }
+  return keyboard;
+}
+
+/** Parses a share-text language-switch button's `callback_data`, or `null` if it's malformed. */
+export function parseShareTextCallback(data: string): { eventId: number; lang: SupportedLanguage } | null {
+  const match = SHARETEXT_CALLBACK_PATTERN.exec(data);
+  if (!match) return null;
+  return { eventId: Number(match[1]), lang: match[2] as SupportedLanguage };
 }

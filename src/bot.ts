@@ -4,7 +4,7 @@ import { handleStart } from "./handlers/start.js";
 import { handleHelp } from "./handlers/help.js";
 import { handleLanguage } from "./handlers/language.js";
 import { handleNewEvent } from "./handlers/newevent.js";
-import { handleShareText } from "./handlers/sharetext.js";
+import { handleShareText, handleShareTextCallback } from "./handlers/sharetext.js";
 import { handleJoin, handleJoinCallback } from "./handlers/join.js";
 import { handleLeave } from "./handlers/leave.js";
 import { handleMyEvent } from "./handlers/myevent.js";
@@ -62,6 +62,7 @@ export function createBot(env: Env): Bot {
     const data = ctx.callbackQuery.data;
     if (data.startsWith("join:")) return handleJoinCallback(ctx, env);
     if (data.startsWith("submit:")) return handleSubmitCallback(ctx, env);
+    if (data.startsWith("sharetext:")) return handleShareTextCallback(ctx, env);
     return ctx.answerCallbackQuery();
   });
 

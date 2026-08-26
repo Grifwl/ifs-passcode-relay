@@ -6,7 +6,7 @@ import { createEvent } from "../db/events.js";
 import { DEFAULT_PATTERN, isValidPattern } from "../domain/pattern.js";
 import { getParticipant, joinEvent } from "../db/participants.js";
 import { deliverStatus } from "../services/broadcast.js";
-import { renderShareText, renderShareTextNote } from "../domain/shareText.js";
+import { sendShareText } from "./sharetext.js";
 
 export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
@@ -39,11 +39,10 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
 
   // Sent before the auto-join below, while the creator isn't a
   // participant yet — same as anyone else sharing an event they haven't
-  // joined, the code is passed explicitly (see renderShareText). Two
-  // separate messages, same reasoning as in handleShareText: the note
-  // shouldn't tag along if the shareable block gets forwarded on its own.
-  await ctx.reply(renderShareText(user.language, event), { parse_mode: "HTML" });
-  await ctx.reply(renderShareTextNote(user.language), { parse_mode: "HTML" });
+  // joined, the code is passed explicitly (see renderShareText). Reuses
+  // handleShareText's own sendShareText, so the two commands stay in
+  // sync by construction (see CLAUDE.md "Event creation is special").
+  await sendShareText(ctx, user.language, event);
 
   // The creator is also a participant from the moment the event exists —
   // being the organizer doesn't exempt them from hunting portals, and

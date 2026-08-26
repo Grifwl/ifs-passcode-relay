@@ -348,14 +348,31 @@ same functions `/sharetext` does.
 
 The share text is actually sent as **two separate messages**, both from
 `/sharetext` and from `/newevent`'s automatic copy: the shareable block
-itself (bot mention + `/join` code), meant to be forwarded or pasted
-as-is, followed by a second, italicized message noting how to get the
-same text in another language. Keeping the language note in its own
-message means it doesn't tag along if the first message is forwarded on
-its own — it's a note for whoever ran the command, not for whoever they
-share the invite with, which is also why it omits the code (whoever's
-reading it is assumed to already be a participant of that event, so a
-bare `/sharetext <lang>` already resolves via their current event).
+itself (bot mention + `/join` code, followed by an italicized hint on
+tapping the code to copy it and then tapping the bot's name to send
+it), meant to be forwarded or pasted as-is, followed by a second,
+italicized note message. Keeping the language note in its own message
+means it doesn't tag along if the first message is forwarded on its
+own — it's for whoever ran the command, not for whoever they share the
+invite with.
+
+The note message carries an inline keyboard with one button per
+supported language other than the one it's currently written in, each
+labelled with that language's name (translated into the note's own
+language, the same way the landing page's language footer is). This
+exists because typing out `/sharetext <lang>` is easy on desktop, where
+Tab-completing a suggested command just fills the input box, but
+awkward on mobile, where tapping a suggested command sends it
+immediately with no room left to add a parameter — a real problem for
+an outdoor, phone-only event like IFS. Tapping a button re-sends the
+whole invite (shareable block + a fresh note, now excluding that
+language) via the same `sendShareText` function `/sharetext` and
+`/newevent` already call, in the picked language. The event id travels
+directly in the button's `callback_data` (see the `/submit` confirmation
+buttons above for the same convention) rather than being resolved from
+the tapper's *current* event, so a language switch always regenerates
+the invite for the event the tapped note was actually about — even if
+the tapper has since left it or joined another one.
 
 A participant who joins via a plain `/join <code>` doesn't get the
 share text automatically the way the creator does — they get a lighter
