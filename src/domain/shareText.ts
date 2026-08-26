@@ -57,12 +57,14 @@ export function renderShareTextNote(lang: SupportedLanguage): string {
 /**
  * Builds the inline keyboard attached to `renderShareTextNote`'s
  * message: one button per supported language other than the one the
- * note is currently written in, each labelled with that language's
- * name translated into `lang` (mirroring the landing page's
- * `footerLanguages`, which does the same). Tapping one re-sends the
- * whole invite (shareable block + a fresh note with its own keyboard,
- * this time excluding the newly picked language) in that language —
- * see `handleShareTextCallback`.
+ * note is currently written in, all on a single row so the keyboard
+ * stays compact on a phone screen — labelled with the bare two-letter
+ * ISO code (`EN`, `CA`, `ES`, `FR`) rather than the full language name,
+ * since only 3 buttons plus their row padding already leaves little
+ * width to work with on mobile. Tapping one re-sends the whole invite
+ * (shareable block + a fresh note with its own keyboard, this time
+ * excluding the newly picked language) in that language — see
+ * `handleShareTextCallback`.
  *
  * The event id is encoded directly in each button's `callback_data`
  * (fits the pattern already used for `/submit`'s confirmation buttons,
@@ -76,8 +78,7 @@ export function buildShareTextLanguageKeyboard(lang: SupportedLanguage, eventId:
   const keyboard = new InlineKeyboard();
   for (const candidate of SUPPORTED_LANGUAGES) {
     if (candidate === lang) continue;
-    keyboard.text(t(lang, "language.name", { code: candidate }), `${SHARETEXT_CALLBACK_PREFIX}${eventId}:${candidate}`);
-    keyboard.row();
+    keyboard.text(candidate.toUpperCase(), `${SHARETEXT_CALLBACK_PREFIX}${eventId}:${candidate}`);
   }
   return keyboard;
 }

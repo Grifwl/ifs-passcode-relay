@@ -357,11 +357,12 @@ own — it's for whoever ran the command, not for whoever they share the
 invite with.
 
 The note message carries an inline keyboard with one button per
-supported language other than the one it's currently written in, each
-labelled with that language's name (translated into the note's own
-language, the same way the landing page's language footer is). This
-exists because typing out `/sharetext <lang>` is easy on desktop, where
-Tab-completing a suggested command just fills the input box, but
+supported language other than the one it's currently written in, all
+on a single row and each labelled with the bare two-letter ISO code
+(`EN`, `CA`, `ES`, `FR`) rather than the full language name, so the
+keyboard stays compact on a phone screen. This exists because typing
+out `/sharetext <lang>` is easy on desktop, where Tab-completing a
+suggested command just fills the input box, but
 awkward on mobile, where tapping a suggested command sends it
 immediately with no room left to add a parameter — a real problem for
 an outdoor, phone-only event like IFS. Tapping a button re-sends the
