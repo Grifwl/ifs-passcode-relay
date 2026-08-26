@@ -71,6 +71,21 @@ export function getConflictingPositions(slots: SlotState[]): number[] {
     .sort((a, b) => a - b);
 }
 
+/**
+ * Positions that are not yet ready for `/closeevent`: unresolved and not
+ * narrowed down to exactly one live candidate (i.e. still blank, or still
+ * genuinely conflicting). Empty means every position is unambiguous and
+ * the event can be closed. Shared between `/closeevent` (which blocks on
+ * this) and `/resolve`'s walkthrough (which uses it to decide whether to
+ * offer a "close event" button once no conflicts remain).
+ */
+export function getUnresolvedPositions(slots: SlotState[]): number[] {
+  return slots
+    .filter((s) => s.resolvedValue === null && s.candidates.length !== 1)
+    .map((s) => s.position)
+    .sort((a, b) => a - b);
+}
+
 function slotBranches(slot: SlotState): BranchOption[] {
   if (slot.resolvedValue !== null) {
     return [{ position: slot.position, value: slot.resolvedValue, supporterCount: null }];

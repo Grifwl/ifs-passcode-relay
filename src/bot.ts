@@ -14,7 +14,7 @@ import { handleResolve, handleResolveCallback } from "./handlers/resolve.js";
 import { handleUnresolve } from "./handlers/unresolve.js";
 import { handleTrust, handleTroll, handleUntrust } from "./handlers/trust.js";
 import { handleKick } from "./handlers/kick.js";
-import { handleCloseEvent } from "./handlers/closeevent.js";
+import { handleCloseEvent, handleCloseEventCallback } from "./handlers/closeevent.js";
 import { handleEvents } from "./handlers/events.js";
 
 /**
@@ -64,6 +64,7 @@ export function createBot(env: Env): Bot {
     if (data.startsWith("submit:")) return handleSubmitCallback(ctx, env);
     if (data.startsWith("sharetext:")) return handleShareTextCallback(ctx, env);
     if (data.startsWith("resolve:") || data.startsWith("resolveall:")) return handleResolveCallback(ctx, env);
+    if (data.startsWith("closeevent:")) return handleCloseEventCallback(ctx, env);
     return ctx.answerCallbackQuery();
   });
 

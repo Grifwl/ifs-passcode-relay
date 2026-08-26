@@ -81,7 +81,11 @@ group chat.
    resolve it with a single tap. Running bare `/resolve`, with no arguments,
    instead walks through every position still in disagreement one at a
    time: resolve the one shown via its buttons and the bot immediately
-   sends the next, until it reports there are no more left. The creator
+   sends the next, until it reports there are no more left — and if, by
+   then, every position also has a settled value (resolved, or with a
+   single reported candidate), that message comes with a button to
+   close the event on the spot, doing exactly what `/closeevent` does.
+   The creator
    can also mark a participant as trusted or as a troll if needed. Marking
    someone a troll, for that event only, discards the rest of their
    reports and stops sending them further updates — including the final
@@ -106,7 +110,7 @@ group chat.
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
 | `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time. |
+| `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time; once none are left, offers a button to close the event if every position also has a settled value. |
 | `/unresolve <position>` | event creator | Reopen a resolved position. |
 | `/trust <user>` | event creator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
 | `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |

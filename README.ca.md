@@ -83,7 +83,10 @@ recollir captures de pantalla manualment en un grup de xat.
    sol, sense arguments, repassa en canvi totes les posicions encara en
    discrepància una per una: en resoldre la que es mostra amb els seus
    botons, el bot envia de seguida la següent, fins que avisa que ja no
-   en queda cap. Qui ha creat l'esdeveniment també pot marcar un
+   en queda cap — i, si en aquell moment totes les posicions tenen ja un
+   valor establert (resolta, o amb un únic candidat reportat), aquest
+   avís porta un botó per tancar l'esdeveniment allà mateix, fent
+   exactament el mateix que `/closeevent`. Qui ha creat l'esdeveniment també pot marcar un
    participant com a de confiança o com a troll si cal.
    Marcar algú com a troll, només per a aquell esdeveniment, descarta la
    resta de les seves aportacions i deixa d'enviar-li actualitzacions —
@@ -108,7 +111,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
-| `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una. |
+| `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, ofereix un botó per tancar l'esdeveniment si totes les posicions tenen ja un valor establert. |
 | `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
 | `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança, perquè el seu suport es destaqui a la llista de candidats de `/resolve`. |
 | `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |

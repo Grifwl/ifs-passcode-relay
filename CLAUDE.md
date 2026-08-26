@@ -220,6 +220,20 @@ by someone else, simply won't reappear in the next recomputation). If
 there is nothing in disagreement when `/resolve` is run bare, it says
 so immediately instead of listing anything.
 
+Whenever that "nothing in disagreement" message is the one shown —
+either immediately, because `/resolve` found no conflicts to begin
+with, or as the last step of a walkthrough that just resolved the
+final one — the bot additionally checks whether the event is fully
+ready to close: every position resolved, or reduced to exactly one
+live candidate (the same condition `/closeevent` itself enforces, see
+`domain/passcode.ts`'s `getUnresolvedPositions`). If so, the message
+carries one extra inline button that closes the event right there,
+running the exact same logic as `/closeevent` (see
+`handlers/closeevent.ts`'s shared core, invoked from both the command
+and this button's callback, tagged `closeevent:<eventId>`). This is a
+convenience only — it changes nothing about when a position counts as
+resolved or how `/closeevent` itself behaves when run as a command.
+
 Because the number of unresolved positions with more than one candidate
 must be kept from exploding combinatorially in the rendered message,
 implementation must cap the number of rendered variants (suggested cap:
@@ -490,7 +504,7 @@ word too.
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
 | `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | creator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next. |
+| `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, offers a button to close the event if every position also has a settled value. |
 | `/unresolve <position>` | creator | Reopen a resolved position. |
 | `/trust <user>` | creator | Flag a participant as trusted. |
 | `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |

@@ -122,7 +122,7 @@ const en: LandingContent = {
       heading: "For the event's creator",
       rows: [
         { command: "/resolve <position> [<value>]", description: "Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons." },
-        { command: "/resolve", description: "Walk through every position still in disagreement, one at a time." },
+        { command: "/resolve", description: "Walk through every position still in disagreement, one at a time; once none are left, offers a button to close the event if every position also has a settled value." },
         { command: "/unresolve <position>", description: "Reopen a resolved position." },
         { command: "/trust, /troll, /untrust <user>", description: "Moderate a participant's contributions; trusted support is called out in /resolve's candidate lists." },
         { command: "/kick <user>", description: "Remove a participant from the event." },
@@ -204,7 +204,7 @@ const ca: LandingContent = {
       heading: "Per a qui crea l'esdeveniment",
       rows: [
         { command: "/resolve <posició> [<valor>]", description: "Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre." },
-        { command: "/resolve", description: "Repassa totes les posicions encara en discrepància, una per una." },
+        { command: "/resolve", description: "Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, ofereix un botó per tancar l'esdeveniment si totes les posicions tenen ja un valor establert." },
         { command: "/unresolve <posició>", description: "Reobre una posició resolta." },
         { command: "/trust, /troll, /untrust <usuari>", description: "Modera les aportacions d'un participant; el suport de confiança es destaca a les llistes de candidats de /resolve." },
         { command: "/kick <usuari>", description: "Expulsa un participant de l'esdeveniment." },
@@ -286,7 +286,7 @@ const es: LandingContent = {
       heading: "Para quien crea el evento",
       rows: [
         { command: "/resolve <posición> [<valor>]", description: "Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver." },
-        { command: "/resolve", description: "Repasa todas las posiciones todavía en discrepancia, una por una." },
+        { command: "/resolve", description: "Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, ofrece un botón para cerrar el evento si todas las posiciones ya tienen un valor establecido." },
         { command: "/unresolve <posición>", description: "Reabre una posición resuelta." },
         { command: "/trust, /troll, /untrust <usuario>", description: "Modera las aportaciones de un participante; el apoyo de confianza se destaca en las listas de candidatos de /resolve." },
         { command: "/kick <usuario>", description: "Expulsa a un participante del evento." },
@@ -368,7 +368,7 @@ const fr: LandingContent = {
       heading: "Pour la personne qui crée l'événement",
       rows: [
         { command: "/resolve <position> [<valeur>]", description: "Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre." },
-        { command: "/resolve", description: "Parcourt toutes les positions encore en désaccord, une par une." },
+        { command: "/resolve", description: "Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, propose un bouton pour clôturer l'événement si toutes les positions ont déjà une valeur établie." },
         { command: "/unresolve <position>", description: "Rouvre une position résolue." },
         { command: "/trust, /troll, /untrust <utilisateur>", description: "Modère les contributions d'un participant ; le soutien fiable est mis en avant dans les listes de candidats de /resolve." },
         { command: "/kick <utilisateur>", description: "Exclut un participant de l'événement." },

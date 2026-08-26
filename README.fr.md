@@ -89,7 +89,11 @@ dans un groupe de discussion.
    résoudre d'un seul geste. Taper `/resolve` seul, sans argument,
    parcourt à la place toutes les positions encore en désaccord une par
    une : résoudre celle affichée via ses boutons envoie aussitôt la
-   suivante, jusqu'à ce qu'il n'en reste plus aucune. La personne qui a
+   suivante, jusqu'à ce qu'il n'en reste plus aucune — et, si à ce
+   moment-là toutes les positions ont déjà une valeur établie (résolue,
+   ou avec un seul candidat signalé), cet avis est accompagné d'un
+   bouton pour clôturer l'événement sur-le-champ, faisant exactement ce
+   que fait `/closeevent`. La personne qui a
    créé l'événement peut
    aussi marquer un participant comme fiable ou comme troll si besoin. Marquer quelqu'un comme troll, pour cet événement
    uniquement, écarte le reste de ses contributions et arrête de lui
@@ -115,7 +119,7 @@ dans un groupe de discussion.
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
 | `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
 | `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
-| `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une. |
+| `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, propose un bouton pour clôturer l'événement si toutes les positions ont déjà une valeur établie. |
 | `/unresolve <position>` | créateur de l'événement | Rouvre une position résolue. |
 | `/trust <utilisateur>` | créateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
 | `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |

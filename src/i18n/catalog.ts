@@ -108,6 +108,7 @@ const en = {
   "resolve.candidatesPrompt": () => "Tap a button below to resolve to that value.",
   "resolve.allHeader": (p) => `${p.count} positions still in disagreement. Next: position ${p.position} — reported values:`,
   "resolve.allDone": () => "No positions are currently in disagreement.",
+  "resolve.closeEventButton": () => "Close event",
 
   "unresolve.usage": () => "Usage: /unresolve <position>.",
   "unresolve.notResolved": (p) => `Position ${p.position} isn't resolved.`,
@@ -244,6 +245,7 @@ const ca: Catalog = {
   "resolve.candidatesPrompt": () => "Toca un botó a sota per resoldre amb aquell valor.",
   "resolve.allHeader": (p) => `${p.count} posicions encara en discrepància. Següent: posició ${p.position} — valors reportats:`,
   "resolve.allDone": () => "Ara mateix no hi ha cap posició en discrepància.",
+  "resolve.closeEventButton": () => "Tanca l'esdeveniment",
 
   "unresolve.usage": () => "Ús: /unresolve <posició>.",
   "unresolve.notResolved": (p) => `La posició ${p.position} no està resolta.`,
@@ -377,6 +379,7 @@ const es: Catalog = {
   "resolve.candidatesPrompt": () => "Toca un botón debajo para resolver con ese valor.",
   "resolve.allHeader": (p) => `${p.count} posiciones todavía en discrepancia. Siguiente: posición ${p.position} — valores reportados:`,
   "resolve.allDone": () => "Ahora mismo no hay ninguna posición en discrepancia.",
+  "resolve.closeEventButton": () => "Cerrar evento",
 
   "unresolve.usage": () => "Uso: /unresolve <posición>.",
   "unresolve.notResolved": (p) => `La posición ${p.position} no está resuelta.`,
@@ -514,6 +517,7 @@ const fr: Catalog = {
   "resolve.candidatesPrompt": () => "Touchez un bouton ci-dessous pour résoudre avec cette valeur.",
   "resolve.allHeader": (p) => `${p.count} positions encore en désaccord. Suivante : position ${p.position} — valeurs signalées :`,
   "resolve.allDone": () => "Aucune position n'est actuellement en désaccord.",
+  "resolve.closeEventButton": () => "Clôturer l'événement",
 
   "unresolve.usage": () => "Utilisation : /unresolve <position>.",
   "unresolve.notResolved": (p) => `La position ${p.position} n'est pas résolue.`,

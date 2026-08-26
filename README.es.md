@@ -84,7 +84,10 @@ grupo de chat.
    sin argumentos, repasa en cambio todas las posiciones todavía en
    discrepancia una por una: al resolver la que se muestra con sus
    botones, el bot envía enseguida la siguiente, hasta que avisa de que
-   ya no queda ninguna. Quien ha creado el
+   ya no queda ninguna — y, si en ese momento todas las posiciones ya
+   tienen un valor establecido (resuelta, o con un único candidato
+   reportado), ese aviso trae un botón para cerrar el evento ahí mismo,
+   haciendo exactamente lo mismo que `/closeevent`. Quien ha creado el
    evento también puede marcar a un participante como de confianza o
    como troll si hace falta. Marcar a alguien como troll, solo para ese evento, descarta el
    resto de sus aportaciones y deja de enviarle actualizaciones —
@@ -109,7 +112,7 @@ grupo de chat.
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
 | `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
-| `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una. |
+| `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, ofrece un botón para cerrar el evento si todas las posiciones ya tienen un valor establecido. |
 | `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
 | `/trust <usuario>` | creador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
 | `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
