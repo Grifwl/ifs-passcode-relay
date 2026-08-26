@@ -35,7 +35,7 @@ export function renderShareText(lang: SupportedLanguage, event: Pick<IfsEvent, "
   const intro = escapeHtml(t(lang, "sharetext.text", { name: event.name, bot: BOT_USERNAME }));
   const joinCommand = `<code>/join ${escapeHtml(event.code)}</code>`;
   const tapHint = `<i>${escapeHtml(t(lang, "sharetext.tapToCopy"))}</i>`;
-  return `${intro}\n\n${joinCommand}\n${tapHint}`;
+  return `${intro}\n\n${joinCommand}\n\n${tapHint}`;
 }
 
 /**
