@@ -47,7 +47,7 @@ group chat.
    spread the word too. An agent can only be actively contributing to
    one event at a time.
 3. When you find a value, you just send its position and value: `6
-   CIPHER` reports that position 6 (the word) is `CIPHER`; `7 3` reports
+   GLYPH` reports that position 6 (the word) is `GLYPH`; `7 3` reports
    that position 7 is the digit `3`. No need to remember a command.
    Letters are shown in upper case, but you can type them however you
    want.

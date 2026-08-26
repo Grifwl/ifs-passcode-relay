@@ -4,7 +4,7 @@ export interface ParsedSubmission {
 }
 
 /**
- * Parses a free-form submission like "5 A", "6: CIPHER" or "7-3" into a
+ * Parses a free-form submission like "5 A", "6: GLYPH" or "7-3" into a
  * position and a value. Returns null if the text doesn't look like a
  * submission at all (this is also how the bot tells a submission
  * attempt apart from ordinary chat text, see bot.ts).

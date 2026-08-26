@@ -61,11 +61,11 @@ INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_s
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 5, '3', -9001, '@test_creator');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'CIPHER', -9002, '@test_agent_a');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLYPH', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'CIPHER', -9003, '@test_agent_b');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLYPH', -9003, '@test_agent_b');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'CYPHER', -9001, '@test_creator');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLIPH', -9001, '@test_creator');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 7, '4', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)

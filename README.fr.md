@@ -52,8 +52,8 @@ dans un groupe de discussion.
    aussi à lancer `/sharetext` s'il souhaite aider à le faire connaître.
    Un agent ne peut contribuer activement qu'à un seul événement à la fois.
 3. Quand vous trouvez une valeur, vous envoyez simplement sa position et
-   sa valeur : `6 CIPHER` signale que la position 6 (le mot) est
-   `CIPHER` ; `7 3` signale que la position 7 est le chiffre `3`. Pas
+   sa valeur : `6 GLYPH` signale que la position 6 (le mot) est
+   `GLYPH` ; `7 3` signale que la position 7 est le chiffre `3`. Pas
    besoin de retenir une commande. Les lettres sont affichées en
    majuscules, mais vous pouvez les écrire comme vous voulez.
 4. Le bot maintient un seul message par participant à jour avec l'état

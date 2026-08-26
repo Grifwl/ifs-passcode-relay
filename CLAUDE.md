@@ -241,12 +241,12 @@ event's creator can spot a likely troll or a known-reliable agent and
 act on it (see Trust below). Example shape:
 
 ```
-ABC12CIPHER345XY
+ABC12GLYPH345XY
 ```
 👥 5
 
 ```
-ABC12CYPHER345XY
+ABC12GLIPH345XY
 ```
 👥 1 — @suspicious_agent ⚠️
 

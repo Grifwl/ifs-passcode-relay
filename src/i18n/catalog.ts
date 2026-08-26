@@ -35,7 +35,7 @@ const en = {
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
-    `You've been joined automatically and marked as trusted.\n\n` +
+    `You've been joined automatically and marked as trusted. Report what you find as "<position> <value>", e.g. "6 GLYPH".\n\n` +
     `Share (or forward) the message below with the event's group, or with anyone you want to help solve the passcode:`,
 
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
@@ -48,7 +48,7 @@ const en = {
   "join.confirmYesButton": () => "Yes, switch",
   "join.confirmNoButton": () => "Cancel",
   "join.switched": (p) => `Switched to "${p.name}".`,
-  "join.joined": (p) => `Joined "${p.name}". Report what you find as "<position> <value>", e.g. "6 CIPHER".`,
+  "join.joined": (p) => `Joined "${p.name}". Report what you find as "<position> <value>", e.g. "6 GLYPH".`,
   "join.shareHint": () => "Want to help others find this event? Run /sharetext to get an invite message to share.",
   "join.alreadyInThisEvent": (p) => `You're already in "${p.name}".`,
   "join.cancelled": (p) => `Cancelled — you're still in "${p.name}".`,
@@ -162,7 +162,7 @@ const ca: Catalog = {
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
-    `T'hi has unit automàticament i t'has marcat com a de confiança.\n\n` +
+    `T'hi has unit automàticament i t'has marcat com a de confiança. Reporta el que trobis com a "<posició> <valor>", p.ex. "6 GLYPH".\n\n` +
     `Comparteix (o reenvia) el missatge següent al grup de l'esdeveniment o amb qui vulguis resoldre el passcode:`,
 
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
@@ -175,7 +175,7 @@ const ca: Catalog = {
   "join.confirmYesButton": () => "Sí, canvia",
   "join.confirmNoButton": () => "Cancel·la",
   "join.switched": (p) => `Has canviat a "${p.name}".`,
-  "join.joined": (p) => `T'has unit a "${p.name}". Reporta el que trobis com a "<posició> <valor>", p.ex. "6 CIPHER".`,
+  "join.joined": (p) => `T'has unit a "${p.name}". Reporta el que trobis com a "<posició> <valor>", p.ex. "6 GLYPH".`,
   "join.shareHint": () => "Vols ajudar a difondre l'esdeveniment? Executa /sharetext per obtenir un text d'invitació.",
   "join.alreadyInThisEvent": (p) => `Ja ets a "${p.name}".`,
   "join.cancelled": (p) => `Cancel·lat — segueixes a "${p.name}".`,
@@ -287,7 +287,7 @@ const es: Catalog = {
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
-    `Te has unido automáticamente y te has marcado como de confianza.\n\n` +
+    `Te has unido automáticamente y te has marcado como de confianza. Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 GLYPH".\n\n` +
     `Comparte (o reenvía) el siguiente mensaje con el grupo del evento, o con quien quieras que ayude a resolver el passcode:`,
 
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
@@ -300,7 +300,7 @@ const es: Catalog = {
   "join.confirmYesButton": () => "Sí, cambiar",
   "join.confirmNoButton": () => "Cancelar",
   "join.switched": (p) => `Has cambiado a "${p.name}".`,
-  "join.joined": (p) => `Te has unido a "${p.name}". Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 CIPHER".`,
+  "join.joined": (p) => `Te has unido a "${p.name}". Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 GLYPH".`,
   "join.shareHint": () => "¿Quieres ayudar a difundir el evento? Ejecuta /sharetext para obtener un texto de invitación.",
   "join.alreadyInThisEvent": (p) => `Ya estás en "${p.name}".`,
   "join.cancelled": (p) => `Cancelado — sigues en "${p.name}".`,
@@ -412,7 +412,7 @@ const fr: Catalog = {
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
-    `Vous avez été inscrit automatiquement et marqué comme fiable.\n\n` +
+    `Vous avez été inscrit automatiquement et marqué comme fiable. Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 GLYPH".\n\n` +
     `Partagez (ou transférez) le message ci-dessous avec le groupe de l'événement, ou avec qui vous voulez pour aider à résoudre le passcode :`,
 
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,
@@ -427,7 +427,7 @@ const fr: Catalog = {
   "join.confirmYesButton": () => "Oui, changer",
   "join.confirmNoButton": () => "Annuler",
   "join.switched": (p) => `Vous êtes passé à "${p.name}".`,
-  "join.joined": (p) => `Vous avez rejoint "${p.name}". Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 CIPHER".`,
+  "join.joined": (p) => `Vous avez rejoint "${p.name}". Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 GLYPH".`,
   "join.shareHint": () =>
     "Vous voulez aider à faire connaître l'événement ? Lancez /sharetext pour obtenir un texte d'invitation.",
   "join.alreadyInThisEvent": (p) => `Vous êtes déjà dans "${p.name}".`,

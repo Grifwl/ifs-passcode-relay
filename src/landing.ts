@@ -60,7 +60,7 @@ const en: LandingContent = {
   steps: [
     "Whoever organizes the passcode relay creates an event with /newevent — the creator is joined automatically, and gets a ready-to-paste invite message to forward to attendees.",
     "Every other attendee sends /join <code> to the bot, which also invites them to run /sharetext and help spread the word.",
-    'Found something? Just send it: "6 CIPHER" reports that position 6 is CIPHER. No command to remember.',
+    'Found something? Just send it: "6 GLYPH" reports that position 6 is GLYPH. No command to remember.',
     "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's creator settles it with /resolve.",
     "When the event is over, its creator closes it with /closeevent, which sends the final passcode to every participant.",
   ],
@@ -128,7 +128,7 @@ const ca: LandingContent = {
   steps: [
     "Qui organitza el relleu de passcode crea un esdeveniment amb /newevent — qui el crea s'hi uneix automàticament, i rep un text d'invitació llest per reenviar als assistents.",
     "La resta d'assistents envien /join <codi> al bot, que també els convida a executar /sharetext per ajudar a difondre'l.",
-    'Has trobat alguna cosa? Simplement l\'envies: "6 CIPHER" reporta que la posició 6 és CIPHER. No cal recordar cap comanda.',
+    'Has trobat alguna cosa? Simplement l\'envies: "6 GLYPH" reporta que la posició 6 és GLYPH. No cal recordar cap comanda.',
     "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui ha creat l'esdeveniment ho resol amb /resolve.",
     "Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb /closeevent, que envia el passcode final a tots els participants.",
   ],
@@ -196,7 +196,7 @@ const es: LandingContent = {
   steps: [
     "Quien organiza el relevo de passcode crea un evento con /newevent — quien lo crea se une automáticamente, y recibe un texto de invitación listo para reenviar a los asistentes.",
     "El resto de asistentes envía /join <código> al bot, que también les invita a ejecutar /sharetext para ayudar a difundirlo.",
-    '¿Has encontrado algo? Simplemente lo envías: "6 CIPHER" reporta que la posición 6 es CIPHER. No hace falta recordar ningún comando.',
+    '¿Has encontrado algo? Simplemente lo envías: "6 GLYPH" reporta que la posición 6 es GLYPH. No hace falta recordar ningún comando.',
     "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien ha creado el evento lo resuelve con /resolve.",
     "Cuando el evento termina, quien lo ha creado lo cierra con /closeevent, que envía el passcode final a todos los participantes.",
   ],
@@ -264,7 +264,7 @@ const fr: LandingContent = {
   steps: [
     "La personne qui organise le relais de passcode crée un événement avec /newevent — elle y est inscrite automatiquement, et reçoit un texte d'invitation prêt à transférer aux participants.",
     "Chaque autre participant envoie /join <code> au bot, qui l'invite aussi à lancer /sharetext pour aider à le faire connaître.",
-    'Vous avez trouvé quelque chose ? Envoyez-le simplement : "6 CIPHER" signale que la position 6 est CIPHER. Pas besoin de retenir une commande.',
+    'Vous avez trouvé quelque chose ? Envoyez-le simplement : "6 GLYPH" signale que la position 6 est GLYPH. Pas besoin de retenir une commande.',
     "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui a créé l'événement tranche avec /resolve.",
     "Une fois l'événement terminé, son créateur le clôture avec /closeevent, ce qui envoie le passcode final à tous les participants.",
   ],

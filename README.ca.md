@@ -49,7 +49,7 @@ recollir captures de pantalla manualment en un grup de xat.
    convida a executar `/sharetext` per si volen ajudar a difondre'l. Un
    agent només pot estar contribuint activament a un esdeveniment alhora.
 3. Quan trobes un valor, simplement envies la seva posició i el valor:
-   `6 CIPHER` reporta que la posició 6 (la paraula) és `CIPHER`; `7 3`
+   `6 GLYPH` reporta que la posició 6 (la paraula) és `GLYPH`; `7 3`
    reporta que la posició 7 és el número `3`. No cal recordar cap
    comanda. Les lletres es mostren en majúscules, però les pots escriure
    com vulguis.

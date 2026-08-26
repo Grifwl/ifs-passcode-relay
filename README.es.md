@@ -50,7 +50,7 @@ grupo de chat.
    invita a ejecutar `/sharetext` por si quieren ayudar a difundirlo. Un
    agente solo puede estar contribuyendo activamente a un evento a la vez.
 3. Cuando encuentras un valor, simplemente envías su posición y el
-   valor: `6 CIPHER` reporta que la posición 6 (la palabra) es `CIPHER`;
+   valor: `6 GLYPH` reporta que la posición 6 (la palabra) es `GLYPH`;
    `7 3` reporta que la posición 7 es el número `3`. No hace falta
    recordar ningún comando. Las letras se muestran en mayúsculas, pero
    las puedes escribir como quieras.
