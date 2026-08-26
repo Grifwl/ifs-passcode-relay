@@ -525,7 +525,7 @@ export function renderLandingPage(lang: SupportedLanguage): string {
   section { padding: 40px 0; border-top: 1px solid var(--border); }
   section h2 { font-size: 1.5rem; margin: 0 0 20px; }
   .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-  .steps li {
+  .steps > li {
     display: grid;
     grid-template-columns: 32px 1fr;
     gap: 14px;
