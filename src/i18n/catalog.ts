@@ -35,7 +35,7 @@ const en = {
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
-    `You've been joined automatically.\n\n` +
+    `You've been joined automatically and marked as trusted.\n\n` +
     `Share (or forward) the message below with the event's group, or with anyone you want to help solve the passcode:`,
 
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
@@ -162,7 +162,7 @@ const ca: Catalog = {
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
-    `T'hi has unit automàticament.\n\n` +
+    `T'hi has unit automàticament i t'has marcat com a de confiança.\n\n` +
     `Comparteix (o reenvia) el missatge següent al grup de l'esdeveniment o amb qui vulguis resoldre el passcode:`,
 
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
@@ -287,7 +287,7 @@ const es: Catalog = {
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
-    `Te has unido automáticamente.\n\n` +
+    `Te has unido automáticamente y te has marcado como de confianza.\n\n` +
     `Comparte (o reenvía) el siguiente mensaje con el grupo del evento, o con quien quieras que ayude a resolver el passcode:`,
 
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
@@ -412,7 +412,7 @@ const fr: Catalog = {
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
-    `Vous avez été inscrit automatiquement.\n\n` +
+    `Vous avez été inscrit automatiquement et marqué comme fiable.\n\n` +
     `Partagez (ou transférez) le message ci-dessous avec le groupe de l'événement, ou avec qui vous voulez pour aider à résoudre le passcode :`,
 
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,

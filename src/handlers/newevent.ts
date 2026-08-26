@@ -5,6 +5,7 @@ import { t } from "../i18n/index.js";
 import { createEvent } from "../db/events.js";
 import { DEFAULT_PATTERN, isValidPattern } from "../domain/pattern.js";
 import { getParticipant, joinEvent } from "../db/participants.js";
+import { setTrust } from "../db/passcode.js";
 import { deliverStatus } from "../services/broadcast.js";
 import { sendShareText } from "./sharetext.js";
 
@@ -48,6 +49,11 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   // being the organizer doesn't exempt them from hunting portals, and
   // joinEvent already handles replacing any prior membership.
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
+
+  // The creator starts out trusted for their own event, as if they'd run
+  // /trust on themselves — they're the one everyone else already trusts
+  // enough to organize the event in the first place.
+  await setTrust(env.DB, { eventId: event.id, userId: user.userId, status: "trusted", setBy: user.userId });
 
   const participant = await getParticipant(env.DB, user.userId);
   if (participant) await deliverStatus(ctx.api, env.DB, event, participant, user.language);

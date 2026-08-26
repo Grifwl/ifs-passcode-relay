@@ -31,8 +31,10 @@ grupo de chat.
    asistentes (por ejemplo, en un grupo de WhatsApp) — el bot envía de
    inmediato un texto de invitación listo para pegar con ese código, y
    quien crea el evento se une a él automáticamente, ya que ser el
-   organizador no le exime de cazar portales también. Por defecto, se da
-   por hecho que el
+   organizador no le exime de cazar portales también. Quien crea el
+   evento también empieza marcado como de confianza para su propio
+   evento, igual que haría `/trust` con cualquier otra persona. Por
+   defecto, se da por hecho que el
    passcode sigue el patrón `XXX99*999XX` (tres letras, dos números, una
    palabra entera, tres números, dos letras) — quien crea el evento
    puede establecer otro patrón si ese IFS usa otro formato. El nombre
@@ -91,7 +93,7 @@ grupo de chat.
 |---|---|---|
 | `/start`, `/help` | cualquiera | Introducción y lista de comandos. |
 | `/language <código>` | cualquiera | Establece tu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso. |
+| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. |
 | `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
 | `/join <código>` | cualquiera | Únete a un evento. |
 | `/leave` | participante | Sal del evento actual. |

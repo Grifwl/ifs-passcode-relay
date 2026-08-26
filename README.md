@@ -29,7 +29,9 @@ group chat.
    (e.g. in a WhatsApp group) — the bot immediately sends a ready-to-paste
    invite message with that code, and the creator is joined to the event
    automatically, since being the organizer doesn't exempt them from
-   hunting portals too. By default, the passcode is expected to follow
+   hunting portals too. The creator also starts out flagged trusted for
+   their own event, the same way `/trust` would flag anyone else. By
+   default, the passcode is expected to follow
    the pattern `XXX99*999XX` (three letters, two digits, one whole word,
    three digits, two letters) — the creator can set a different pattern
    if that IFS uses another shape. The event's name doesn't need to be
@@ -88,7 +90,7 @@ group chat.
 |---|---|---|
 | `/start`, `/help` | anyone | Introduction and command list. |
 | `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`). |
-| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event. |
 | `/leave` | participant | Leave your current event. |

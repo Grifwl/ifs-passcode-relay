@@ -77,7 +77,7 @@ const en: LandingContent = {
     {
       heading: "Events",
       rows: [
-        { command: "/newevent <name>", description: "Create a new IFS event and get its join code." },
+        { command: "/newevent <name>", description: "Create a new IFS event and get its join code; joins you automatically and marks you trusted." },
         { command: "/join <code>", description: "Join an event." },
         { command: "/leave", description: "Leave your current event." },
         { command: "/myevent", description: "Show which event you're in." },
@@ -145,7 +145,7 @@ const ca: LandingContent = {
     {
       heading: "Esdeveniments",
       rows: [
-        { command: "/newevent <nom>", description: "Crea un nou esdeveniment IFS i n'obté el codi d'accés." },
+        { command: "/newevent <nom>", description: "Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança." },
         { command: "/join <codi>", description: "Uneix-te a un esdeveniment." },
         { command: "/leave", description: "Surt de l'esdeveniment actual." },
         { command: "/myevent", description: "Mostra a quin esdeveniment estàs." },
@@ -213,7 +213,7 @@ const es: LandingContent = {
     {
       heading: "Eventos",
       rows: [
-        { command: "/newevent <nombre>", description: "Crea un nuevo evento IFS y obtiene su código de acceso." },
+        { command: "/newevent <nombre>", description: "Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza." },
         { command: "/join <código>", description: "Únete a un evento." },
         { command: "/leave", description: "Sal del evento actual." },
         { command: "/myevent", description: "Muestra en qué evento estás." },
@@ -281,7 +281,7 @@ const fr: LandingContent = {
     {
       heading: "Événements",
       rows: [
-        { command: "/newevent <nom>", description: "Crée un nouvel événement IFS et obtient son code d'accès." },
+        { command: "/newevent <nom>", description: "Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable." },
         { command: "/join <code>", description: "Rejoindre un événement." },
         { command: "/leave", description: "Quitter l'événement actuel." },
         { command: "/myevent", description: "Affiche dans quel événement vous êtes." },

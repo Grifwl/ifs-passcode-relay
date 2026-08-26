@@ -30,8 +30,10 @@ recollir captures de pantalla manualment en un grup de xat.
    exemple, en un grup de WhatsApp) — el bot envia de seguida un text
    d'invitació llest per enganxar amb aquest codi, i qui crea
    l'esdeveniment s'hi uneix automàticament, ja que ser l'organitzador no
-   l'eximeix de caçar portals també. Per defecte, es dona per fet que el
-   passcode segueix
+   l'eximeix de caçar portals també. Qui crea l'esdeveniment també
+   comença marcat com a de confiança pel seu propi esdeveniment, igual
+   com faria `/trust` amb qualsevol altra persona. Per defecte, es dona
+   per fet que el passcode segueix
    el patró `XXX99*999XX` (tres lletres, dos números, una paraula
    sencera, tres números, dues lletres) — qui crea l'esdeveniment pot
    establir-ne un altre si aquell IFS fa servir un altre format. El nom
@@ -90,7 +92,7 @@ recollir captures de pantalla manualment en un grup de xat.
 |---|---|---|
 | `/start`, `/help` | tothom | Introducció i llista de comandes. |
 | `/language <codi>` | tothom | Estableix el teu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés. |
+| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. |
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
 | `/leave` | participant | Surt de l'esdeveniment actual. |

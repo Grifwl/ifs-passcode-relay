@@ -31,7 +31,10 @@ dans un groupe de discussion.
    les participants (par exemple dans un groupe WhatsApp) — le bot
    envoie aussitôt un texte d'invitation prêt à coller avec ce code, et
    la personne qui crée l'événement y est automatiquement inscrite, car
-   être l'organisateur ne dispense pas de chasser des portails aussi.
+   être l'organisateur ne dispense pas de chasser des portails aussi. La
+   personne qui crée l'événement est aussi marquée fiable pour son
+   propre événement dès le départ, comme le ferait `/trust` pour
+   n'importe qui d'autre.
    Par défaut, le passcode est censé suivre le modèle `XXX99*999XX` (trois
    lettres, deux chiffres, un mot entier, trois chiffres, deux lettres)
    — la personne qui crée l'événement peut définir un autre modèle si
@@ -95,7 +98,7 @@ dans un groupe de discussion.
 |---|---|---|
 | `/start`, `/help` | tout le monde | Introduction et liste des commandes. |
 | `/language <code>` | tout le monde | Définit votre langue (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès. |
+| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. |
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement. |
 | `/leave` | participant | Quitter l'événement actuel. |

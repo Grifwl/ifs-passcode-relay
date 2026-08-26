@@ -320,7 +320,10 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   This status is scoped to a single `(event_id, user_id)` pair in
   `event_trust` — it never carries over to another event, past or
   future; the same agent starts neutral every time they join a
-  different event, even one run by the same creator.
+  different event, even one run by the same creator, with one
+  exception: the creator of an event is automatically marked `trusted`
+  for that event of their own, by `/newevent` itself (see
+  Internationalization's "Event creation is special").
 - **`trusted`** does **not** bulk-accept anything and must not trigger
   any automatic resolution. It is purely an advisory signal (surfaced in
   the candidate listing, see Rendering combinations, and in `/resolve`'s
@@ -384,7 +387,13 @@ auto-joining the creator to it, `/newevent` automatically sends the
 **shareable join text** (meant to be pasted into an external group chat)
 in the creator's own language. That automatic message always names the
 code explicitly, since at that point the creator isn't a participant
-yet. The same text can be regenerated later, in a different language,
+yet. `/newevent` also marks the creator `trusted` for the event it just
+created, as if they had run `/trust` on themselves — the same person
+everyone else already trusts enough to organize the event starts out
+with their reports counted as trusted in `/resolve`'s candidate
+listing, with no separate step required.
+
+The share text can be regenerated later, in a different language,
 via `/sharetext [code] [lang]` — `[lang]` defaults to the caller's own
 language, and `[code]` defaults to the caller's *current* event once
 they have one (a bare `/sharetext` or `/sharetext <lang>` both resolve
@@ -434,7 +443,7 @@ word too.
 |---|---|---|
 | `/start`, `/help` | anyone | Onboarding / command list. |
 | `/language <code>` | anyone | Set own interface language. |
-| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins the creator. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins the creator and marks them trusted. |
 | `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
 | `/join <code>` | anyone | Join an event (confirmation prompt if already in one). |
 | `/leave` | participant | Leave the current event. |
