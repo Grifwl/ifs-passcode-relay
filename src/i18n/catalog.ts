@@ -38,7 +38,9 @@ const en = {
     `Share (or forward) the message below with the event's group, or with anyone you want to help solve the passcode:`,
 
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
-  "sharetext.otherLanguages": () => "Need this in another language? Run /sharetext <lang> (en, ca, es, fr).",
+  "sharetext.tapToCopy": () => "Tap the command above to copy it, then tap the bot's name to send it.",
+  "sharetext.otherLanguages": () =>
+    "Need this in another language?\nRun /sharetext <lang>\n(en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "You're not in an event. Specify a code: /sharetext <code> [lang].",
 
   "join.usage": () => "Usage: /join <code>.",
@@ -155,7 +157,9 @@ const ca: Catalog = {
     `Comparteix (o reenvia) el missatge següent al grup de l'esdeveniment o amb qui vulguis resoldre el passcode:`,
 
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
-  "sharetext.otherLanguages": () => "Ho vols en un altre idioma? Executa /sharetext <idioma> (en, ca, es, fr).",
+  "sharetext.tapToCopy": () => "Toca la comanda de sobre per copiar-la i després toca el nom del bot per enviar-l'hi.",
+  "sharetext.otherLanguages": () =>
+    "Ho vols en un altre idioma?\nExecuta /sharetext <idioma>\n(en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "No estàs en cap esdeveniment. Especifica un codi: /sharetext <codi> [idioma].",
 
   "join.usage": () => "Ús: /join <codi>.",
@@ -270,7 +274,9 @@ const es: Catalog = {
     `Comparte (o reenvía) el siguiente mensaje con el grupo del evento, o con quien quieras que ayude a resolver el passcode:`,
 
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
-  "sharetext.otherLanguages": () => "¿Lo quieres en otro idioma? Ejecuta /sharetext <idioma> (en, ca, es, fr).",
+  "sharetext.tapToCopy": () => "Toca el comando de arriba para copiarlo y luego toca el nombre del bot para enviárselo.",
+  "sharetext.otherLanguages": () =>
+    "¿Lo quieres en otro idioma?\nEjecuta /sharetext <idioma>\n(en, ca, es, fr).",
   "sharetext.noCurrentEvent": () => "No estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
 
   "join.usage": () => "Uso: /join <código>.",
@@ -385,8 +391,10 @@ const fr: Catalog = {
     `Partagez (ou transférez) le message ci-dessous avec le groupe de l'événement, ou avec qui vous voulez pour aider à résoudre le passcode :`,
 
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,
+  "sharetext.tapToCopy": () =>
+    "Touchez la commande ci-dessus pour la copier, puis touchez le nom du bot pour la lui envoyer.",
   "sharetext.otherLanguages": () =>
-    "Vous le voulez dans une autre langue ? Lancez /sharetext <langue> (en, ca, es, fr).",
+    "Vous le voulez dans une autre langue ?\nLancez /sharetext <langue>\n(en, ca, es, fr).",
   "sharetext.noCurrentEvent": () =>
     "Vous n'êtes dans aucun événement. Indiquez un code : /sharetext <code> [langue].",
 

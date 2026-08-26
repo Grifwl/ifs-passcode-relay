@@ -25,11 +25,17 @@ import { BOT_USERNAME } from "./botInfo.js";
  * automatically right after creating an event — at that point the
  * creator isn't a participant yet either, so the code is always passed
  * explicitly here too.
+ *
+ * The `/join <code>` block is followed by an italicized hint on tapping
+ * it to copy and then tapping the bot's name to send it — on mobile the
+ * monospace command doesn't stand out much on its own, so this spells
+ * out the two taps needed to actually act on it.
  */
 export function renderShareText(lang: SupportedLanguage, event: Pick<IfsEvent, "name" | "code">): string {
   const intro = escapeHtml(t(lang, "sharetext.text", { name: event.name, bot: BOT_USERNAME }));
   const joinCommand = `<code>/join ${escapeHtml(event.code)}</code>`;
-  return `${intro}\n\n${joinCommand}`;
+  const tapHint = `<i>${escapeHtml(t(lang, "sharetext.tapToCopy"))}</i>`;
+  return `${intro}\n\n${joinCommand}\n${tapHint}`;
 }
 
 /**
