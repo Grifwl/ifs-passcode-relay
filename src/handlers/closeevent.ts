@@ -67,8 +67,8 @@ export async function handleCloseEvent(ctx: Context, env: Env): Promise<void> {
     await ctx.reply(t(user.language, "common.notInEvent"));
     return;
   }
-  if (event.createdBy !== user.userId) {
-    await ctx.reply(t(user.language, "common.notCreator"));
+  if (event.adminUserId !== user.userId) {
+    await ctx.reply(t(user.language, "common.notAdmin"));
     return;
   }
 
@@ -91,8 +91,8 @@ export async function handleCloseEventCallback(ctx: Context, env: Env): Promise<
     await ctx.answerCallbackQuery();
     return;
   }
-  if (event.createdBy !== user.userId) {
-    await ctx.answerCallbackQuery({ text: t(user.language, "common.notCreator"), show_alert: true });
+  if (event.adminUserId !== user.userId) {
+    await ctx.answerCallbackQuery({ text: t(user.language, "common.notAdmin"), show_alert: true });
     return;
   }
 

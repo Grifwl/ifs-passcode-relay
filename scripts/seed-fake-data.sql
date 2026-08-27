@@ -13,7 +13,7 @@
 -- Fills 10 of the pattern's 11 slots (position 11 is left blank on
 -- purpose, so the known/total counter shows it isn't complete yet).
 -- Positions 3, 5 and 6 each have two disagreeing values (a majority
--- from the two fake agents, a minority from the fake creator), for
+-- from the two fake agents, a minority from the fake administrator), for
 -- exactly 2x2x2 = 8 rendered combinations — comfortably under the
 -- 16-variant cap, enough to see supporter counts and the flagged
 -- minority name.
@@ -35,11 +35,11 @@
 -- ALL, since D1 rejects a compound SELECT with this many terms.
 
 INSERT INTO users (user_id, language, username) VALUES
-  (-9001, 'en', 'test_creator'),
+  (-9001, 'en', 'test_admin'),
   (-9002, 'en', 'test_agent_a'),
   (-9003, 'en', 'test_agent_b');
 
-INSERT INTO events (code, name, pattern, status, created_by) VALUES
+INSERT INTO events (code, name, pattern, status, admin_user_id) VALUES
   ('TESTER', 'Test Event (seeded)', 'XXX99*999XX', 'active', -9001);
 
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
@@ -51,7 +51,7 @@ INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_s
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 3, 'C', -9003, '@test_agent_b');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 3, 'X', -9001, '@test_creator');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 3, 'X', -9001, '@test_admin');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 4, '1', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
@@ -59,13 +59,13 @@ INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_s
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 5, '2', -9003, '@test_agent_b');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 5, '3', -9001, '@test_creator');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 5, '3', -9001, '@test_admin');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLYPH', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLYPH', -9003, '@test_agent_b');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
-  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLIPH', -9001, '@test_creator');
+  VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 6, 'GLIPH', -9001, '@test_admin');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)
   VALUES ((SELECT id FROM events WHERE code = 'TESTER'), 7, '4', -9002, '@test_agent_a');
 INSERT INTO passcode_reports (event_id, position, value, user_id, display_name_snapshot)

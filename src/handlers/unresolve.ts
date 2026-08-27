@@ -17,8 +17,8 @@ export async function handleUnresolve(ctx: Context, env: Env): Promise<void> {
     await ctx.reply(t(user.language, "common.notInEvent"));
     return;
   }
-  if (event.createdBy !== user.userId) {
-    await ctx.reply(t(user.language, "common.notCreator"));
+  if (event.adminUserId !== user.userId) {
+    await ctx.reply(t(user.language, "common.notAdmin"));
     return;
   }
 

@@ -8,7 +8,7 @@ interface EventRow {
   pattern: string;
   status: string;
   closed_reason: string | null;
-  created_by: number;
+  admin_user_id: number;
   created_at: string;
 }
 
@@ -20,7 +20,7 @@ function fromRow(row: EventRow): IfsEvent {
     pattern: row.pattern,
     status: row.status as EventStatus,
     closedReason: row.closed_reason as IfsEvent["closedReason"],
-    createdBy: row.created_by,
+    adminUserId: row.admin_user_id,
     createdAt: row.created_at,
   };
 }
@@ -40,10 +40,15 @@ export async function getEventById(db: D1Database, id: number): Promise<IfsEvent
   return row ? fromRow(row) : null;
 }
 
-/** Lists the events a given user has created, most recent first. */
-export async function listEventsCreatedBy(db: D1Database, userId: number): Promise<IfsEvent[]> {
+/**
+ * Lists the events a given user currently administers, most recent
+ * first. Since the admin role can move on via `/promote` or `/leave`
+ * succession (see CLAUDE.md "Administrator succession"), this reflects
+ * who holds the role *now*, not necessarily who ran `/newevent`.
+ */
+export async function listEventsAdministeredBy(db: D1Database, userId: number): Promise<IfsEvent[]> {
   const { results } = await db
-    .prepare("SELECT * FROM events WHERE created_by = ? ORDER BY created_at DESC")
+    .prepare("SELECT * FROM events WHERE admin_user_id = ? ORDER BY created_at DESC")
     .bind(userId)
     .all<EventRow>();
   return results.map(fromRow);
@@ -51,11 +56,11 @@ export async function listEventsCreatedBy(db: D1Database, userId: number): Promi
 
 /**
  * Creates a new event with a freshly generated, collision-free join
- * code.
+ * code. Whoever creates it becomes its first administrator.
  */
 export async function createEvent(
   db: D1Database,
-  params: { name: string; pattern: string; createdBy: number }
+  params: { name: string; pattern: string; adminUserId: number }
 ): Promise<IfsEvent> {
   let code = generateEventCode();
   // Codes are short and drawn from a small alphabet; collisions are rare
@@ -68,9 +73,9 @@ export async function createEvent(
 
   const { results } = await db
     .prepare(
-      "INSERT INTO events (code, name, pattern, created_by) VALUES (?, ?, ?, ?) RETURNING *"
+      "INSERT INTO events (code, name, pattern, admin_user_id) VALUES (?, ?, ?, ?) RETURNING *"
     )
-    .bind(code, params.name, params.pattern, params.createdBy)
+    .bind(code, params.name, params.pattern, params.adminUserId)
     .all<EventRow>();
 
   const row = results[0];
@@ -82,7 +87,7 @@ export async function createEvent(
  * Marks an event as closed, freezing it against further joins/submissions.
  * `reason` records whether it completed normally (`/closeevent`) or was
  * auto-closed because `/leave` ran out of eligible successors (see
- * CLAUDE.md "Creator succession").
+ * CLAUDE.md "Administrator succession").
  */
 export async function closeEvent(
   db: D1Database,
@@ -92,7 +97,7 @@ export async function closeEvent(
   await db.prepare("UPDATE events SET status = 'closed', closed_reason = ? WHERE id = ?").bind(reason, eventId).run();
 }
 
-/** Transfers an event's creator role to a different user (used by /promote). */
-export async function transferCreator(db: D1Database, eventId: number, newCreatorId: number): Promise<void> {
-  await db.prepare("UPDATE events SET created_by = ? WHERE id = ?").bind(newCreatorId, eventId).run();
+/** Transfers an event's administrator role to a different user (used by /promote and /leave succession). */
+export async function transferAdmin(db: D1Database, eventId: number, newAdminUserId: number): Promise<void> {
+  await db.prepare("UPDATE events SET admin_user_id = ? WHERE id = ?").bind(newAdminUserId, eventId).run();
 }

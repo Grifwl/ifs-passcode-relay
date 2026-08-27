@@ -20,14 +20,14 @@ const en = {
     '"<position> <value>" or /submit - report a value\n' +
     '"<position>" alone (no value) - remove your own report at that position\n' +
     "/status - show the current code\n" +
-    "/resolve <position> [<value|@user>] - settle a disagreement, or list current candidates as buttons (creator)\n" +
-    "/resolve - go through every position still in disagreement, one at a time (creator)\n" +
-    "/unresolve <position> - reopen a resolved position (creator)\n" +
-    "/trust, /troll, /untrust <@user> - moderate a participant (creator)\n" +
-    "/kick <@user> - remove a participant (creator)\n" +
-    "/promote <@user> - hand the creator role to another participant (creator)\n" +
-    "/closeevent - freeze the event and announce the result (creator)\n" +
-    "/events - list the events you've created",
+    "/resolve <position> [<value|@user>] - settle a disagreement, or list current candidates as buttons (administrator)\n" +
+    "/resolve - go through every position still in disagreement, one at a time (administrator)\n" +
+    "/unresolve <position> - reopen a resolved position (administrator)\n" +
+    "/trust, /troll, /untrust <@user> - moderate a participant (administrator)\n" +
+    "/kick <@user> - remove a participant (administrator)\n" +
+    "/promote <@user> - hand the administrator role to another participant (administrator)\n" +
+    "/closeevent - freeze the event and announce the result (administrator)\n" +
+    "/events - list the events you administer",
 
   "language.usage": () => "Usage: /language <code>. Supported: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" isn't a supported language. Supported: en, ca, es, fr.`,
@@ -59,11 +59,11 @@ const en = {
 
   "leave.notInEvent": () => "You're not currently in any event.",
   "leave.left": (p) => `Left "${p.name}".`,
-  "leave.leftPromoted": (p) => `Left "${p.name}". ${p.successor} is now its creator.`,
+  "leave.leftPromoted": (p) => `Left "${p.name}". ${p.successor} is now its administrator.`,
   "leave.autoPromoted": (p) =>
-    `You are now the creator of "${p.name}" — its previous creator left. Send /help to see the commands you can now use.`,
+    `You are now the administrator of "${p.name}" — its previous administrator left. Send /help to see the commands you can now use.`,
   "leave.closedAbandoned": (p) =>
-    `Left "${p.name}". No one left in the event was eligible to take over as creator, so it's been closed as unfinished.`,
+    `Left "${p.name}". No one left in the event was eligible to take over as administrator, so it's been closed as unfinished.`,
   "leave.anotherParticipant": () => "Another participant",
 
   "myevent.notInEvent": () => "You're not currently in any event. Use /join <code> or /newevent to start one.",
@@ -73,15 +73,15 @@ const en = {
   "status.supportCount": (p) => `Supported by ${p.count}`,
   "status.supportedBy": (p) => `Supported by ${p.count} — ${p.names}`,
   "status.tooManyVariants": (p) =>
-    `Too many open possibilities right now (${p.count}). Ask the event's creator to /resolve some positions.`,
-  "status.moreVariants": (p) => `+${p.count} more possibilities — ask the event's creator to /resolve some positions.`,
+    `Too many open possibilities right now (${p.count}). Ask the event's administrator to /resolve some positions.`,
+  "status.moreVariants": (p) => `+${p.count} more possibilities — ask the event's administrator to /resolve some positions.`,
 
   "slotType.letter": () => "a letter",
   "slotType.digit": () => "a digit",
   "slotType.word": () => "a word",
 
   "common.notInEvent": () => "You're not in an event. Use /join <code> first.",
-  "common.notCreator": () => "Only the event's creator can do that.",
+  "common.notAdmin": () => "Only the event's administrator can do that.",
   "common.userNotFound": () => "Couldn't find that participant. Use their @username or the name shown in /status.",
   "common.invalidPosition": (p) => `Position must be a number between 1 and ${p.max}.`,
 
@@ -95,7 +95,7 @@ const en = {
   "submit.nothingToRemove": (p) => `You hadn't reported anything at position ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Already recorded: position ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
-    `Position ${p.position} is already confirmed as "${p.value}" by the event's creator. Noted anyway.`,
+    `Position ${p.position} is already confirmed as "${p.value}" by the event's administrator. Noted anyway.`,
   "submit.confirmOtherConflict": (p) =>
     `Position ${p.position} already has "${p.existing}" reported by someone else. Also record "${p.value}"?`,
   "submit.confirmTypeMismatch": (p) =>
@@ -133,16 +133,16 @@ const en = {
   "kick.notInEvent": (p) => `${p.name} isn't currently in this event.`,
 
   "promote.usage": () => "Usage: /promote <@username>.",
-  "promote.cannotSelf": () => "You're already the event's creator.",
+  "promote.cannotSelf": () => "You're already the event's administrator.",
   "promote.notParticipant": (p) => `${p.name} isn't currently in this event.`,
-  "promote.done": (p) => `${p.name} is now this event's creator. You remain a participant.`,
-  "promote.youAreNow": (p) => `You are now the creator of "${p.name}". Send /help to see the commands you can now use.`,
+  "promote.done": (p) => `${p.name} is now this event's administrator. You remain a participant.`,
+  "promote.youAreNow": (p) => `You are now the administrator of "${p.name}". Send /help to see the commands you can now use.`,
 
   "closeevent.unresolved": (p) => `Resolve these positions first: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Final passcode for "${p.name}":`,
   "closeevent.done": () => "Event closed. Final passcode sent to every participant.",
 
-  "events.none": () => "You haven't created any events yet.",
+  "events.none": () => "You don't administer any events yet.",
   "events.list": (p) => `Your events:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
 } satisfies Record<string, Message>;
@@ -169,14 +169,14 @@ const ca: Catalog = {
     '"<posició> <valor>" o /submit - reporta un valor\n' +
     '"<posició>" sola (sense valor) - elimina el teu report en aquella posició\n' +
     "/status - mostra el codi actual\n" +
-    "/resolve <posició> [<valor|@usuari>] - resol una discrepància, o llista els valors reportats com a botons (creador)\n" +
-    "/resolve - repassa totes les posicions encara en discrepància, una per una (creador)\n" +
-    "/unresolve <posició> - reobre una posició resolta (creador)\n" +
-    "/trust, /troll, /untrust <@usuari> - modera un participant (creador)\n" +
-    "/kick <@usuari> - expulsa un participant (creador)\n" +
-    "/promote <@usuari> - cedeix el rol de creador a un altre participant (creador)\n" +
-    "/closeevent - congela l'esdeveniment i anuncia el resultat (creador)\n" +
-    "/events - llista els esdeveniments que has creat",
+    "/resolve <posició> [<valor|@usuari>] - resol una discrepància, o llista els valors reportats com a botons (administrador)\n" +
+    "/resolve - repassa totes les posicions encara en discrepància, una per una (administrador)\n" +
+    "/unresolve <posició> - reobre una posició resolta (administrador)\n" +
+    "/trust, /troll, /untrust <@usuari> - modera un participant (administrador)\n" +
+    "/kick <@usuari> - expulsa un participant (administrador)\n" +
+    "/promote <@usuari> - cedeix el rol d'administrador a un altre participant (administrador)\n" +
+    "/closeevent - congela l'esdeveniment i anuncia el resultat (administrador)\n" +
+    "/events - llista els esdeveniments que administres",
 
   "language.usage": () => "Ús: /language <codi>. Suportats: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" no és un idioma suportat. Suportats: en, ca, es, fr.`,
@@ -208,11 +208,11 @@ const ca: Catalog = {
 
   "leave.notInEvent": () => "Ara mateix no ets a cap esdeveniment.",
   "leave.left": (p) => `Has sortit de "${p.name}".`,
-  "leave.leftPromoted": (p) => `Has sortit de "${p.name}". ${p.successor} n'és ara la persona creadora.`,
+  "leave.leftPromoted": (p) => `Has sortit de "${p.name}". ${p.successor} n'és ara la persona administradora.`,
   "leave.autoPromoted": (p) =>
-    `Ara ets la persona creadora de "${p.name}" — qui ho era abans ha marxat. Envia /help per veure les comandes que ja pots fer servir.`,
+    `Ara ets la persona administradora de "${p.name}" — qui ho era abans ha marxat. Envia /help per veure les comandes que ja pots fer servir.`,
   "leave.closedAbandoned": (p) =>
-    `Has sortit de "${p.name}". No quedava ningú apte per assumir el rol de creador, així que s'ha tancat com a inacabat.`,
+    `Has sortit de "${p.name}". No quedava ningú apte per assumir el rol d'administrador, així que s'ha tancat com a inacabat.`,
   "leave.anotherParticipant": () => "Un altre participant",
 
   "myevent.notInEvent": () => "Ara mateix no ets a cap esdeveniment. Fes servir /join <codi> o /newevent per crear-ne un.",
@@ -222,16 +222,16 @@ const ca: Catalog = {
   "status.supportCount": (p) => `Donat per bo per ${p.count}`,
   "status.supportedBy": (p) => `Donat per bo per ${p.count} — ${p.names}`,
   "status.tooManyVariants": (p) =>
-    `Hi ha massa possibilitats obertes ara mateix (${p.count}). Demana a qui ha creat l'esdeveniment que faci /resolve d'algunes posicions.`,
+    `Hi ha massa possibilitats obertes ara mateix (${p.count}). Demana a qui administra l'esdeveniment que faci /resolve d'algunes posicions.`,
   "status.moreVariants": (p) =>
-    `+${p.count} possibilitats més — demana a qui ha creat l'esdeveniment que faci /resolve d'algunes posicions.`,
+    `+${p.count} possibilitats més — demana a qui administra l'esdeveniment que faci /resolve d'algunes posicions.`,
 
   "slotType.letter": () => "una lletra",
   "slotType.digit": () => "un número",
   "slotType.word": () => "una paraula",
 
   "common.notInEvent": () => "No ets a cap esdeveniment. Fes servir /join <codi> primer.",
-  "common.notCreator": () => "Només qui ha creat l'esdeveniment pot fer això.",
+  "common.notAdmin": () => "Només qui administra l'esdeveniment pot fer això.",
   "common.userNotFound": () => "No s'ha trobat aquest participant. Fes servir el seu @usuari o el nom que surt a /status.",
   "common.invalidPosition": (p) => `La posició ha de ser un número entre 1 i ${p.max}.`,
 
@@ -245,7 +245,7 @@ const ca: Catalog = {
   "submit.nothingToRemove": (p) => `No havies reportat res a la posició ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Ja estava registrat: posició ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
-    `La posició ${p.position} ja està confirmada com a "${p.value}" per qui ha creat l'esdeveniment. Igualment queda anotat.`,
+    `La posició ${p.position} ja està confirmada com a "${p.value}" per qui administra l'esdeveniment. Igualment queda anotat.`,
   "submit.confirmOtherConflict": (p) =>
     `La posició ${p.position} ja té "${p.existing}" reportat per algú altre. També vols registrar "${p.value}"?`,
   "submit.confirmTypeMismatch": (p) =>
@@ -283,16 +283,16 @@ const ca: Catalog = {
   "kick.notInEvent": (p) => `${p.name} no és participant d'aquest esdeveniment ara mateix.`,
 
   "promote.usage": () => "Ús: /promote <@usuari>.",
-  "promote.cannotSelf": () => "Ja ets qui ha creat aquest esdeveniment.",
+  "promote.cannotSelf": () => "Ja ets qui administra aquest esdeveniment.",
   "promote.notParticipant": (p) => `${p.name} no és participant d'aquest esdeveniment ara mateix.`,
-  "promote.done": (p) => `${p.name} ara és qui ha creat aquest esdeveniment. Tu continues sent-ne participant.`,
-  "promote.youAreNow": (p) => `Ara ets qui ha creat "${p.name}". Envia /help per veure les comandes que ja pots fer servir.`,
+  "promote.done": (p) => `${p.name} ara és qui administra aquest esdeveniment. Tu continues sent-ne participant.`,
+  "promote.youAreNow": (p) => `Ara ets qui administra "${p.name}". Envia /help per veure les comandes que ja pots fer servir.`,
 
   "closeevent.unresolved": (p) => `Resol primer aquestes posicions: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Esdeveniment tancat. El passcode final s'ha enviat a tots els participants.",
 
-  "events.none": () => "Encara no has creat cap esdeveniment.",
+  "events.none": () => "Encara no administres cap esdeveniment.",
   "events.list": (p) => `Els teus esdeveniments:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
 };
@@ -316,14 +316,14 @@ const es: Catalog = {
     '"<posición> <valor>" o /submit - reporta un valor\n' +
     '"<posición>" sola (sin valor) - elimina tu reporte en esa posición\n' +
     "/status - muestra el código actual\n" +
-    "/resolve <posición> [<valor|@usuario>] - resuelve una discrepancia, o lista los valores reportados como botones (creador)\n" +
-    "/resolve - repasa todas las posiciones todavía en discrepancia, una por una (creador)\n" +
-    "/unresolve <posición> - reabre una posición resuelta (creador)\n" +
-    "/trust, /troll, /untrust <@usuario> - modera a un participante (creador)\n" +
-    "/kick <@usuario> - expulsa a un participante (creador)\n" +
-    "/promote <@usuario> - cede el rol de creador a otro participante (creador)\n" +
-    "/closeevent - congela el evento y anuncia el resultado (creador)\n" +
-    "/events - lista los eventos que has creado",
+    "/resolve <posición> [<valor|@usuario>] - resuelve una discrepancia, o lista los valores reportados como botones (administrador)\n" +
+    "/resolve - repasa todas las posiciones todavía en discrepancia, una por una (administrador)\n" +
+    "/unresolve <posición> - reabre una posición resuelta (administrador)\n" +
+    "/trust, /troll, /untrust <@usuario> - modera a un participante (administrador)\n" +
+    "/kick <@usuario> - expulsa a un participante (administrador)\n" +
+    "/promote <@usuario> - cede el rol de administrador a otro participante (administrador)\n" +
+    "/closeevent - congela el evento y anuncia el resultado (administrador)\n" +
+    "/events - lista los eventos que administras",
 
   "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" no es un idioma soportado. Soportados: en, ca, es, fr.`,
@@ -355,11 +355,11 @@ const es: Catalog = {
 
   "leave.notInEvent": () => "Ahora mismo no estás en ningún evento.",
   "leave.left": (p) => `Has salido de "${p.name}".`,
-  "leave.leftPromoted": (p) => `Has salido de "${p.name}". ${p.successor} ahora es quien lo ha creado.`,
+  "leave.leftPromoted": (p) => `Has salido de "${p.name}". ${p.successor} ahora es quien lo administra.`,
   "leave.autoPromoted": (p) =>
-    `Ahora eres quien ha creado "${p.name}" — quien lo era antes se ha marchado. Envía /help para ver los comandos que ya puedes usar.`,
+    `Ahora eres quien administra "${p.name}" — quien lo era antes se ha marchado. Envía /help para ver los comandos que ya puedes usar.`,
   "leave.closedAbandoned": (p) =>
-    `Has salido de "${p.name}". No quedaba nadie apto para asumir el rol de creador, así que se ha cerrado como inacabado.`,
+    `Has salido de "${p.name}". No quedaba nadie apto para asumir el rol de administrador, así que se ha cerrado como inacabado.`,
   "leave.anotherParticipant": () => "Otro participante",
 
   "myevent.notInEvent": () => "Ahora mismo no estás en ningún evento. Usa /join <código> o /newevent para crear uno.",
@@ -369,16 +369,16 @@ const es: Catalog = {
   "status.supportCount": (p) => `Respaldado por ${p.count}`,
   "status.supportedBy": (p) => `Respaldado por ${p.count} — ${p.names}`,
   "status.tooManyVariants": (p) =>
-    `Hay demasiadas posibilidades abiertas ahora mismo (${p.count}). Pide a quien ha creado el evento que haga /resolve de algunas posiciones.`,
+    `Hay demasiadas posibilidades abiertas ahora mismo (${p.count}). Pide a quien administra el evento que haga /resolve de algunas posiciones.`,
   "status.moreVariants": (p) =>
-    `+${p.count} posibilidades más — pide a quien ha creado el evento que haga /resolve de algunas posiciones.`,
+    `+${p.count} posibilidades más — pide a quien administra el evento que haga /resolve de algunas posiciones.`,
 
   "slotType.letter": () => "una letra",
   "slotType.digit": () => "un número",
   "slotType.word": () => "una palabra",
 
   "common.notInEvent": () => "No estás en ningún evento. Usa /join <código> primero.",
-  "common.notCreator": () => "Solo quien ha creado el evento puede hacer esto.",
+  "common.notAdmin": () => "Solo quien administra el evento puede hacer esto.",
   "common.userNotFound": () => "No se ha encontrado a ese participante. Usa su @usuario o el nombre que aparece en /status.",
   "common.invalidPosition": (p) => `La posición debe ser un número entre 1 y ${p.max}.`,
 
@@ -392,7 +392,7 @@ const es: Catalog = {
   "submit.nothingToRemove": (p) => `No habías reportado nada en la posición ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Ya estaba registrado: posición ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
-    `La posición ${p.position} ya está confirmada como "${p.value}" por quien ha creado el evento. Igualmente queda anotado.`,
+    `La posición ${p.position} ya está confirmada como "${p.value}" por quien administra el evento. Igualmente queda anotado.`,
   "submit.confirmOtherConflict": (p) =>
     `La posición ${p.position} ya tiene "${p.existing}" reportado por otra persona. ¿También quieres registrar "${p.value}"?`,
   "submit.confirmTypeMismatch": (p) =>
@@ -430,16 +430,16 @@ const es: Catalog = {
   "kick.notInEvent": (p) => `${p.name} no es participante de este evento ahora mismo.`,
 
   "promote.usage": () => "Uso: /promote <@usuario>.",
-  "promote.cannotSelf": () => "Ya eres quien ha creado este evento.",
+  "promote.cannotSelf": () => "Ya eres quien administra este evento.",
   "promote.notParticipant": (p) => `${p.name} no es participante de este evento ahora mismo.`,
-  "promote.done": (p) => `${p.name} ahora es quien ha creado este evento. Tú sigues siendo participante.`,
-  "promote.youAreNow": (p) => `Ahora eres quien ha creado "${p.name}". Envía /help para ver los comandos que ya puedes usar.`,
+  "promote.done": (p) => `${p.name} ahora es quien administra este evento. Tú sigues siendo participante.`,
+  "promote.youAreNow": (p) => `Ahora eres quien administra "${p.name}". Envía /help para ver los comandos que ya puedes usar.`,
 
   "closeevent.unresolved": (p) => `Resuelve antes estas posiciones: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Evento cerrado. El passcode final se ha enviado a todos los participantes.",
 
-  "events.none": () => "Todavía no has creado ningún evento.",
+  "events.none": () => "Todavía no administras ningún evento.",
   "events.list": (p) => `Tus eventos:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
 };
@@ -463,14 +463,14 @@ const fr: Catalog = {
     '"<position> <valeur>" ou /submit - signaler une valeur\n' +
     '"<position>" seule (sans valeur) - supprime votre signalement à cette position\n' +
     "/status - affiche le code actuel\n" +
-    "/resolve <position> [<valeur|@utilisateur>] - règle un désaccord, ou liste les valeurs signalées sous forme de boutons (créateur)\n" +
-    "/resolve - parcourt toutes les positions encore en désaccord, une par une (créateur)\n" +
-    "/unresolve <position> - rouvre une position résolue (créateur)\n" +
-    "/trust, /troll, /untrust <@utilisateur> - modère un participant (créateur)\n" +
-    "/kick <@utilisateur> - exclut un participant (créateur)\n" +
-    "/promote <@utilisateur> - transfère le rôle de créateur à un autre participant (créateur)\n" +
-    "/closeevent - fige l'événement et annonce le résultat (créateur)\n" +
-    "/events - liste les événements que vous avez créés",
+    "/resolve <position> [<valeur|@utilisateur>] - règle un désaccord, ou liste les valeurs signalées sous forme de boutons (administrateur)\n" +
+    "/resolve - parcourt toutes les positions encore en désaccord, une par une (administrateur)\n" +
+    "/unresolve <position> - rouvre une position résolue (administrateur)\n" +
+    "/trust, /troll, /untrust <@utilisateur> - modère un participant (administrateur)\n" +
+    "/kick <@utilisateur> - exclut un participant (administrateur)\n" +
+    "/promote <@utilisateur> - transfère le rôle d'administrateur à un autre participant (administrateur)\n" +
+    "/closeevent - fige l'événement et annonce le résultat (administrateur)\n" +
+    "/events - liste les événements que vous administrez",
 
   "language.usage": () => "Utilisation : /language <code>. Langues gérées : en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" n'est pas une langue gérée. Langues gérées : en, ca, es, fr.`,
@@ -505,11 +505,11 @@ const fr: Catalog = {
 
   "leave.notInEvent": () => "Vous n'êtes actuellement dans aucun événement.",
   "leave.left": (p) => `Vous avez quitté "${p.name}".`,
-  "leave.leftPromoted": (p) => `Vous avez quitté "${p.name}". ${p.successor} en est désormais le créateur.`,
+  "leave.leftPromoted": (p) => `Vous avez quitté "${p.name}". ${p.successor} en est désormais l'administrateur.`,
   "leave.autoPromoted": (p) =>
-    `Vous êtes désormais le créateur de "${p.name}" — son précédent créateur est parti. Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
+    `Vous êtes désormais l'administrateur de "${p.name}" — son précédent administrateur est parti. Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
   "leave.closedAbandoned": (p) =>
-    `Vous avez quitté "${p.name}". Personne d'éligible ne restait pour reprendre le rôle de créateur, donc il a été clôturé comme inachevé.`,
+    `Vous avez quitté "${p.name}". Personne d'éligible ne restait pour reprendre le rôle d'administrateur, donc il a été clôturé comme inachevé.`,
   "leave.anotherParticipant": () => "Un autre participant",
 
   "myevent.notInEvent": () => "Vous n'êtes actuellement dans aucun événement. Utilisez /join <code> ou /newevent pour en créer un.",
@@ -519,16 +519,16 @@ const fr: Catalog = {
   "status.supportCount": (p) => `Confirmé par ${p.count}`,
   "status.supportedBy": (p) => `Confirmé par ${p.count} — ${p.names}`,
   "status.tooManyVariants": (p) =>
-    `Il y a trop de possibilités ouvertes en ce moment (${p.count}). Demandez à la personne qui a créé l'événement de faire /resolve sur certaines positions.`,
+    `Il y a trop de possibilités ouvertes en ce moment (${p.count}). Demandez à la personne qui administre l'événement de faire /resolve sur certaines positions.`,
   "status.moreVariants": (p) =>
-    `+${p.count} possibilités supplémentaires — demandez à la personne qui a créé l'événement de faire /resolve sur certaines positions.`,
+    `+${p.count} possibilités supplémentaires — demandez à la personne qui administre l'événement de faire /resolve sur certaines positions.`,
 
   "slotType.letter": () => "une lettre",
   "slotType.digit": () => "un chiffre",
   "slotType.word": () => "un mot",
 
   "common.notInEvent": () => "Vous n'êtes dans aucun événement. Utilisez d'abord /join <code>.",
-  "common.notCreator": () => "Seule la personne qui a créé l'événement peut faire cela.",
+  "common.notAdmin": () => "Seule la personne qui administre l'événement peut faire cela.",
   "common.userNotFound": () =>
     "Ce participant est introuvable. Utilisez son @utilisateur ou le nom affiché dans /status.",
   "common.invalidPosition": (p) => `La position doit être un nombre entre 1 et ${p.max}.`,
@@ -543,7 +543,7 @@ const fr: Catalog = {
   "submit.nothingToRemove": (p) => `Vous n'aviez rien signalé à la position ${p.position}.`,
   "submit.alreadyRecorded": (p) => `Déjà enregistré : position ${p.position} = "${p.value}".`,
   "submit.positionResolvedNotice": (p) =>
-    `La position ${p.position} est déjà confirmée comme "${p.value}" par la personne qui a créé l'événement. C'est noté quand même.`,
+    `La position ${p.position} est déjà confirmée comme "${p.value}" par la personne qui administre l'événement. C'est noté quand même.`,
   "submit.confirmOtherConflict": (p) =>
     `La position ${p.position} a déjà "${p.existing}" signalé par quelqu'un d'autre. Enregistrer aussi "${p.value}" ?`,
   "submit.confirmTypeMismatch": (p) =>
@@ -581,17 +581,17 @@ const fr: Catalog = {
   "kick.notInEvent": (p) => `${p.name} ne participe pas actuellement à cet événement.`,
 
   "promote.usage": () => "Utilisation : /promote <@utilisateur>.",
-  "promote.cannotSelf": () => "Vous êtes déjà la personne qui a créé cet événement.",
+  "promote.cannotSelf": () => "Vous êtes déjà la personne qui administre cet événement.",
   "promote.notParticipant": (p) => `${p.name} ne participe pas actuellement à cet événement.`,
-  "promote.done": (p) => `${p.name} est désormais la personne qui a créé cet événement. Vous restez participant.`,
+  "promote.done": (p) => `${p.name} est désormais la personne qui administre cet événement. Vous restez participant.`,
   "promote.youAreNow": (p) =>
-    `Vous êtes désormais la personne qui a créé "${p.name}". Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
+    `Vous êtes désormais la personne qui administre "${p.name}". Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
 
   "closeevent.unresolved": (p) => `Résolvez d'abord ces positions : ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}" :`,
   "closeevent.done": () => "Événement clôturé. Le passcode final a été envoyé à tous les participants.",
 
-  "events.none": () => "Vous n'avez encore créé aucun événement.",
+  "events.none": () => "Vous n'administrez encore aucun événement.",
   "events.list": (p) => `Vos événements :\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
 };

@@ -32,7 +32,7 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
     return;
   }
 
-  const event = await createEvent(env.DB, { name, pattern, createdBy: user.userId });
+  const event = await createEvent(env.DB, { name, pattern, adminUserId: user.userId });
 
   await ctx.reply(
     t(user.language, "newevent.created", { name: event.name, code: event.code, pattern: event.pattern })
@@ -50,9 +50,10 @@ export async function handleNewEvent(ctx: Context, env: Env): Promise<void> {
   // joinEvent already handles replacing any prior membership.
   await joinEvent(env.DB, { userId: user.userId, eventId: event.id, chatId: ctx.chat!.id });
 
-  // The creator starts out trusted for their own event, as if they'd run
-  // /trust on themselves — they're the one everyone else already trusts
-  // enough to organize the event in the first place.
+  // The event's creator — now also its administrator — starts out
+  // trusted for their own event, as if they'd run /trust on themselves —
+  // they're the one everyone else already trusts enough to organize the
+  // event in the first place.
   await setTrust(env.DB, { eventId: event.id, userId: user.userId, status: "trusted", setBy: user.userId });
 
   const participant = await getParticipant(env.DB, user.userId);

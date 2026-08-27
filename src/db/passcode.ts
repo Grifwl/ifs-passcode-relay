@@ -209,7 +209,7 @@ export async function clearTrust(db: D1Database, eventId: number, userId: number
 /**
  * Every other participant of an event, with the trust status and
  * current report count `pickSuccessor` needs to choose who inherits the
- * creator role on `/leave` (see domain/succession.ts).
+ * administrator role on `/leave` (see domain/succession.ts).
  */
 export async function getSuccessionCandidates(
   db: D1Database,

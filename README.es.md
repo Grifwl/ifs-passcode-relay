@@ -30,10 +30,10 @@ grupo de chat.
    `/newevent` y obtiene un código corto para compartir con los
    asistentes (por ejemplo, en un grupo de WhatsApp) — el bot envía de
    inmediato un texto de invitación listo para pegar con ese código, y
-   quien crea el evento se une a él automáticamente, ya que ser el
-   organizador no le exime de cazar portales también. Quien crea el
-   evento también empieza marcado como de confianza para su propio
-   evento, igual que haría `/trust` con cualquier otra persona. Por
+   quien crea el evento se une a él automáticamente — como su
+   administrador —, ya que ser el organizador no le exime de cazar
+   portales también. También empieza marcado como de confianza para su
+   propio evento, igual que haría `/trust` con cualquier otra persona. Por
    defecto, se da por hecho que el
    passcode sigue el patrón `XXX99*999XX` (tres letras, dos números, una
    palabra entera, tres números, dos letras) — quien crea el evento
@@ -61,7 +61,7 @@ grupo de chat.
    posición, ambos se conservan: el bot muestra cada posible código
    completo en un bloque fácil de copiar, con cuántas personas lo
    respaldan — y, en los menos respaldados, quién los ha reportado, para
-   que quien ha creado el evento pueda detectar un error o un troll. Si
+   que quien administra el evento pueda detectar un error o un troll. Si
    lo que envías no encaja con la posición esperada, o contradice lo que
    **otra persona** ya ha reportado, el bot te pide confirmación antes
    de registrarlo. Corregir tu **propio** reporte anterior es distinto:
@@ -75,7 +75,7 @@ grupo de chat.
    después (o `/submit <posición>`), para eliminar tu reporte en esa
    posición — sin confirmación, y el bot te dice qué valor ha eliminado
    por si también quieres deshacerlo.
-6. Quien ha creado el evento resuelve una discrepancia con `/resolve
+6. Quien administra el evento resuelve una discrepancia con `/resolve
    <posición> <valor>` — o, escrito solo como `/resolve <posición>`, el
    bot lista los valores reportados para esa posición con cuánta gente
    respalda cada uno — y, si alguno de esos apoyos es de confianza,
@@ -87,12 +87,12 @@ grupo de chat.
    ya no queda ninguna — y, si en ese momento todas las posiciones ya
    tienen un valor establecido (resuelta, o con un único candidato
    reportado), ese aviso trae un botón para cerrar el evento ahí mismo,
-   haciendo exactamente lo mismo que `/closeevent`. Quien ha creado el
+   haciendo exactamente lo mismo que `/closeevent`. Quien administra el
    evento también puede marcar a un participante como de confianza o
    como troll si hace falta. Marcar a alguien como troll, solo para ese evento, descarta el
    resto de sus aportaciones y deja de enviarle actualizaciones —
    tampoco recibirá el passcode final cuando se cierre el evento.
-7. Cuando el evento termina, quien lo ha creado lo cierra con
+7. Cuando el evento termina, quien lo administra lo cierra con
    `/closeevent`, que envía el passcode final como un mensaje **nuevo**
    a todos los participantes — no solo una edición — para que a nadie se
    le escape aunque no lo haya estado siguiendo activamente.
@@ -106,21 +106,21 @@ grupo de chat.
 | `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. Aquí la `\|` separa el nombre del patrón, no significa "elige uno u otro" — p. ej. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
 | `/join <código>` | cualquiera | Únete a un evento. |
-| `/leave` | participante | Sal del evento actual. Si eres quien lo ha creado, otro participante asume el rol automáticamente (priorizando a los de confianza y, si no, a quien más haya aportado), o se cierra como inacabado si no hay nadie apto. |
+| `/leave` | participante | Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (priorizando a los de confianza y, si no, a quien más haya aportado), o se cierra como inacabado si no hay nadie apto. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
-| `/resolve <posición> [<valor \| @usuario>]` | creador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
-| `/resolve` (sin argumentos) | creador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, ofrece un botón para cerrar el evento si todas las posiciones ya tienen un valor establecido. |
-| `/unresolve <posición>` | creador del evento | Reabre una posición resuelta. |
-| `/trust <usuario>` | creador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
-| `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
-| `/untrust <usuario>` | creador del evento | Quita la marca de confianza a un participante. |
-| `/kick <usuario>` | creador del evento | Expulsa a un participante del evento. |
-| `/promote <usuario>` | creador del evento | Cede el rol de creador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
-| `/closeevent` | creador del evento | Congela el evento y anuncia el código final a todos. |
-| `/events` | cualquiera | Lista los eventos que has creado. |
+| `/resolve <posición> [<valor \| @usuario>]` | administrador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
+| `/resolve` (sin argumentos) | administrador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, ofrece un botón para cerrar el evento si todas las posiciones ya tienen un valor establecido. |
+| `/unresolve <posición>` | administrador del evento | Reabre una posición resuelta. |
+| `/trust <usuario>` | administrador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
+| `/troll <usuario>` | administrador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
+| `/untrust <usuario>` | administrador del evento | Quita la marca de confianza a un participante. |
+| `/kick <usuario>` | administrador del evento | Expulsa a un participante del evento. |
+| `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
+| `/closeevent` | administrador del evento | Congela el evento y anuncia el código final a todos. |
+| `/events` | cualquiera | Lista los eventos que administras. |
 
 Cada jugador ve los mensajes del bot en su propio idioma, establecido una
 vez con `/language` y recordado a partir de entonces.

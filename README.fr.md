@@ -30,9 +30,9 @@ dans un groupe de discussion.
    événement avec `/newevent` et obtient un code court à partager avec
    les participants (par exemple dans un groupe WhatsApp) — le bot
    envoie aussitôt un texte d'invitation prêt à coller avec ce code, et
-   la personne qui crée l'événement y est automatiquement inscrite, car
-   être l'organisateur ne dispense pas de chasser des portails aussi. La
-   personne qui crée l'événement est aussi marquée fiable pour son
+   la personne qui crée l'événement y est automatiquement inscrite — en
+   tant qu'administrateur —, car être l'organisateur ne dispense pas de
+   chasser des portails aussi. Elle est aussi marquée fiable pour son
    propre événement dès le départ, comme le ferait `/trust` pour
    n'importe qui d'autre.
    Par défaut, le passcode est censé suivre le modèle `XXX99*999XX` (trois
@@ -63,7 +63,7 @@ dans un groupe de discussion.
    la même position, les deux sont conservées : le bot affiche chaque
    code complet possible dans son propre bloc facile à copier, avec le
    nombre de personnes qui le confirment — et, pour les moins confirmés,
-   qui les a signalés, afin que la personne qui a créé l'événement
+   qui les a signalés, afin que la personne qui administre l'événement
    puisse repérer une erreur ou un troll. Si ce que vous envoyez ne
    correspond pas à la position attendue, ou contredit ce qu'**une
    autre personne** a déjà signalé, le bot vous demande confirmation
@@ -80,7 +80,7 @@ dans un groupe de discussion.
    signalement à cette position — sans confirmation, et le bot indique
    quelle valeur il a supprimée au cas où vous voudriez aussi annuler
    ça.
-6. La personne qui a créé l'événement résout un désaccord avec
+6. La personne qui administre l'événement résout un désaccord avec
    `/resolve <position> <valeur>` — ou, tapé simplement comme
    `/resolve <position>`, le bot liste les valeurs signalées pour cette
    position avec le nombre de personnes qui confirment chacune — et, si
@@ -93,13 +93,13 @@ dans un groupe de discussion.
    moment-là toutes les positions ont déjà une valeur établie (résolue,
    ou avec un seul candidat signalé), cet avis est accompagné d'un
    bouton pour clôturer l'événement sur-le-champ, faisant exactement ce
-   que fait `/closeevent`. La personne qui a
-   créé l'événement peut
+   que fait `/closeevent`. La personne qui
+   administre l'événement peut
    aussi marquer un participant comme fiable ou comme troll si besoin. Marquer quelqu'un comme troll, pour cet événement
    uniquement, écarte le reste de ses contributions et arrête de lui
    envoyer des mises à jour — il ne recevra pas non plus le passcode
    final à la clôture de l'événement.
-7. Une fois l'événement terminé, son créateur le clôture avec
+7. Une fois l'événement terminé, son administrateur le clôture avec
    `/closeevent`, ce qui envoie le passcode final comme **nouveau**
    message à tous les participants — pas seulement une modification —
    pour que personne ne le rate même sans avoir suivi activement.
@@ -113,21 +113,21 @@ dans un groupe de discussion.
 | `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Ici, le `\|` sépare le nom du modèle, il ne veut pas dire « choisissez l'un ou l'autre » — ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement. |
-| `/leave` | participant | Quitter l'événement actuel. Si vous êtes le créateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible. |
+| `/leave` | participant | Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
 | `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
-| `/resolve <position> [<valeur \| @utilisateur>]` | créateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
-| `/resolve` (sans argument) | créateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, propose un bouton pour clôturer l'événement si toutes les positions ont déjà une valeur établie. |
-| `/unresolve <position>` | créateur de l'événement | Rouvre une position résolue. |
-| `/trust <utilisateur>` | créateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
-| `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
-| `/untrust <utilisateur>` | créateur de l'événement | Retire le marquage de fiabilité d'un participant. |
-| `/kick <utilisateur>` | créateur de l'événement | Exclut un participant de l'événement. |
-| `/promote <utilisateur>` | créateur de l'événement | Transfère le rôle de créateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre créateur. |
-| `/closeevent` | créateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
-| `/events` | tout le monde | Liste les événements que vous avez créés. |
+| `/resolve <position> [<valeur \| @utilisateur>]` | administrateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
+| `/resolve` (sans argument) | administrateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, propose un bouton pour clôturer l'événement si toutes les positions ont déjà une valeur établie. |
+| `/unresolve <position>` | administrateur de l'événement | Rouvre une position résolue. |
+| `/trust <utilisateur>` | administrateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
+| `/troll <utilisateur>` | administrateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
+| `/untrust <utilisateur>` | administrateur de l'événement | Retire le marquage de fiabilité d'un participant. |
+| `/kick <utilisateur>` | administrateur de l'événement | Exclut un participant de l'événement. |
+| `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
+| `/closeevent` | administrateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
+| `/events` | tout le monde | Liste les événements que vous administrez. |
 
 Chaque joueur voit les messages du bot dans sa propre langue, définie une
 fois avec `/language` et mémorisée par la suite.

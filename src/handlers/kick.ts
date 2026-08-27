@@ -2,10 +2,10 @@ import type { Context } from "grammy";
 import type { Env } from "../env.js";
 import { t } from "../i18n/index.js";
 import { getParticipant, removeParticipant } from "../db/participants.js";
-import { resolveCreatorAction } from "./trust.js";
+import { resolveAdminAction } from "./trust.js";
 
 export async function handleKick(ctx: Context, env: Env): Promise<void> {
-  const resolved = await resolveCreatorAction(ctx, env, "kick.usage");
+  const resolved = await resolveAdminAction(ctx, env, "kick.usage");
   if (!resolved) return;
   const { event, targetUserId, targetName, lang } = resolved;
 

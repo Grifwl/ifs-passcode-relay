@@ -9,8 +9,8 @@ import { setTrust, clearTrust } from "../db/passcode.js";
 import type { EventTrustStatus } from "../domain/trust.js";
 import type { IfsEvent } from "../domain/types.js";
 
-/** Resolves the "creator acting on a participant" preamble shared by /trust, /troll, /untrust and /kick. */
-export async function resolveCreatorAction(
+/** Resolves the "administrator acting on a participant" preamble shared by /trust, /troll, /untrust, /kick and /promote. */
+export async function resolveAdminAction(
   ctx: Context,
   env: Env,
   usageKey: MessageKey
@@ -29,8 +29,8 @@ export async function resolveCreatorAction(
     await ctx.reply(t(user.language, "common.notInEvent"));
     return null;
   }
-  if (event.createdBy !== user.userId) {
-    await ctx.reply(t(user.language, "common.notCreator"));
+  if (event.adminUserId !== user.userId) {
+    await ctx.reply(t(user.language, "common.notAdmin"));
     return null;
   }
 
@@ -56,7 +56,7 @@ export async function resolveCreatorAction(
 }
 
 async function applyTrust(ctx: Context, env: Env, status: EventTrustStatus, usageKey: MessageKey, doneKey: MessageKey): Promise<void> {
-  const resolved = await resolveCreatorAction(ctx, env, usageKey);
+  const resolved = await resolveAdminAction(ctx, env, usageKey);
   if (!resolved) return;
   const { event, actingUserId, targetUserId, targetName, lang } = resolved;
 
@@ -73,7 +73,7 @@ export async function handleTroll(ctx: Context, env: Env): Promise<void> {
 }
 
 export async function handleUntrust(ctx: Context, env: Env): Promise<void> {
-  const resolved = await resolveCreatorAction(ctx, env, "untrust.usage");
+  const resolved = await resolveAdminAction(ctx, env, "untrust.usage");
   if (!resolved) return;
   const { event, targetUserId, targetName, lang } = resolved;
 

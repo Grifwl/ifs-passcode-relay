@@ -24,7 +24,8 @@ export interface IfsEvent {
   status: EventStatus;
   /** Why a closed event stopped; null while it's still active, or if it was never explicitly recorded. */
   closedReason: "completed" | "abandoned" | null;
-  createdBy: number;
+  /** The user id of this event's current administrator — set at creation, but transferable via /promote or /leave succession. */
+  adminUserId: number;
   createdAt: string;
 }
 

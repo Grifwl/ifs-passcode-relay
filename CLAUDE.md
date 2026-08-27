@@ -112,7 +112,9 @@ is ever supplied.
   `pattern` (e.g. `XXX99*999XX`, see above), `status`
   (`active`|`closed`), `closed_reason` (`completed`|`abandoned`|`NULL`
   — null while active; see "Succession on `/leave`" for the `abandoned`
-  case), `created_by` (user id), `created_at`. Only `code`
+  case), `admin_user_id` (user id of the event's current
+  administrator — set at creation time, but transferable, see
+  Administrator succession), `created_at`. Only `code`
   is unique — `name` is not, so running `/newevent` twice with the exact
   same name is expected to succeed and simply produces two independent
   events with two different join codes, not a conflict. Since the name
@@ -148,14 +150,14 @@ is ever supplied.
   non-troll users who reported it), `trusted_count` (of those, how many
   are flagged `trusted` for the event), `last_reported_at`.
 - **`passcode_resolutions`** — the canonical value for a position, set
-  explicitly by the event's creator once they're confident which
+  explicitly by the event's administrator once they're confident which
   candidate is correct. While a position has no resolution, all of its
   candidates are considered live and feed into the variant listing
   described below.
   `event_id`, `position`, `value`, `resolved_by`, `resolved_at`. Primary
   key: `(event_id, position)`.
 - **`event_trust`** — per-event trust flag on a participant, set by the
-  event's creator (see Trust below).
+  event's administrator (see Trust below).
   `event_id`, `user_id`, `status` (`trusted`|`troll`), `set_by`,
   `set_at`. Primary key: `(event_id, user_id)`. Not cleared by `/kick` —
   kicking stops future submissions, trust status independently controls
@@ -173,7 +175,7 @@ is therefore not always a single string — it is the cross product of the
 candidate sets of every unresolved position (resolved positions
 contribute exactly one fixed value).
 
-The event creator resolves a disagreement with `/resolve <position>
+The event's administrator resolves a disagreement with `/resolve <position>
 <value>` (or `/resolve <position> @user`, using the value that
 participant reported), which fixes that position's value and removes it
 from the combinatorial expansion; `/unresolve <position>` reopens it.
@@ -184,24 +186,24 @@ Calling `/resolve <position>` with no value or `@user` instead lists
 that position's current candidates (from `passcode_candidates`) with
 each one's supporter count, ordered most- to least-supported, and
 attaches one inline button per candidate in that same order so the
-creator can resolve with a tap instead of retyping the value. If the
+administrator can resolve with a tap instead of retyping the value. If the
 position has no candidates yet, the bot says so and shows no buttons.
 Alongside the total supporter count, a candidate whose supporters
 include at least one participant flagged `trusted` for the event also
 shows how many of them are trusted (e.g. `5 (2)` for 5 total
 supporters, 2 of them trusted) — both in the listing text and on the
-button label — so the creator can weigh a value backed by trusted
+button label — so the administrator can weigh a value backed by trusted
 agents over an equally-supported one that isn't, without having to
 cross-reference `/trust` status by hand. This is `/trust`'s only
 functional effect on `/resolve` beyond the `@user` convenience already
 described above; it never causes automatic resolution.
 Since `passcode_candidates` doesn't take resolution status into
 account, this also works on an already-resolved position, letting the
-creator switch it to a different reported value without an
+administrator switch it to a different reported value without an
 `/unresolve` round-trip first. The button's `callback_data` carries the
 event id, position and value directly (`resolve:<eventId>:<position>:
 <value>`, mirroring `/submit`'s confirmation buttons) and re-checks
-that the tapper is still the event's creator before acting, since the
+that the tapper is still the event's administrator before acting, since the
 button persists in the chat after being sent.
 
 Calling `/resolve` with **no arguments at all** starts a walkthrough of
@@ -240,7 +242,7 @@ Because the number of unresolved positions with more than one candidate
 must be kept from exploding combinatorially in the rendered message,
 implementation must cap the number of rendered variants (suggested cap:
 16); beyond the cap, render a summary instead (event progress + which
-positions are still in conflict) and prompt the creator to `/resolve`
+positions are still in conflict) and prompt the administrator to `/resolve`
 some of them, rather than printing an unreadable wall of codes.
 
 ### Rendering combinations
@@ -253,7 +255,7 @@ monospaced format, not that every combination is padded to equal
 character width (word slots vary in length). Each block is annotated
 with the number of distinct supporters behind it; for the least-supported
 combinations, the supporters' display names are also shown, so the
-event's creator can spot a likely troll or a known-reliable agent and
+event's administrator can spot a likely troll or a known-reliable agent and
 act on it (see Trust below). Example shape:
 
 ```
@@ -283,7 +285,7 @@ user's own** most recent report at that position, if any:
   If their old value was the only thing keeping that position in
   disagreement (e.g. they were the sole supporter of a minority
   candidate), the disagreement disappears immediately as a side effect —
-  the event's creator does **not** need to `/resolve` it.
+  the event's administrator does **not** need to `/resolve` it.
   The acknowledgement for a self-correction names **both** the new value
   and the one it replaced, so an agent who corrects the wrong position by
   mistake can immediately undo it by resubmitting the previous value
@@ -326,8 +328,8 @@ directly in the button's `callback_data`) whenever either is true:
 - **The position already has a different value reported by someone
   else.** Confirming adds the new value as an additional candidate — it
   does **not** replace the other person's, since resolving a genuine
-  disagreement between two different agents is the event creator's call
-  via `/resolve`, not something either agent can override unilaterally
+  disagreement between two different agents is the event's administrator's
+  call via `/resolve`, not something either agent can override unilaterally
   the way a self-correction can.
 - **The value's shape doesn't match its slot's expected type** (a digit
   where the pattern expects a letter, or vice versa). This is a soft
@@ -341,7 +343,7 @@ once; the confirmation message names whichever apply.
 
 ## Trust & moderation
 
-The event's creator can mark a participant's trust status with
+The event's administrator can mark a participant's trust status with
 `/trust <user>` (trusted), `/troll <user>` (discard their contributions)
 or `/untrust <user>` (back to neutral/default), writing `event_trust`.
 
@@ -364,68 +366,70 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   This status is scoped to a single `(event_id, user_id)` pair in
   `event_trust` — it never carries over to another event, past or
   future; the same agent starts neutral every time they join a
-  different event, even one run by the same creator, with one
-  exception: the creator of an event is automatically marked `trusted`
-  for that event of their own, by `/newevent` itself (see
+  different event, even one administered by the same person, with one
+  exception: whoever creates an event is automatically marked `trusted`
+  for it, as its first administrator, by `/newevent` itself (see
   Internationalization's "Event creation is special").
 - **`trusted`** does **not** bulk-accept anything and must not trigger
   any automatic resolution. It is purely an advisory signal (surfaced in
   the candidate listing, see Rendering combinations, and in `/resolve`'s
   candidate listing, see Conflict handling) that this participant has
-  generally been reliable — the creator still evaluates and resolves
+  generally been reliable — the administrator still evaluates and resolves
   position by position, since the same trusted agent can be right about
   one position and wrong about another. Its functional effects are: (1)
-  `/resolve <position> @user` lets the creator point at a specific
+  `/resolve <position> @user` lets the administrator point at a specific
   report instead of retyping its value, equally usable for any
   participant, trusted or not; and (2) `/resolve`'s candidate listing
   additionally breaks down each candidate's supporter count by how many
-  of them are trusted, letting the creator weigh trusted backing when
+  of them are trusted, letting the administrator weigh trusted backing when
   two candidates are otherwise equally supported.
 
 Trust status and event membership remain separate concerns: marking
 someone `troll` silences broadcasts to them and discounts their reports,
 but leaves their `participants` row in place, so they still occupy their
-one-event-at-a-time slot until they `/leave` or the creator explicitly
+one-event-at-a-time slot until they `/leave` or the administrator explicitly
 `/kick`s them. `/kick <user>` is the only thing that actually removes
 someone from `participants` (freeing their slot and blocking further
-submissions, since submitting requires being a current participant) — a
-creator who wants a troll gone entirely, not just silenced, calls both
+submissions, since submitting requires being a current participant) — an
+administrator who wants a troll gone entirely, not just silenced, calls both
 commands.
 
-## Creator succession
+## Administrator succession
 
-An event has exactly one creator at a time (`events.created_by`), and
-only that person can run any of the creator-only commands above, plus
-`/resolve`, `/unresolve` and `/closeevent`. `/promote <user>` transfers
-this role outright: the target must already be a participant of the
-same event, becomes the new `created_by`, and is marked `trusted` for
-the event exactly as `/newevent` marks its own creator (see Trust &
+An event has exactly one administrator at a time (`events.admin_user_id`,
+set to whoever ran `/newevent` at creation time), and only that person
+can run any of the administrator-only commands above, plus `/resolve`,
+`/unresolve` and `/closeevent`. `/promote <user>` transfers this role
+outright: the target must already be a participant of the same event,
+becomes the new `admin_user_id`, and is marked `trusted` for the event
+the same way `/newevent` marks its own first administrator (see Trust &
 moderation) — the same reasoning applies, since whoever the previous
-creator hands the role to is, by that act, someone they trust enough to
-run the event. The previous creator's own trust flag is left untouched
-either way, and they remain a participant like anyone else; nothing
-about `/promote` requires them to also `/leave`. There is no
-confirmation prompt, unlike `/submit`'s Sí/No flow — the action is
-reversible in practice, since the new creator can simply `/promote` the
-role back. Both the old and new creator are notified: the caller gets a
-direct reply, and the newly promoted user gets a separate message
-naming the event, sent to their own chat, in their own language.
+administrator hands the role to is, by that act, someone they trust
+enough to run the event. The previous administrator's own trust flag is
+left untouched either way, and they remain a participant like anyone
+else; nothing about `/promote` requires them to also `/leave`. There is
+no confirmation prompt, unlike `/submit`'s Sí/No flow — the action is
+reversible in practice, since the new administrator can simply
+`/promote` the role back. Both the old and new administrator are
+notified: the caller gets a direct reply, and the newly promoted user
+gets a separate message naming the event, sent to their own chat, in
+their own language.
 
 This is the first of three planned tools for keeping an event
-recoverable even if its creator becomes unavailable — `/promote` lets a
-creator hand off deliberately before stepping away. Still to design: how
-another participant can claim the role if the creator goes silent
-instead of leaving outright.
+recoverable even if its administrator becomes unavailable — `/promote`
+lets an administrator hand off deliberately before stepping away. Still
+to design: how another participant can claim the role if the
+administrator goes silent instead of leaving outright.
 
 ### Succession on `/leave`
 
-If the creator runs `/leave` on a still-active event without having
-`/promote`d anyone first, the bot picks a successor automatically
-instead of leaving the event creator-less — `/leave` itself never
-blocks or asks for confirmation, the departing creator is removed from
-`participants` exactly as it would for anyone else. The candidate pool
-is every other current participant of the event, and the pick follows
-a strict order:
+If the administrator runs `/leave` on a still-active event without
+having `/promote`d anyone first, the bot picks a successor automatically
+instead of leaving the event without one — `/leave` itself never
+blocks or asks for confirmation, the departing administrator is removed
+from `participants` exactly as it would for anyone else. The candidate
+pool is every other current participant of the event, and the pick
+follows a strict order:
 
 1. Prefer participants flagged `trusted` for the event. If that pool is
    non-empty, the winner comes from it exclusively — an untrusted
@@ -446,16 +450,16 @@ a strict order:
    no one to hand the role to. The event is closed instead
    (`events.status = 'closed'`, `events.closed_reason = 'abandoned'`,
    distinct from a normal `/closeevent` completion which records
-   `'completed'`), and the departing creator is told so. No final
+   `'completed'`), and the departing administrator is told so. No final
    passcode is sent to anyone in this case — an abandoned event never
    had every position settled, or someone would already have run
    `/closeevent`.
 
 A successful auto-promotion mirrors `/promote`'s own conventions: the
-new creator is marked `trusted` for the event the same way, and both
-people are notified — the departing creator's own `/leave`
-acknowledgement now also names who took over, and the new creator gets
-a separate message explaining why they suddenly have the role.
+new administrator is marked `trusted` for the event the same way, and
+both people are notified — the departing administrator's own `/leave`
+acknowledgement now also names who took over, and the new administrator
+gets a separate message explaining why they suddenly have the role.
 
 ## Live updates
 
@@ -562,24 +566,24 @@ word too.
 |---|---|---|
 | `/start`, `/help` | anyone | Onboarding / command list. |
 | `/language <code>` | anyone | Set own interface language. |
-| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins the creator and marks them trusted. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins its creator — now the event's first administrator — and marks them trusted. |
 | `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
 | `/join <code>` | anyone | Join an event (confirmation prompt if already in one). |
-| `/leave` | participant | Leave the current event. If you're the creator, hands the role to another participant automatically (see Creator succession), or closes the event as abandoned if no one is eligible. |
+| `/leave` | participant | Leave the current event. If you're the administrator, hands the role to another participant automatically (see Administrator succession), or closes the event as abandoned if no one is eligible. |
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
 | `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
-| `/resolve <position> [<value \| @user>]` | creator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | creator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, offers a button to close the event if every position also has a settled value. |
-| `/unresolve <position>` | creator | Reopen a resolved position. |
-| `/trust <user>` | creator | Flag a participant as trusted. |
-| `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
-| `/untrust <user>` | creator | Clear a participant's trust flag back to neutral. |
-| `/kick <user>` | creator | Remove a participant from the event. |
-| `/promote <user>` | creator | Hand the creator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own creator. |
-| `/closeevent` | creator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
-| `/events` | anyone | List events the caller created. |
+| `/resolve <position> [<value \| @user>]` | administrator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
+| `/resolve` (no arguments) | administrator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, offers a button to close the event if every position also has a settled value. |
+| `/unresolve <position>` | administrator | Reopen a resolved position. |
+| `/trust <user>` | administrator | Flag a participant as trusted. |
+| `/troll <user>` | administrator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
+| `/untrust <user>` | administrator | Clear a participant's trust flag back to neutral. |
+| `/kick <user>` | administrator | Remove a participant from the event. |
+| `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
+| `/closeevent` | administrator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
+| `/events` | anyone | List events the caller administers. |
 
 Letters and word slots are always **displayed uppercase**; input is
 accepted in any case and normalized on the way in.

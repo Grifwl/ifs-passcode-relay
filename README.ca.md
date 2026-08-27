@@ -29,8 +29,8 @@ recollir captures de pantalla manualment en un grup de xat.
    `/newevent` i obté un codi curt per compartir amb els assistents (per
    exemple, en un grup de WhatsApp) — el bot envia de seguida un text
    d'invitació llest per enganxar amb aquest codi, i qui crea
-   l'esdeveniment s'hi uneix automàticament, ja que ser l'organitzador no
-   l'eximeix de caçar portals també. Qui crea l'esdeveniment també
+   l'esdeveniment s'hi uneix automàticament — com a administrador/a —,
+   ja que ser l'organitzador no l'eximeix de caçar portals també. També
    comença marcat com a de confiança pel seu propi esdeveniment, igual
    com faria `/trust` amb qualsevol altra persona. Per defecte, es dona
    per fet que el passcode segueix
@@ -60,7 +60,7 @@ recollir captures de pantalla manualment en un grup de xat.
    mateixa posició, totes dues es conserven: el bot mostra cada possible
    codi complet en un bloc fàcil de copiar, amb quantes persones el
    donen per bo — i, en els menys donats per bons, qui els ha reportat,
-   perquè qui ha creat l'esdeveniment pugui detectar un error o un
+   perquè qui administra l'esdeveniment pugui detectar un error o un
    troll. Si el que envies no encaixa amb la posició esperada, o
    contradiu el que **algú altre** ja ha reportat, el bot et demana
    confirmació abans de registrar-ho. Corregir el teu **propi** report
@@ -74,7 +74,7 @@ recollir captures de pantalla manualment en un grup de xat.
    `/submit <posició>`), per eliminar el teu report en aquella posició —
    sense confirmació, i el bot et diu quin valor ha eliminat per si
    també ho vols desfer.
-6. Qui ha creat l'esdeveniment resol una discrepància amb `/resolve
+6. Qui administra l'esdeveniment resol una discrepància amb `/resolve
    <posició> <valor>` — o, escrit només com `/resolve <posició>`, el bot
    llista els valors reportats per aquella posició amb quanta gent en
    dona cadascun per bo — i, si algun d'aquests suports és de confiança,
@@ -86,12 +86,12 @@ recollir captures de pantalla manualment en un grup de xat.
    en queda cap — i, si en aquell moment totes les posicions tenen ja un
    valor establert (resolta, o amb un únic candidat reportat), aquest
    avís porta un botó per tancar l'esdeveniment allà mateix, fent
-   exactament el mateix que `/closeevent`. Qui ha creat l'esdeveniment també pot marcar un
+   exactament el mateix que `/closeevent`. Qui administra l'esdeveniment també pot marcar un
    participant com a de confiança o com a troll si cal.
    Marcar algú com a troll, només per a aquell esdeveniment, descarta la
    resta de les seves aportacions i deixa d'enviar-li actualitzacions —
    tampoc rebrà el passcode final quan es tanqui l'esdeveniment.
-7. Quan l'esdeveniment s'acaba, qui l'ha creat el tanca amb
+7. Quan l'esdeveniment s'acaba, qui l'administra el tanca amb
    `/closeevent`, que envia el passcode final com a missatge **nou** a
    tots els participants — no només una edició — perquè a ningú se li
    escapi encara que no hagi estat seguint-ho activament.
@@ -105,21 +105,21 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Aquí la `\|` separa el nom del patró, no vol dir "tria l'un o l'altre" — p. ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
-| `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'ha creat, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte. |
+| `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
-| `/resolve <posició> [<valor \| @usuari>]` | creador de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
-| `/resolve` (sense arguments) | creador de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, ofereix un botó per tancar l'esdeveniment si totes les posicions tenen ja un valor establert. |
-| `/unresolve <posició>` | creador de l'esdeveniment | Reobre una posició resolta. |
-| `/trust <usuari>` | creador de l'esdeveniment | Marca un participant com a de confiança, perquè el seu suport es destaqui a la llista de candidats de `/resolve`. |
-| `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
-| `/untrust <usuari>` | creador de l'esdeveniment | Treu la marca de confiança d'un participant. |
-| `/kick <usuari>` | creador de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
-| `/promote <usuari>` | creador de l'esdeveniment | Cedeix el rol de creador a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
-| `/closeevent` | creador de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
-| `/events` | tothom | Llista els esdeveniments que has creat. |
+| `/resolve <posició> [<valor \| @usuari>]` | administrador/a de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
+| `/resolve` (sense arguments) | administrador/a de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, ofereix un botó per tancar l'esdeveniment si totes les posicions tenen ja un valor establert. |
+| `/unresolve <posició>` | administrador/a de l'esdeveniment | Reobre una posició resolta. |
+| `/trust <usuari>` | administrador/a de l'esdeveniment | Marca un participant com a de confiança, perquè el seu suport es destaqui a la llista de candidats de `/resolve`. |
+| `/troll <usuari>` | administrador/a de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
+| `/untrust <usuari>` | administrador/a de l'esdeveniment | Treu la marca de confiança d'un participant. |
+| `/kick <usuari>` | administrador/a de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
+| `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
+| `/closeevent` | administrador/a de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
+| `/events` | tothom | Llista els esdeveniments que administres. |
 
 Cada jugador veu els missatges del bot en el seu propi idioma, establert
 un cop amb `/language` i recordat a partir de llavors.

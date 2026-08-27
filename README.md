@@ -28,10 +28,10 @@ group chat.
    with `/newevent` and gets a short join code to share with attendees
    (e.g. in a WhatsApp group) — the bot immediately sends a ready-to-paste
    invite message with that code, and the creator is joined to the event
-   automatically, since being the organizer doesn't exempt them from
-   hunting portals too. The creator also starts out flagged trusted for
-   their own event, the same way `/trust` would flag anyone else. By
-   default, the passcode is expected to follow
+   automatically — as its administrator — since being the organizer
+   doesn't exempt them from hunting portals too. They also start out
+   flagged trusted for their own event, the same way `/trust` would flag
+   anyone else. By default, the passcode is expected to follow
    the pattern `XXX99*999XX` (three letters, two digits, one whole word,
    three digits, two letters) — the creator can set a different pattern
    if that IFS uses another shape. The event's name doesn't need to be
@@ -59,7 +59,7 @@ group chat.
    position, both are kept: the bot shows every resulting full-code
    possibility in its own easy-to-copy block, with how many people back
    each one — and, for the least-backed ones, who reported them, so the
-   event's creator can spot a mistake or a troll. If what you send
+   event's administrator can spot a mistake or a troll. If what you send
    doesn't match the expected position, or contradicts what someone
    *else* already reported, the bot asks you to confirm before recording
    it. Correcting your **own** earlier report is different: no
@@ -73,7 +73,7 @@ group chat.
    `/submit <position>`) to remove your own report there — no
    confirmation, and the bot names the value it removed so you can undo
    that too if needed.
-6. The event's creator settles a disagreement with `/resolve <position>
+6. The event's administrator settles a disagreement with `/resolve <position>
    <value>` — or, run as just `/resolve <position>`, the bot lists the
    values reported for that position with how many people back each
    one — and, if any of those supporters is flagged trusted, how many
@@ -85,12 +85,12 @@ group chat.
    then, every position also has a settled value (resolved, or with a
    single reported candidate), that message comes with a button to
    close the event on the spot, doing exactly what `/closeevent` does.
-   The creator
+   The administrator
    can also mark a participant as trusted or as a troll if needed. Marking
    someone a troll, for that event only, discards the rest of their
    reports and stops sending them further updates — including the final
    passcode when the event closes.
-7. When the event is over, its creator closes it with `/closeevent`,
+7. When the event is over, its administrator closes it with `/closeevent`,
    which sends the final passcode as a **new** message to every
    participant — not just an edit — so nobody misses it even if they
    weren't actively following along.
@@ -104,21 +104,21 @@ group chat.
 | `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event. |
-| `/leave` | participant | Leave your current event. If you're the creator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible. |
+| `/leave` | participant | Leave your current event. If you're the administrator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible. |
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
-| `/resolve <position> [<value \| @user>]` | event creator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | event creator | Walk through every position still in disagreement, one at a time; once none are left, offers a button to close the event if every position also has a settled value. |
-| `/unresolve <position>` | event creator | Reopen a resolved position. |
-| `/trust <user>` | event creator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
-| `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |
-| `/untrust <user>` | event creator | Clear a participant's trust flag. |
-| `/kick <user>` | event creator | Remove a participant from the event. |
-| `/promote <user>` | event creator | Hand the creator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own creator. |
-| `/closeevent` | event creator | Freeze the event and announce the final code to everyone. |
-| `/events` | anyone | List the events you've created. |
+| `/resolve <position> [<value \| @user>]` | event administrator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
+| `/resolve` (no arguments) | event administrator | Walk through every position still in disagreement, one at a time; once none are left, offers a button to close the event if every position also has a settled value. |
+| `/unresolve <position>` | event administrator | Reopen a resolved position. |
+| `/trust <user>` | event administrator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
+| `/troll <user>` | event administrator | Discard a participant's reports and stop updating them (this event only). |
+| `/untrust <user>` | event administrator | Clear a participant's trust flag. |
+| `/kick <user>` | event administrator | Remove a participant from the event. |
+| `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
+| `/closeevent` | event administrator | Freeze the event and announce the final code to everyone. |
+| `/events` | anyone | List the events you administer. |
 
 Every player sees the bot's messages in their own language, set once with
 `/language` and remembered from then on.

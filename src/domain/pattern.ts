@@ -1,4 +1,4 @@
-/** The default passcode pattern used when an event's creator doesn't override it. */
+/** The default passcode pattern used when an event's administrator doesn't override it. */
 export const DEFAULT_PATTERN = "XXX99*999XX";
 
 /** A single slot of a passcode pattern: one letter, one digit, or one whole word. */
