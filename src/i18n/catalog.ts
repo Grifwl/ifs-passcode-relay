@@ -25,6 +25,7 @@ const en = {
     "/unresolve <position> - reopen a resolved position (creator)\n" +
     "/trust, /troll, /untrust <@user> - moderate a participant (creator)\n" +
     "/kick <@user> - remove a participant (creator)\n" +
+    "/promote <@user> - hand the creator role to another participant (creator)\n" +
     "/closeevent - freeze the event and announce the result (creator)\n" +
     "/events - list the events you've created",
 
@@ -125,6 +126,12 @@ const en = {
   "kick.done": (p) => `${p.name} has been removed from the event.`,
   "kick.notInEvent": (p) => `${p.name} isn't currently in this event.`,
 
+  "promote.usage": () => "Usage: /promote <@username>.",
+  "promote.cannotSelf": () => "You're already the event's creator.",
+  "promote.notParticipant": (p) => `${p.name} isn't currently in this event.`,
+  "promote.done": (p) => `${p.name} is now this event's creator. You remain a participant.`,
+  "promote.youAreNow": (p) => `You are now the creator of "${p.name}". Send /help to see the commands you can now use.`,
+
   "closeevent.unresolved": (p) => `Resolve these positions first: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Final passcode for "${p.name}":`,
   "closeevent.done": () => "Event closed. Final passcode sent to every participant.",
@@ -161,6 +168,7 @@ const ca: Catalog = {
     "/unresolve <posició> - reobre una posició resolta (creador)\n" +
     "/trust, /troll, /untrust <@usuari> - modera un participant (creador)\n" +
     "/kick <@usuari> - expulsa un participant (creador)\n" +
+    "/promote <@usuari> - cedeix el rol de creador a un altre participant (creador)\n" +
     "/closeevent - congela l'esdeveniment i anuncia el resultat (creador)\n" +
     "/events - llista els esdeveniments que has creat",
 
@@ -262,6 +270,12 @@ const ca: Catalog = {
   "kick.done": (p) => `${p.name} ha estat expulsat de l'esdeveniment.`,
   "kick.notInEvent": (p) => `${p.name} no és participant d'aquest esdeveniment ara mateix.`,
 
+  "promote.usage": () => "Ús: /promote <@usuari>.",
+  "promote.cannotSelf": () => "Ja ets qui ha creat aquest esdeveniment.",
+  "promote.notParticipant": (p) => `${p.name} no és participant d'aquest esdeveniment ara mateix.`,
+  "promote.done": (p) => `${p.name} ara és qui ha creat aquest esdeveniment. Tu continues sent-ne participant.`,
+  "promote.youAreNow": (p) => `Ara ets qui ha creat "${p.name}". Envia /help per veure les comandes que ja pots fer servir.`,
+
   "closeevent.unresolved": (p) => `Resol primer aquestes posicions: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Esdeveniment tancat. El passcode final s'ha enviat a tots els participants.",
@@ -295,6 +309,7 @@ const es: Catalog = {
     "/unresolve <posición> - reabre una posición resuelta (creador)\n" +
     "/trust, /troll, /untrust <@usuario> - modera a un participante (creador)\n" +
     "/kick <@usuario> - expulsa a un participante (creador)\n" +
+    "/promote <@usuario> - cede el rol de creador a otro participante (creador)\n" +
     "/closeevent - congela el evento y anuncia el resultado (creador)\n" +
     "/events - lista los eventos que has creado",
 
@@ -396,6 +411,12 @@ const es: Catalog = {
   "kick.done": (p) => `${p.name} ha sido expulsado del evento.`,
   "kick.notInEvent": (p) => `${p.name} no es participante de este evento ahora mismo.`,
 
+  "promote.usage": () => "Uso: /promote <@usuario>.",
+  "promote.cannotSelf": () => "Ya eres quien ha creado este evento.",
+  "promote.notParticipant": (p) => `${p.name} no es participante de este evento ahora mismo.`,
+  "promote.done": (p) => `${p.name} ahora es quien ha creado este evento. Tú sigues siendo participante.`,
+  "promote.youAreNow": (p) => `Ahora eres quien ha creado "${p.name}". Envía /help para ver los comandos que ya puedes usar.`,
+
   "closeevent.unresolved": (p) => `Resuelve antes estas posiciones: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Evento cerrado. El passcode final se ha enviado a todos los participantes.",
@@ -429,6 +450,7 @@ const fr: Catalog = {
     "/unresolve <position> - rouvre une position résolue (créateur)\n" +
     "/trust, /troll, /untrust <@utilisateur> - modère un participant (créateur)\n" +
     "/kick <@utilisateur> - exclut un participant (créateur)\n" +
+    "/promote <@utilisateur> - transfère le rôle de créateur à un autre participant (créateur)\n" +
     "/closeevent - fige l'événement et annonce le résultat (créateur)\n" +
     "/events - liste les événements que vous avez créés",
 
@@ -533,6 +555,13 @@ const fr: Catalog = {
   "kick.usage": () => "Utilisation : /kick <@utilisateur>.",
   "kick.done": (p) => `${p.name} a été exclu de l'événement.`,
   "kick.notInEvent": (p) => `${p.name} ne participe pas actuellement à cet événement.`,
+
+  "promote.usage": () => "Utilisation : /promote <@utilisateur>.",
+  "promote.cannotSelf": () => "Vous êtes déjà la personne qui a créé cet événement.",
+  "promote.notParticipant": (p) => `${p.name} ne participe pas actuellement à cet événement.`,
+  "promote.done": (p) => `${p.name} est désormais la personne qui a créé cet événement. Vous restez participant.`,
+  "promote.youAreNow": (p) =>
+    `Vous êtes désormais la personne qui a créé "${p.name}". Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
 
   "closeevent.unresolved": (p) => `Résolvez d'abord ces positions : ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}" :`,

@@ -80,3 +80,8 @@ export async function createEvent(
 export async function closeEvent(db: D1Database, eventId: number): Promise<void> {
   await db.prepare("UPDATE events SET status = 'closed' WHERE id = ?").bind(eventId).run();
 }
+
+/** Transfers an event's creator role to a different user (used by /promote). */
+export async function transferCreator(db: D1Database, eventId: number, newCreatorId: number): Promise<void> {
+  await db.prepare("UPDATE events SET created_by = ? WHERE id = ?").bind(newCreatorId, eventId).run();
+}

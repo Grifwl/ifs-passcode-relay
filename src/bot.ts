@@ -14,6 +14,7 @@ import { handleResolve, handleResolveCallback } from "./handlers/resolve.js";
 import { handleUnresolve } from "./handlers/unresolve.js";
 import { handleTrust, handleTroll, handleUntrust } from "./handlers/trust.js";
 import { handleKick } from "./handlers/kick.js";
+import { handlePromote } from "./handlers/promote.js";
 import { handleCloseEvent, handleCloseEventCallback } from "./handlers/closeevent.js";
 import { handleEvents } from "./handlers/events.js";
 
@@ -49,6 +50,7 @@ export function createBot(env: Env): Bot {
   bot.command("troll", (ctx) => handleTroll(ctx, env));
   bot.command("untrust", (ctx) => handleUntrust(ctx, env));
   bot.command("kick", (ctx) => handleKick(ctx, env));
+  bot.command("promote", (ctx) => handlePromote(ctx, env));
   bot.command("closeevent", (ctx) => handleCloseEvent(ctx, env));
   bot.command("events", (ctx) => handleEvents(ctx, env));
 

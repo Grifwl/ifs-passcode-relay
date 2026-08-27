@@ -118,6 +118,7 @@ grupo de chat.
 | `/troll <usuario>` | creador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
 | `/untrust <usuario>` | creador del evento | Quita la marca de confianza a un participante. |
 | `/kick <usuario>` | creador del evento | Expulsa a un participante del evento. |
+| `/promote <usuario>` | creador del evento | Cede el rol de creador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
 | `/closeevent` | creador del evento | Congela el evento y anuncia el código final a todos. |
 | `/events` | cualquiera | Lista los eventos que has creado. |
 

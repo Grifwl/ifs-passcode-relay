@@ -24,6 +24,7 @@ const COMMANDS = [
   { command: "troll", description: "Exclude a participant's reports (creator)" },
   { command: "untrust", description: "Clear a participant's trust flag (creator)" },
   { command: "kick", description: "Remove a participant from the event (creator)" },
+  { command: "promote", description: "Hand the creator role to another participant (creator)" },
   { command: "closeevent", description: "Freeze the event and announce the result (creator)" },
   { command: "events", description: "List the events you've created" },
 ];

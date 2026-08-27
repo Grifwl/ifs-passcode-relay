@@ -117,6 +117,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/troll <usuari>` | creador de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
 | `/untrust <usuari>` | creador de l'esdeveniment | Treu la marca de confiança d'un participant. |
 | `/kick <usuari>` | creador de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
+| `/promote <usuari>` | creador de l'esdeveniment | Cedeix el rol de creador a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
 | `/closeevent` | creador de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que has creat. |
 

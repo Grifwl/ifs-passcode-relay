@@ -125,6 +125,7 @@ dans un groupe de discussion.
 | `/troll <utilisateur>` | créateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
 | `/untrust <utilisateur>` | créateur de l'événement | Retire le marquage de fiabilité d'un participant. |
 | `/kick <utilisateur>` | créateur de l'événement | Exclut un participant de l'événement. |
+| `/promote <utilisateur>` | créateur de l'événement | Transfère le rôle de créateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre créateur. |
 | `/closeevent` | créateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
 | `/events` | tout le monde | Liste les événements que vous avez créés. |
 

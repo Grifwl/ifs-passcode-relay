@@ -116,6 +116,7 @@ group chat.
 | `/troll <user>` | event creator | Discard a participant's reports and stop updating them (this event only). |
 | `/untrust <user>` | event creator | Clear a participant's trust flag. |
 | `/kick <user>` | event creator | Remove a participant from the event. |
+| `/promote <user>` | event creator | Hand the creator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own creator. |
 | `/closeevent` | event creator | Freeze the event and announce the final code to everyone. |
 | `/events` | anyone | List the events you've created. |
 

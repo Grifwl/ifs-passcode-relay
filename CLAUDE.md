@@ -390,6 +390,32 @@ submissions, since submitting requires being a current participant) — a
 creator who wants a troll gone entirely, not just silenced, calls both
 commands.
 
+## Creator succession
+
+An event has exactly one creator at a time (`events.created_by`), and
+only that person can run any of the creator-only commands above, plus
+`/resolve`, `/unresolve` and `/closeevent`. `/promote <user>` transfers
+this role outright: the target must already be a participant of the
+same event, becomes the new `created_by`, and is marked `trusted` for
+the event exactly as `/newevent` marks its own creator (see Trust &
+moderation) — the same reasoning applies, since whoever the previous
+creator hands the role to is, by that act, someone they trust enough to
+run the event. The previous creator's own trust flag is left untouched
+either way, and they remain a participant like anyone else; nothing
+about `/promote` requires them to also `/leave`. There is no
+confirmation prompt, unlike `/submit`'s Sí/No flow — the action is
+reversible in practice, since the new creator can simply `/promote` the
+role back. Both the old and new creator are notified: the caller gets a
+direct reply, and the newly promoted user gets a separate message
+naming the event, sent to their own chat, in their own language.
+
+This is the first of three planned tools for keeping an event
+recoverable even if its creator becomes unavailable — `/promote` lets a
+creator hand off deliberately before stepping away. Still to design:
+what happens when the creator runs `/leave` without having promoted
+anyone first, and how another participant can claim the role if the
+creator goes silent instead of leaving outright.
+
 ## Live updates
 
 When an agent joins an event, the bot sends them a status message and
@@ -510,6 +536,7 @@ word too.
 | `/troll <user>` | creator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
 | `/untrust <user>` | creator | Clear a participant's trust flag back to neutral. |
 | `/kick <user>` | creator | Remove a participant from the event. |
+| `/promote <user>` | creator | Hand the creator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own creator. |
 | `/closeevent` | creator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
 | `/events` | anyone | List events the caller created. |
 
