@@ -113,7 +113,7 @@ dans un groupe de discussion.
 | `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Ici, le `\|` sépare le nom du modèle, il ne veut pas dire « choisissez l'un ou l'autre » — ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement. |
-| `/leave` | participant | Quitter l'événement actuel. |
+| `/leave` | participant | Quitter l'événement actuel. Si vous êtes le créateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |

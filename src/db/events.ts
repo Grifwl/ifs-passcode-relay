@@ -7,6 +7,7 @@ interface EventRow {
   name: string;
   pattern: string;
   status: string;
+  closed_reason: string | null;
   created_by: number;
   created_at: string;
 }
@@ -18,6 +19,7 @@ function fromRow(row: EventRow): IfsEvent {
     name: row.name,
     pattern: row.pattern,
     status: row.status as EventStatus,
+    closedReason: row.closed_reason as IfsEvent["closedReason"],
     createdBy: row.created_by,
     createdAt: row.created_at,
   };
@@ -76,9 +78,18 @@ export async function createEvent(
   return fromRow(row);
 }
 
-/** Marks an event as closed, freezing it against further joins/submissions. */
-export async function closeEvent(db: D1Database, eventId: number): Promise<void> {
-  await db.prepare("UPDATE events SET status = 'closed' WHERE id = ?").bind(eventId).run();
+/**
+ * Marks an event as closed, freezing it against further joins/submissions.
+ * `reason` records whether it completed normally (`/closeevent`) or was
+ * auto-closed because `/leave` ran out of eligible successors (see
+ * CLAUDE.md "Creator succession").
+ */
+export async function closeEvent(
+  db: D1Database,
+  eventId: number,
+  reason: "completed" | "abandoned" = "completed"
+): Promise<void> {
+  await db.prepare("UPDATE events SET status = 'closed', closed_reason = ? WHERE id = ?").bind(reason, eventId).run();
 }
 
 /** Transfers an event's creator role to a different user (used by /promote). */

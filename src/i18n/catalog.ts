@@ -59,6 +59,12 @@ const en = {
 
   "leave.notInEvent": () => "You're not currently in any event.",
   "leave.left": (p) => `Left "${p.name}".`,
+  "leave.leftPromoted": (p) => `Left "${p.name}". ${p.successor} is now its creator.`,
+  "leave.autoPromoted": (p) =>
+    `You are now the creator of "${p.name}" — its previous creator left. Send /help to see the commands you can now use.`,
+  "leave.closedAbandoned": (p) =>
+    `Left "${p.name}". No one left in the event was eligible to take over as creator, so it's been closed as unfinished.`,
+  "leave.anotherParticipant": () => "Another participant",
 
   "myevent.notInEvent": () => "You're not currently in any event. Use /join <code> or /newevent to start one.",
   "myevent.info": (p) => `You're in "${p.name}" (code ${p.code}, pattern ${p.pattern}).`,
@@ -202,6 +208,12 @@ const ca: Catalog = {
 
   "leave.notInEvent": () => "Ara mateix no ets a cap esdeveniment.",
   "leave.left": (p) => `Has sortit de "${p.name}".`,
+  "leave.leftPromoted": (p) => `Has sortit de "${p.name}". ${p.successor} n'és ara la persona creadora.`,
+  "leave.autoPromoted": (p) =>
+    `Ara ets la persona creadora de "${p.name}" — qui ho era abans ha marxat. Envia /help per veure les comandes que ja pots fer servir.`,
+  "leave.closedAbandoned": (p) =>
+    `Has sortit de "${p.name}". No quedava ningú apte per assumir el rol de creador, així que s'ha tancat com a inacabat.`,
+  "leave.anotherParticipant": () => "Un altre participant",
 
   "myevent.notInEvent": () => "Ara mateix no ets a cap esdeveniment. Fes servir /join <codi> o /newevent per crear-ne un.",
   "myevent.info": (p) => `Ets a "${p.name}" (codi ${p.code}, patró ${p.pattern}).`,
@@ -343,6 +355,12 @@ const es: Catalog = {
 
   "leave.notInEvent": () => "Ahora mismo no estás en ningún evento.",
   "leave.left": (p) => `Has salido de "${p.name}".`,
+  "leave.leftPromoted": (p) => `Has salido de "${p.name}". ${p.successor} ahora es quien lo ha creado.`,
+  "leave.autoPromoted": (p) =>
+    `Ahora eres quien ha creado "${p.name}" — quien lo era antes se ha marchado. Envía /help para ver los comandos que ya puedes usar.`,
+  "leave.closedAbandoned": (p) =>
+    `Has salido de "${p.name}". No quedaba nadie apto para asumir el rol de creador, así que se ha cerrado como inacabado.`,
+  "leave.anotherParticipant": () => "Otro participante",
 
   "myevent.notInEvent": () => "Ahora mismo no estás en ningún evento. Usa /join <código> o /newevent para crear uno.",
   "myevent.info": (p) => `Estás en "${p.name}" (código ${p.code}, patrón ${p.pattern}).`,
@@ -487,6 +505,12 @@ const fr: Catalog = {
 
   "leave.notInEvent": () => "Vous n'êtes actuellement dans aucun événement.",
   "leave.left": (p) => `Vous avez quitté "${p.name}".`,
+  "leave.leftPromoted": (p) => `Vous avez quitté "${p.name}". ${p.successor} en est désormais le créateur.`,
+  "leave.autoPromoted": (p) =>
+    `Vous êtes désormais le créateur de "${p.name}" — son précédent créateur est parti. Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
+  "leave.closedAbandoned": (p) =>
+    `Vous avez quitté "${p.name}". Personne d'éligible ne restait pour reprendre le rôle de créateur, donc il a été clôturé comme inachevé.`,
+  "leave.anotherParticipant": () => "Un autre participant",
 
   "myevent.notInEvent": () => "Vous n'êtes actuellement dans aucun événement. Utilisez /join <code> ou /newevent pour en créer un.",
   "myevent.info": (p) => `Vous êtes dans "${p.name}" (code ${p.code}, modèle ${p.pattern}).`,

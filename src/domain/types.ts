@@ -22,6 +22,8 @@ export interface IfsEvent {
   name: string;
   pattern: string;
   status: EventStatus;
+  /** Why a closed event stopped; null while it's still active, or if it was never explicitly recorded. */
+  closedReason: "completed" | "abandoned" | null;
   createdBy: number;
   createdAt: string;
 }

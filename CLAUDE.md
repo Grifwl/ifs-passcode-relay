@@ -110,7 +110,9 @@ is ever supplied.
 - **`events`** — an IFS event.
   `id` (PK), `code` (unique short join code, e.g. `7KPQ2M`), `name`,
   `pattern` (e.g. `XXX99*999XX`, see above), `status`
-  (`active`|`closed`), `created_by` (user id), `created_at`. Only `code`
+  (`active`|`closed`), `closed_reason` (`completed`|`abandoned`|`NULL`
+  — null while active; see "Succession on `/leave`" for the `abandoned`
+  case), `created_by` (user id), `created_at`. Only `code`
   is unique — `name` is not, so running `/newevent` twice with the exact
   same name is expected to succeed and simply produces two independent
   events with two different join codes, not a conflict. Since the name
@@ -411,10 +413,49 @@ naming the event, sent to their own chat, in their own language.
 
 This is the first of three planned tools for keeping an event
 recoverable even if its creator becomes unavailable — `/promote` lets a
-creator hand off deliberately before stepping away. Still to design:
-what happens when the creator runs `/leave` without having promoted
-anyone first, and how another participant can claim the role if the
-creator goes silent instead of leaving outright.
+creator hand off deliberately before stepping away. Still to design: how
+another participant can claim the role if the creator goes silent
+instead of leaving outright.
+
+### Succession on `/leave`
+
+If the creator runs `/leave` on a still-active event without having
+`/promote`d anyone first, the bot picks a successor automatically
+instead of leaving the event creator-less — `/leave` itself never
+blocks or asks for confirmation, the departing creator is removed from
+`participants` exactly as it would for anyone else. The candidate pool
+is every other current participant of the event, and the pick follows
+a strict order:
+
+1. Prefer participants flagged `trusted` for the event. If that pool is
+   non-empty, the winner comes from it exclusively — an untrusted
+   participant is never picked over a trusted one, however many
+   contributions they have.
+2. If no participant is `trusted`, fall back to every participant *not*
+   flagged `troll` (this includes anyone neutral, i.e. with no
+   `event_trust` row at all).
+3. Within whichever pool applies, the participant with the most
+   contributions wins — "contributions" here means how many positions
+   they currently have a live report at for this event (`COUNT(*)` over
+   `passcode_reports`, the same rows a self-correction would have
+   deleted and replaced, so it reflects their present standing, not
+   every report they've ever sent). A tie among the top contributors is
+   broken at random (`domain/succession.ts`'s `pickSuccessor`).
+4. If both pools are empty — every remaining participant is flagged
+   `troll`, or there are no other participants left at all — there is
+   no one to hand the role to. The event is closed instead
+   (`events.status = 'closed'`, `events.closed_reason = 'abandoned'`,
+   distinct from a normal `/closeevent` completion which records
+   `'completed'`), and the departing creator is told so. No final
+   passcode is sent to anyone in this case — an abandoned event never
+   had every position settled, or someone would already have run
+   `/closeevent`.
+
+A successful auto-promotion mirrors `/promote`'s own conventions: the
+new creator is marked `trusted` for the event the same way, and both
+people are notified — the departing creator's own `/leave`
+acknowledgement now also names who took over, and the new creator gets
+a separate message explaining why they suddenly have the role.
 
 ## Live updates
 
@@ -524,7 +565,7 @@ word too.
 | `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins the creator and marks them trusted. |
 | `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
 | `/join <code>` | anyone | Join an event (confirmation prompt if already in one). |
-| `/leave` | participant | Leave the current event. |
+| `/leave` | participant | Leave the current event. If you're the creator, hands the role to another participant automatically (see Creator succession), or closes the event as abandoned if no one is eligible. |
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |

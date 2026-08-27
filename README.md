@@ -104,7 +104,7 @@ group chat.
 | `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event. |
-| `/leave` | participant | Leave your current event. |
+| `/leave` | participant | Leave your current event. If you're the creator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible. |
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |

@@ -105,7 +105,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Aquí la `\|` separa el nom del patró, no vol dir "tria l'un o l'altre" — p. ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
-| `/leave` | participant | Surt de l'esdeveniment actual. |
+| `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'ha creat, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |

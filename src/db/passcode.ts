@@ -1,4 +1,5 @@
 import type { EventTrustStatus } from "../domain/trust.js";
+import type { SuccessionCandidate } from "../domain/succession.js";
 
 export interface CandidateRow {
   position: number;
@@ -203,6 +204,35 @@ export async function setTrust(
 /** Clears a participant's trust flag, back to neutral. */
 export async function clearTrust(db: D1Database, eventId: number, userId: number): Promise<void> {
   await db.prepare("DELETE FROM event_trust WHERE event_id = ? AND user_id = ?").bind(eventId, userId).run();
+}
+
+/**
+ * Every other participant of an event, with the trust status and
+ * current report count `pickSuccessor` needs to choose who inherits the
+ * creator role on `/leave` (see domain/succession.ts).
+ */
+export async function getSuccessionCandidates(
+  db: D1Database,
+  eventId: number,
+  excludingUserId: number
+): Promise<SuccessionCandidate[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT p.user_id AS user_id, t.status AS status, COALESCE(r.cnt, 0) AS report_count
+       FROM participants p
+       LEFT JOIN event_trust t ON t.event_id = p.event_id AND t.user_id = p.user_id
+       LEFT JOIN (
+         SELECT user_id, COUNT(*) AS cnt FROM passcode_reports WHERE event_id = ? GROUP BY user_id
+       ) r ON r.user_id = p.user_id
+       WHERE p.event_id = ? AND p.user_id != ?`
+    )
+    .bind(eventId, eventId, excludingUserId)
+    .all<{ user_id: number; status: string | null; report_count: number }>();
+  return results.map((r) => ({
+    userId: r.user_id,
+    trustStatus: r.status as EventTrustStatus | null,
+    reportCount: r.report_count,
+  }));
 }
 
 /** Registers a word-slot value in the shared cross-event vocabulary, or bumps its use count. */
