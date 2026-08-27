@@ -92,6 +92,15 @@ grupo de chat.
    como troll si hace falta. Marcar a alguien como troll, solo para ese evento, descarta el
    resto de sus aportaciones y deja de enviarle actualizaciones —
    tampoco recibirá el passcode final cuando se cierre el evento.
+
+   Cuando solo quedan pocas posiciones en discrepancia, puede ser más
+   rápido probar directamente unos cuantos de los bloques de código
+   renderizados en la pantalla de canje del juego. Una vez que uno de
+   ellos se confirma correcto allí, quien administra el evento puede
+   pegarlo de vuelta con `/verify <código>` y el bot averigua, para
+   todas las posiciones a la vez, qué valor reportado lo produjo — y a
+   continuación resuelve todas las posiciones y cierra el evento, ya que
+   un código confirmado en la tienda no deja nada más por decidir.
 7. Cuando el evento termina, quien lo administra lo cierra con
    `/closeevent`, que envía el passcode final como un mensaje **nuevo**
    a todos los participantes — no solo una edición — para que a nadie se
@@ -120,6 +129,7 @@ grupo de chat.
 | `/kick <usuario>` | administrador del evento | Expulsa a un participante del evento. |
 | `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
 | `/claim` | participante | Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo. |
+| `/verify <código>` | administrador del evento | Pega un código confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez y cierra el evento. |
 | `/closeevent` | administrador del evento | Congela el evento y anuncia el código final a todos. |
 | `/events` | cualquiera | Lista los eventos que administras. |
 

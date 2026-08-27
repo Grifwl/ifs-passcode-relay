@@ -15,13 +15,14 @@ import type { IfsEvent } from "../domain/types.js";
 export const CLOSEEVENT_CALLBACK_PREFIX = "closeevent:";
 
 /**
- * Shared core of `/closeevent`, used both by the command itself and by
- * the "close event" button `/resolve`'s walkthrough offers once every
- * position is unambiguous. Blocks (via `reply`) if that's not actually
- * the case anymore — state may have shifted between the button being
- * shown and tapped.
+ * Shared core of `/closeevent`, used by the command itself, by the
+ * "close event" button `/resolve`'s walkthrough offers once every
+ * position is unambiguous, and by `/verify` once it has resolved every
+ * position from a store-confirmed code. Blocks (via `reply`) if that's
+ * not actually the case anymore — state may have shifted between the
+ * check and this call.
  */
-async function closeEventCore(
+export async function closeEventCore(
   ctx: Context,
   env: Env,
   lang: SupportedLanguage,

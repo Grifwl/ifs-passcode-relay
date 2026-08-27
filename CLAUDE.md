@@ -278,6 +278,60 @@ ABC12GLIPH345XY
 ```
 👥 1 — @suspicious_agent ⚠️
 
+### Confirming a store-validated code with `/verify`
+
+When there are few enough conflicting positions that brute-forcing the
+redeem screen with a handful of the rendered combinations above is
+practical, `/verify <code>` (administrator-only) lets the administrator
+paste back the exact code the game just confirmed as correct, and have
+the bot settle every position from it in one shot instead of resolving
+each conflicting position by hand.
+
+Because that code can only ever have been copied from one of the
+combinations implied by the event's current reports, matching it
+against every such combination (the same cross product `/status` and
+this section's rendering already compute, just without capping to 16 or
+sorting by supporter count — see `domain/passcode.ts`'s `matchCode`)
+identifies, for every position at once, which reported value was the
+right one, including positions with more than one live candidate that a
+supporter-count ranking alone couldn't settle. This also means `/verify`
+never needs to work out a word slot's variable-length span by manually
+slicing the string: whichever candidate values line up to reproduce the
+pasted code character-for-character *are* the boundaries, implicitly.
+
+A successful match resolves every position to the value implied by that
+combination (even ones that weren't in dispute — harmless, since it's
+the same value they already had) and immediately closes the event, the
+same way `/closeevent` itself would once nothing is left unresolved,
+since a store-confirmed code leaves nothing further for the
+administrator to decide.
+
+Two things can keep `/verify` from settling anything, both reported to
+the administrator instead of guessing:
+
+- **No combination matches.** In ordinary use this shouldn't happen —
+  the code was copied verbatim from an already-rendered combination —
+  but state can shift between testing the code in-game and running
+  `/verify`: a report might get self-corrected, another position might
+  get `/resolve`d to a different value in the meantime, or the code was
+  simply mistyped or missing a candidate that was never reported at
+  all. `/verify` reports this rather than resolving nothing silently.
+- **More than one combination matches.** Structurally impossible for a
+  pattern with a single word slot (`*`), since every `X`/`9` slot is
+  exactly one character and the word slot's span is then fully
+  determined by the total code length — no candidate matching is even
+  needed to disambiguate. It only becomes possible with a pattern
+  configured with **two or more** word slots, where two different
+  candidate splits can concatenate into an identical string (e.g. `"AB"
+  + "CD"` and `"A" + "BCD"` both read `"ABCD"`). A safety net for an
+  exotic pattern, not the expected path.
+
+As with `buildCombinations`, the raw cross product is capped by the
+same `SAFETY_LIMIT` before being enumerated at all; if there are too
+many open possibilities to check against, `/verify` asks the
+administrator to `/resolve` some positions manually first, same as
+`/status`'s own cap-16 message does for rendering.
+
 ### Self-correction vs. disagreeing with someone else
 
 Before anything else, a submission is checked against **that same
@@ -646,6 +700,7 @@ word too.
 | `/kick <user>` | administrator | Remove a participant from the event. |
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |
+| `/verify <code>` | administrator | Match a store-confirmed code against current candidates to resolve every position at once, then close the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated code with `/verify`"). |
 | `/closeevent` | administrator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
 | `/events` | anyone | List events the caller administers. |
 

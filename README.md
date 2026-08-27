@@ -90,6 +90,14 @@ group chat.
    someone a troll, for that event only, discards the rest of their
    reports and stops sending them further updates — including the final
    passcode when the event closes.
+
+   When there are only a few positions still in disagreement, it can be
+   faster to just try a handful of the rendered code blocks directly at
+   the game's redeem screen. Once one of them is confirmed correct
+   there, the administrator can paste it back with `/verify <code>` and
+   the bot figures out, for every position at once, which reported value
+   produced it — then resolves everything and closes the event right
+   away, since a store-confirmed code leaves nothing left to decide.
 7. When the event is over, its administrator closes it with `/closeevent`,
    which sends the final passcode as a **new** message to every
    participant — not just an edit — so nobody misses it even if they
@@ -118,6 +126,7 @@ group chat.
 | `/kick <user>` | event administrator | Remove a participant from the event. |
 | `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through. |
+| `/verify <code>` | event administrator | Paste a code confirmed correct at the game's redeem screen; resolves every position from it at once and closes the event. |
 | `/closeevent` | event administrator | Freeze the event and announce the final code to everyone. |
 | `/events` | anyone | List the events you administer. |
 

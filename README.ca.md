@@ -91,6 +91,15 @@ recollir captures de pantalla manualment en un grup de xat.
    Marcar algú com a troll, només per a aquell esdeveniment, descarta la
    resta de les seves aportacions i deixa d'enviar-li actualitzacions —
    tampoc rebrà el passcode final quan es tanqui l'esdeveniment.
+
+   Quan només queden poques posicions en discrepància, pot ser més ràpid
+   provar directament uns quants dels blocs de codi renderitzats a la
+   pantalla de bescanvi del joc. Un cop un d'ells es confirma correcte
+   allà, qui administra l'esdeveniment el pot enganxar de tornada amb
+   `/verify <codi>` i el bot esbrina, per a totes les posicions alhora,
+   quin valor reportat l'ha produït — i tot seguit resol totes les
+   posicions i tanca l'esdeveniment, ja que un codi confirmat a la
+   botiga no deixa res més per decidir.
 7. Quan l'esdeveniment s'acaba, qui l'administra el tanca amb
    `/closeevent`, que envia el passcode final com a missatge **nou** a
    tots els participants — no només una edició — perquè a ningú se li
@@ -119,6 +128,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/kick <usuari>` | administrador/a de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
 | `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
 | `/claim` | participant | Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu. |
+| `/verify <codi>` | administrador/a de l'esdeveniment | Enganxa un codi confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora i tanca l'esdeveniment. |
 | `/closeevent` | administrador/a de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que administres. |
 

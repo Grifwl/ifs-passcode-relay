@@ -109,6 +109,20 @@ function slotBranches(slot: SlotState): BranchOption[] {
  * single point of disagreement, that's exactly that candidate's own
  * count, which is the common case in practice.
  */
+function crossProduct(branchLists: BranchOption[][]): BranchOption[][] {
+  let combos: BranchOption[][] = [[]];
+  for (const options of branchLists) {
+    const next: BranchOption[][] = [];
+    for (const combo of combos) {
+      for (const option of options) {
+        next.push([...combo, option]);
+      }
+    }
+    combos = next;
+  }
+  return combos;
+}
+
 export function buildCombinations(slots: SlotState[]): BuildResult {
   const ordered = [...slots].sort((a, b) => a.position - b.position);
   const branchLists = ordered.map(slotBranches);
@@ -129,16 +143,7 @@ export function buildCombinations(slots: SlotState[]): BuildResult {
     };
   }
 
-  let combos: BranchOption[][] = [[]];
-  for (const options of branchLists) {
-    const next: BranchOption[][] = [];
-    for (const combo of combos) {
-      for (const option of options) {
-        next.push([...combo, option]);
-      }
-    }
-    combos = next;
-  }
+  const combos = crossProduct(branchLists);
 
   const scored: Combination[] = combos.map((combo) => {
     const code = combo.map((o) => o.value).join("");
@@ -161,4 +166,46 @@ export function buildCombinations(slots: SlotState[]): BuildResult {
   const combinations = scored.slice(0, MAX_VARIANTS);
 
   return { combinations, truncatedCount, hasConflict, overwhelmed: false, missingCount, totalSlots };
+}
+
+export interface MatchResult {
+  status: "match" | "noMatch" | "ambiguous" | "overwhelmed";
+  /** Present only when status is "match": every slot's position and matched value. */
+  resolutions?: { position: number; value: string }[];
+}
+
+/**
+ * Matches a full passcode string — confirmed correct by an external
+ * source, e.g. accepted at the in-game redeem screen — against every
+ * combination implied by the event's current resolutions/candidates, to
+ * determine which value each position must have to produce it. Used by
+ * `/verify`.
+ *
+ * Unlike `buildCombinations`, this doesn't cap to `MAX_VARIANTS` or sort
+ * by supporter count: the whole point is to settle a disagreement that a
+ * supporter-count ranking alone couldn't, so the correct combination may
+ * well be the least-supported one. It also doesn't need to segment a
+ * word slot's variable-length span by hand — matching against the known
+ * candidate strings themselves does that implicitly, since a slot's
+ * option list only ever contains values people actually reported.
+ */
+export function matchCode(slots: SlotState[], code: string): MatchResult {
+  const ordered = [...slots].sort((a, b) => a.position - b.position);
+  const branchLists = ordered.map(slotBranches);
+
+  const rawTotal = branchLists.reduce((acc, options) => acc * options.length, 1);
+  if (rawTotal > SAFETY_LIMIT) {
+    return { status: "overwhelmed" };
+  }
+
+  const normalized = code.replace(/\s+/g, "").toUpperCase();
+  const matches = crossProduct(branchLists).filter((combo) => combo.map((o) => o.value).join("") === normalized);
+
+  if (matches.length === 0) return { status: "noMatch" };
+  if (matches.length > 1) return { status: "ambiguous" };
+
+  return {
+    status: "match",
+    resolutions: matches[0]!.map((o) => ({ position: o.position, value: o.value })),
+  };
 }

@@ -16,6 +16,7 @@ import { handleTrust, handleTroll, handleUntrust } from "./handlers/trust.js";
 import { handleKick } from "./handlers/kick.js";
 import { handlePromote } from "./handlers/promote.js";
 import { handleCloseEvent, handleCloseEventCallback } from "./handlers/closeevent.js";
+import { handleVerify } from "./handlers/verify.js";
 import { handleEvents } from "./handlers/events.js";
 import { handleClaim, handleClaimCallback } from "./handlers/claim.js";
 import { touchParticipantActivity } from "./db/participants.js";
@@ -63,6 +64,7 @@ export function createBot(env: Env): Bot {
   bot.command("untrust", (ctx) => handleUntrust(ctx, env));
   bot.command("kick", (ctx) => handleKick(ctx, env));
   bot.command("promote", (ctx) => handlePromote(ctx, env));
+  bot.command("verify", (ctx) => handleVerify(ctx, env));
   bot.command("closeevent", (ctx) => handleCloseEvent(ctx, env));
   bot.command("events", (ctx) => handleEvents(ctx, env));
   bot.command("claim", (ctx) => handleClaim(ctx, env));

@@ -99,6 +99,15 @@ dans un groupe de discussion.
    uniquement, écarte le reste de ses contributions et arrête de lui
    envoyer des mises à jour — il ne recevra pas non plus le passcode
    final à la clôture de l'événement.
+
+   Quand il ne reste que peu de positions en désaccord, il peut être
+   plus rapide d'essayer directement quelques-uns des blocs de code
+   affichés à l'écran d'échange du jeu. Une fois que l'un d'eux y est
+   confirmé correct, la personne qui administre l'événement peut le
+   recoller avec `/verify <code>` et le bot détermine, pour toutes les
+   positions à la fois, quelle valeur signalée l'a produit — puis résout
+   toutes les positions et clôture l'événement, puisqu'un code confirmé
+   en boutique ne laisse plus rien à décider.
 7. Une fois l'événement terminé, son administrateur le clôture avec
    `/closeevent`, ce qui envoie le passcode final comme **nouveau**
    message à tous les participants — pas seulement une modification —
@@ -127,6 +136,7 @@ dans un groupe de discussion.
 | `/kick <utilisateur>` | administrateur de l'événement | Exclut un participant de l'événement. |
 | `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
 | `/claim` | participant | Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse. |
+| `/verify <code>` | administrateur de l'événement | Colle un code confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup et clôture l'événement. |
 | `/closeevent` | administrateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
 | `/events` | tout le monde | Liste les événements que vous administrez. |
 

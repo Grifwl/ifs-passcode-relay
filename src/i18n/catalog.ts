@@ -27,6 +27,7 @@ const en = {
     "/kick <@user> - remove a participant (administrator)\n" +
     "/promote <@user> - hand the administrator role to another participant (administrator)\n" +
     "/claim - take over as administrator if the current one has been inactive a while\n" +
+    "/verify <code> - confirm a store-validated code and resolve every position from it (administrator)\n" +
     "/closeevent - freeze the event and announce the result (administrator)\n" +
     "/events - list the events you administer",
 
@@ -163,6 +164,15 @@ const en = {
   "closeevent.finalMessage": (p) => `Final passcode for "${p.name}":`,
   "closeevent.done": () => "Event closed. Final passcode sent to every participant.",
 
+  "verify.usage": () => "Usage: /verify <code>. Paste the exact code the game confirmed as correct when redeemed.",
+  "verify.matched": () => "Code confirmed — every position has been resolved to match it. Closing the event…",
+  "verify.noMatch": () =>
+    "That code doesn't match any combination of currently reported values. Double-check what you pasted — it may also mean a candidate is missing.",
+  "verify.ambiguous": () =>
+    "That code matches more than one possible combination of currently reported values, so it can't tell which one is right on its own. Resolve some positions manually first.",
+  "verify.overwhelmed": () =>
+    "There are too many open possibilities to check right now. Resolve some positions manually first, then try /verify again.",
+
   "events.none": () => "You don't administer any events yet.",
   "events.list": (p) => `Your events:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
@@ -197,6 +207,7 @@ const ca: Catalog = {
     "/kick <@usuari> - expulsa un participant (administrador)\n" +
     "/promote <@usuari> - cedeix el rol d'administrador a un altre participant (administrador)\n" +
     "/claim - assumeix el càrrec d'administrador si l'actual fa temps que és inactiu\n" +
+    "/verify <codi> - confirma un codi validat a la botiga i resol totes les posicions a partir d'ell (administrador)\n" +
     "/closeevent - congela l'esdeveniment i anuncia el resultat (administrador)\n" +
     "/events - llista els esdeveniments que administres",
 
@@ -334,6 +345,15 @@ const ca: Catalog = {
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Esdeveniment tancat. El passcode final s'ha enviat a tots els participants.",
 
+  "verify.usage": () => "Ús: /verify <codi>. Enganxa el codi exacte que el joc ha confirmat com a correcte en bescanviar-lo.",
+  "verify.matched": () => "Codi confirmat — totes les posicions s'han resolt en conseqüència. Tancant l'esdeveniment…",
+  "verify.noMatch": () =>
+    "Aquest codi no coincideix amb cap combinació dels valors reportats actualment. Comprova el que has enganxat — també pot ser que falti algun candidat per reportar.",
+  "verify.ambiguous": () =>
+    "Aquest codi coincideix amb més d'una combinació possible dels valors reportats actualment, així que no es pot saber quina és la correcta automàticament. Resol algunes posicions manualment primer.",
+  "verify.overwhelmed": () =>
+    "Hi ha massa possibilitats obertes per comprovar-ho ara mateix. Resol algunes posicions manualment primer i torna a provar /verify.",
+
   "events.none": () => "Encara no administres cap esdeveniment.",
   "events.list": (p) => `Els teus esdeveniments:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
@@ -365,6 +385,7 @@ const es: Catalog = {
     "/kick <@usuario> - expulsa a un participante (administrador)\n" +
     "/promote <@usuario> - cede el rol de administrador a otro participante (administrador)\n" +
     "/claim - asume el cargo de administrador si el actual lleva tiempo inactivo\n" +
+    "/verify <código> - confirma un código validado en la tienda y resuelve todas las posiciones a partir de él (administrador)\n" +
     "/closeevent - congela el evento y anuncia el resultado (administrador)\n" +
     "/events - lista los eventos que administras",
 
@@ -502,6 +523,15 @@ const es: Catalog = {
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Evento cerrado. El passcode final se ha enviado a todos los participantes.",
 
+  "verify.usage": () => "Uso: /verify <código>. Pega el código exacto que el juego ha confirmado como correcto al canjearlo.",
+  "verify.matched": () => "Código confirmado — todas las posiciones se han resuelto en consecuencia. Cerrando el evento…",
+  "verify.noMatch": () =>
+    "Ese código no coincide con ninguna combinación de los valores reportados actualmente. Comprueba lo que has pegado — también puede ser que falte algún candidato por reportar.",
+  "verify.ambiguous": () =>
+    "Ese código coincide con más de una combinación posible de los valores reportados actualmente, así que no se puede saber cuál es la correcta automáticamente. Resuelve antes algunas posiciones manualmente.",
+  "verify.overwhelmed": () =>
+    "Hay demasiadas posibilidades abiertas para comprobarlo ahora mismo. Resuelve antes algunas posiciones manualmente y vuelve a intentar /verify.",
+
   "events.none": () => "Todavía no administras ningún evento.",
   "events.list": (p) => `Tus eventos:\n${p.items}`,
   "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
@@ -533,6 +563,7 @@ const fr: Catalog = {
     "/kick <@utilisateur> - exclut un participant (administrateur)\n" +
     "/promote <@utilisateur> - transfère le rôle d'administrateur à un autre participant (administrateur)\n" +
     "/claim - reprend le rôle d'administrateur si l'actuel est inactif depuis un moment\n" +
+    "/verify <code> - confirme un code validé en boutique et résout toutes les positions à partir de lui (administrateur)\n" +
     "/closeevent - fige l'événement et annonce le résultat (administrateur)\n" +
     "/events - liste les événements que vous administrez",
 
@@ -674,6 +705,15 @@ const fr: Catalog = {
   "closeevent.unresolved": (p) => `Résolvez d'abord ces positions : ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}" :`,
   "closeevent.done": () => "Événement clôturé. Le passcode final a été envoyé à tous les participants.",
+
+  "verify.usage": () => "Utilisation : /verify <code>. Collez le code exact confirmé comme correct par le jeu lors de l'échange.",
+  "verify.matched": () => "Code confirmé — toutes les positions ont été résolues en conséquence. Clôture de l'événement…",
+  "verify.noMatch": () =>
+    "Ce code ne correspond à aucune combinaison des valeurs actuellement signalées. Vérifiez ce que vous avez collé — il se peut aussi qu'il manque un candidat signalé.",
+  "verify.ambiguous": () =>
+    "Ce code correspond à plusieurs combinaisons possibles des valeurs actuellement signalées, impossible de savoir automatiquement laquelle est la bonne. Résolvez d'abord certaines positions manuellement.",
+  "verify.overwhelmed": () =>
+    "Il y a trop de possibilités ouvertes pour vérifier cela maintenant. Résolvez d'abord certaines positions manuellement, puis réessayez /verify.",
 
   "events.none": () => "Vous n'administrez encore aucun événement.",
   "events.list": (p) => `Vos événements :\n${p.items}`,
