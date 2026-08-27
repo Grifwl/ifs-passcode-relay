@@ -118,6 +118,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/untrust <usuari>` | administrador/a de l'esdeveniment | Treu la marca de confiança d'un participant. |
 | `/kick <usuari>` | administrador/a de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
 | `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
+| `/claim` | participant | Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu. |
 | `/closeevent` | administrador/a de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que administres. |
 

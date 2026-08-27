@@ -119,6 +119,7 @@ grupo de chat.
 | `/untrust <usuario>` | administrador del evento | Quita la marca de confianza a un participante. |
 | `/kick <usuario>` | administrador del evento | Expulsa a un participante del evento. |
 | `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
+| `/claim` | participante | Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo. |
 | `/closeevent` | administrador del evento | Congela el evento y anuncia el código final a todos. |
 | `/events` | cualquiera | Lista los eventos que administras. |
 

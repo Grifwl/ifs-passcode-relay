@@ -128,7 +128,8 @@ is ever supplied.
   a different event.
   `user_id` (PK), `event_id`, `chat_id`, `status_message_id` (id of the
   live-updating status message edited on every passcode change),
-  `joined_at`.
+  `joined_at`, `last_active_at` (touched on every update from this
+  user, of any kind — see "Claiming with `/claim`").
 - **`passcode_reports`** — log of every accepted submission (including
   deliberate duplicates from two different agents disagreeing, created
   via the confirmation prompt below), append-only with exactly one
@@ -166,6 +167,15 @@ is ever supplied.
   events.
   `word` (PK, uppercased), `first_used_in_event_id`, `first_used_at`,
   `use_count`.
+- **`admin_claims`** — at most one open `/claim` negotiation per event
+  (see "Claiming with `/claim`").
+  `event_id` (PK), `initiated_at`, `notify_chat_id`, `notify_message_id`
+  (where the administrator's Accept/Keep message was sent, so it can be
+  edited once the negotiation resolves).
+- **`admin_claim_candidates`** — every participant who has run
+  `/claim` during the currently open negotiation for an event.
+  `event_id`, `user_id`, `claimed_at`. Primary key: `(event_id,
+  user_id)`.
 
 ## Conflict handling
 
@@ -415,11 +425,15 @@ notified: the caller gets a direct reply, and the newly promoted user
 gets a separate message naming the event, sent to their own chat, in
 their own language.
 
-This is the first of three planned tools for keeping an event
-recoverable even if its administrator becomes unavailable — `/promote`
-lets an administrator hand off deliberately before stepping away. Still
-to design: how another participant can claim the role if the
-administrator goes silent instead of leaving outright.
+This is the first of three tools for keeping an event recoverable even
+if its administrator becomes unavailable: `/promote` lets an
+administrator hand off deliberately before stepping away, "Succession
+on `/leave`" below covers them leaving without having promoted anyone,
+and `/claim` below covers them doing neither — just going quiet.
+`/promote` also resets the new administrator's own inactivity clock
+(`participants.last_active_at`, see `/claim`), the same as the other
+two transfer paths, so a fresh handover always starts with a clean
+clock.
 
 ### Succession on `/leave`
 
@@ -460,6 +474,55 @@ new administrator is marked `trusted` for the event the same way, and
 both people are notified — the departing administrator's own `/leave`
 acknowledgement now also names who took over, and the new administrator
 gets a separate message explaining why they suddenly have the role.
+
+### Claiming with `/claim`
+
+Unlike `/promote` and `/leave` succession, `/claim` doesn't need the
+administrator to act at all — it lets another participant force a
+handover if the administrator has simply gone quiet without leaving
+(e.g. they're at the bar, deliberately not micromanaging while
+attendees work out the passcode themselves, and just haven't touched
+the bot in a while). `participants.last_active_at` records the last
+time each participant sent any message or tapped any button — touched
+by a bot-wide middleware in `bot.ts`, so it isn't limited to command
+usage — and `/promote`, `/leave` succession and `/claim` itself all
+reset it for whoever just became administrator.
+
+Only participants not flagged `troll` can run `/claim`, and only once
+the current administrator has been inactive for at least
+`CLAIM_INACTIVITY_MINUTES` (30) minutes in this event
+(`domain/claim.ts`). The first `/claim` on an event opens a negotiation
+— `admin_claims` holds at most one open row per event — and sends the
+administrator a message with two buttons: keep the role, or hand it
+over. Every subsequent `/claim` during that same negotiation, from a
+different participant, just adds its caller to the candidate pool
+(`admin_claim_candidates`) without re-notifying the administrator.
+
+- If the administrator taps **"Keep the role"**, the negotiation is
+  discarded and nothing changes.
+- If the administrator taps **"Hand it over"**, or doesn't respond
+  within `CLAIM_RESOLUTION_MINUTES` (5) minutes, the negotiation
+  resolves: a successor is picked from the candidate pool using the
+  exact same rule as `/leave` succession (trusted preferred, then most
+  contributions, random tie-break — `pickSuccessor`, restricted to just
+  this pool via `db/claims.ts`'s `getClaimCandidates`), marked
+  `trusted`, and notified; the administrator's original message is
+  edited to confirm what happened.
+- There is no background timer for the 5-minute grace period — this
+  project has no long-running process to run one in (see Platform).
+  Resolving on timeout is instead triggered lazily by the *next*
+  `/claim` call for that event once the grace period has elapsed:
+  whoever runs it first after the deadline passes causes the stale
+  negotiation to resolve (in favor of the accumulated pool, not
+  necessarily them specifically) before their own request is
+  considered. `/claim`'s own reply tells a claimant they can simply run
+  it again after the wait to force the outcome through, since that's
+  the only thing that actually makes it happen.
+- Tapping a button after the negotiation has already resolved the other
+  way — a natural race between "Keep the role" and a
+  timeout-triggering `/claim` — is handled gracefully: whichever side
+  loses the race finds no open negotiation left and says so, instead of
+  double-resolving anything.
 
 ## Live updates
 
@@ -582,6 +645,7 @@ word too.
 | `/untrust <user>` | administrator | Clear a participant's trust flag back to neutral. |
 | `/kick <user>` | administrator | Remove a participant from the event. |
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
+| `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |
 | `/closeevent` | administrator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
 | `/events` | anyone | List events the caller administers. |
 

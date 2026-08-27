@@ -2,7 +2,7 @@ import type { Context } from "grammy";
 import type { Env } from "../env.js";
 import { ensureUser } from "../session.js";
 import { t, type SupportedLanguage } from "../i18n/index.js";
-import { getParticipant, removeParticipant } from "../db/participants.js";
+import { getParticipant, removeParticipant, touchParticipantActivity } from "../db/participants.js";
 import { getEventById, transferAdmin, closeEvent } from "../db/events.js";
 import { getSuccessionCandidates, setTrust } from "../db/passcode.js";
 import { getUser } from "../db/users.js";
@@ -30,6 +30,9 @@ async function handleAdminLeave(ctx: Context, env: Env, lang: SupportedLanguage,
   // Mirrors /promote's own convention of trusting whoever takes over —
   // see CLAUDE.md "Administrator succession".
   await setTrust(env.DB, { eventId: event.id, userId: successorId, status: "trusted", setBy: event.adminUserId });
+  // Starts the new administrator's inactivity clock fresh — see
+  // CLAUDE.md "Administrator succession".
+  await touchParticipantActivity(env.DB, successorId);
 
   const successorUser = await getUser(env.DB, successorId);
   const successorName = successorUser?.username ? `@${successorUser.username}` : t(lang, "leave.anotherParticipant");

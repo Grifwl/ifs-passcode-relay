@@ -117,6 +117,7 @@ group chat.
 | `/untrust <user>` | event administrator | Clear a participant's trust flag. |
 | `/kick <user>` | event administrator | Remove a participant from the event. |
 | `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
+| `/claim` | participant | Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through. |
 | `/closeevent` | event administrator | Freeze the event and announce the final code to everyone. |
 | `/events` | anyone | List the events you administer. |
 

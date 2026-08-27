@@ -26,6 +26,7 @@ const en = {
     "/trust, /troll, /untrust <@user> - moderate a participant (administrator)\n" +
     "/kick <@user> - remove a participant (administrator)\n" +
     "/promote <@user> - hand the administrator role to another participant (administrator)\n" +
+    "/claim - take over as administrator if the current one has been inactive a while\n" +
     "/closeevent - freeze the event and announce the result (administrator)\n" +
     "/events - list the events you administer",
 
@@ -138,6 +139,26 @@ const en = {
   "promote.done": (p) => `${p.name} is now this event's administrator. You remain a participant.`,
   "promote.youAreNow": (p) => `You are now the administrator of "${p.name}". Send /help to see the commands you can now use.`,
 
+  "claim.cannotSelf": () => "You are already this event's administrator.",
+  "claim.notEligible": () => "You're not eligible to claim this event's administrator role.",
+  "claim.joinedQueue": () => "You've joined the queue to take over as administrator if the current one doesn't respond.",
+  "claim.alreadyQueued": () => "You're already waiting for the administrator's response.",
+  "claim.adminRecentlyActive": (p) =>
+    `The administrator has been active in the last ${p.minutes} minutes, so you can't claim the role yet. Try again later.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant} wants to take over as administrator of "${p.name}", since you haven't been active in a while. Keep the role, or hand it over?`,
+  "claim.keepButton": () => "Keep the role",
+  "claim.acceptButton": () => "Hand it over",
+  "claim.opened": (p) =>
+    `The administrator has been notified and has ${p.minutes} minutes to respond. If they don't, run /claim again after that to force the handover.`,
+  "claim.kept": (p) => `You've kept the administrator role for "${p.name}".`,
+  "claim.handedOver": (p) => `You've handed over the administrator role for "${p.name}".`,
+  "claim.handedOverTimeout": (p) =>
+    `Since you didn't respond in time, the administrator role for "${p.name}" has been handed over automatically.`,
+  "claim.becameAdmin": (p) =>
+    `You are now the administrator of "${p.name}" after claiming the role due to inactivity. Send /help to see the commands you can now use.`,
+  "claim.alreadyResolved": () => "This request has already been resolved.",
+
   "closeevent.unresolved": (p) => `Resolve these positions first: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Final passcode for "${p.name}":`,
   "closeevent.done": () => "Event closed. Final passcode sent to every participant.",
@@ -175,6 +196,7 @@ const ca: Catalog = {
     "/trust, /troll, /untrust <@usuari> - modera un participant (administrador)\n" +
     "/kick <@usuari> - expulsa un participant (administrador)\n" +
     "/promote <@usuari> - cedeix el rol d'administrador a un altre participant (administrador)\n" +
+    "/claim - assumeix el càrrec d'administrador si l'actual fa temps que és inactiu\n" +
     "/closeevent - congela l'esdeveniment i anuncia el resultat (administrador)\n" +
     "/events - llista els esdeveniments que administres",
 
@@ -288,6 +310,26 @@ const ca: Catalog = {
   "promote.done": (p) => `${p.name} ara és qui administra aquest esdeveniment. Tu continues sent-ne participant.`,
   "promote.youAreNow": (p) => `Ara ets qui administra "${p.name}". Envia /help per veure les comandes que ja pots fer servir.`,
 
+  "claim.cannotSelf": () => "Ja ets qui administra aquest esdeveniment.",
+  "claim.notEligible": () => "No pots reclamar el rol d'administrador d'aquest esdeveniment.",
+  "claim.joinedQueue": () => "T'has afegit a la cua per assumir el càrrec d'administrador si qui l'ocupa ara no respon.",
+  "claim.alreadyQueued": () => "Ja estàs esperant la resposta de l'administrador.",
+  "claim.adminRecentlyActive": (p) =>
+    `Qui administra l'esdeveniment ha estat actiu en els últims ${p.minutes} minuts, així que encara no pots reclamar el càrrec. Torna-ho a provar més tard.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant} vol ocupar el càrrec d'administrador de "${p.name}", ja que fa temps que no ets actiu. Vols mantenir el càrrec o cedir-lo?`,
+  "claim.keepButton": () => "Mantenir el càrrec",
+  "claim.acceptButton": () => "Cedir el càrrec",
+  "claim.opened": (p) =>
+    `S'ha avisat l'administrador i té ${p.minutes} minuts per respondre. Si no ho fa, torna a fer /claim passat aquest temps per forçar el relleu.`,
+  "claim.kept": (p) => `Has mantingut el càrrec d'administrador de "${p.name}".`,
+  "claim.handedOver": (p) => `Has cedit el càrrec d'administrador de "${p.name}".`,
+  "claim.handedOverTimeout": (p) =>
+    `Com que no has respost a temps, el càrrec d'administrador de "${p.name}" s'ha cedit automàticament.`,
+  "claim.becameAdmin": (p) =>
+    `Ara ets la persona administradora de "${p.name}" després de reclamar el càrrec per inactivitat. Envia /help per veure les comandes que ja pots fer servir.`,
+  "claim.alreadyResolved": () => "Aquesta petició ja s'ha resolt.",
+
   "closeevent.unresolved": (p) => `Resol primer aquestes posicions: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Esdeveniment tancat. El passcode final s'ha enviat a tots els participants.",
@@ -322,6 +364,7 @@ const es: Catalog = {
     "/trust, /troll, /untrust <@usuario> - modera a un participante (administrador)\n" +
     "/kick <@usuario> - expulsa a un participante (administrador)\n" +
     "/promote <@usuario> - cede el rol de administrador a otro participante (administrador)\n" +
+    "/claim - asume el cargo de administrador si el actual lleva tiempo inactivo\n" +
     "/closeevent - congela el evento y anuncia el resultado (administrador)\n" +
     "/events - lista los eventos que administras",
 
@@ -435,6 +478,26 @@ const es: Catalog = {
   "promote.done": (p) => `${p.name} ahora es quien administra este evento. Tú sigues siendo participante.`,
   "promote.youAreNow": (p) => `Ahora eres quien administra "${p.name}". Envía /help para ver los comandos que ya puedes usar.`,
 
+  "claim.cannotSelf": () => "Ya eres quien administra este evento.",
+  "claim.notEligible": () => "No puedes reclamar el rol de administrador de este evento.",
+  "claim.joinedQueue": () => "Te has añadido a la cola para asumir el cargo de administrador si quien lo ocupa ahora no responde.",
+  "claim.alreadyQueued": () => "Ya estás esperando la respuesta del administrador.",
+  "claim.adminRecentlyActive": (p) =>
+    `Quien administra el evento ha estado activo en los últimos ${p.minutes} minutos, así que todavía no puedes reclamar el cargo. Inténtalo de nuevo más tarde.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant} quiere ocupar el cargo de administrador de "${p.name}", ya que hace tiempo que no estás activo. ¿Quieres mantener el cargo o cederlo?`,
+  "claim.keepButton": () => "Mantener el cargo",
+  "claim.acceptButton": () => "Ceder el cargo",
+  "claim.opened": (p) =>
+    `Se ha avisado al administrador y tiene ${p.minutes} minutos para responder. Si no lo hace, vuelve a ejecutar /claim pasado ese tiempo para forzar el relevo.`,
+  "claim.kept": (p) => `Has mantenido el cargo de administrador de "${p.name}".`,
+  "claim.handedOver": (p) => `Has cedido el cargo de administrador de "${p.name}".`,
+  "claim.handedOverTimeout": (p) =>
+    `Como no has respondido a tiempo, el cargo de administrador de "${p.name}" se ha cedido automáticamente.`,
+  "claim.becameAdmin": (p) =>
+    `Ahora eres quien administra "${p.name}" tras reclamar el cargo por inactividad. Envía /help para ver los comandos que ya puedes usar.`,
+  "claim.alreadyResolved": () => "Esta petición ya se ha resuelto.",
+
   "closeevent.unresolved": (p) => `Resuelve antes estas posiciones: ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "closeevent.done": () => "Evento cerrado. El passcode final se ha enviado a todos los participantes.",
@@ -469,6 +532,7 @@ const fr: Catalog = {
     "/trust, /troll, /untrust <@utilisateur> - modère un participant (administrateur)\n" +
     "/kick <@utilisateur> - exclut un participant (administrateur)\n" +
     "/promote <@utilisateur> - transfère le rôle d'administrateur à un autre participant (administrateur)\n" +
+    "/claim - reprend le rôle d'administrateur si l'actuel est inactif depuis un moment\n" +
     "/closeevent - fige l'événement et annonce le résultat (administrateur)\n" +
     "/events - liste les événements que vous administrez",
 
@@ -586,6 +650,26 @@ const fr: Catalog = {
   "promote.done": (p) => `${p.name} est désormais la personne qui administre cet événement. Vous restez participant.`,
   "promote.youAreNow": (p) =>
     `Vous êtes désormais la personne qui administre "${p.name}". Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
+
+  "claim.cannotSelf": () => "Vous êtes déjà la personne qui administre cet événement.",
+  "claim.notEligible": () => "Vous n'êtes pas éligible pour réclamer le rôle d'administrateur de cet événement.",
+  "claim.joinedQueue": () => "Vous avez rejoint la file pour reprendre le rôle d'administrateur si la personne actuelle ne répond pas.",
+  "claim.alreadyQueued": () => "Vous attendez déjà la réponse de l'administrateur.",
+  "claim.adminRecentlyActive": (p) =>
+    `L'administrateur a été actif au cours des ${p.minutes} dernières minutes, vous ne pouvez donc pas encore réclamer le rôle. Réessayez plus tard.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant} souhaite reprendre le rôle d'administrateur de "${p.name}", car vous n'avez pas été actif depuis un moment. Voulez-vous garder le rôle ou le céder ?`,
+  "claim.keepButton": () => "Garder le rôle",
+  "claim.acceptButton": () => "Céder le rôle",
+  "claim.opened": (p) =>
+    `L'administrateur a été prévenu et a ${p.minutes} minutes pour répondre. S'il ne le fait pas, relancez /claim après ce délai pour forcer la passation.`,
+  "claim.kept": (p) => `Vous avez gardé le rôle d'administrateur de "${p.name}".`,
+  "claim.handedOver": (p) => `Vous avez cédé le rôle d'administrateur de "${p.name}".`,
+  "claim.handedOverTimeout": (p) =>
+    `Comme vous n'avez pas répondu à temps, le rôle d'administrateur de "${p.name}" a été cédé automatiquement.`,
+  "claim.becameAdmin": (p) =>
+    `Vous êtes désormais l'administrateur de "${p.name}" après avoir réclamé le rôle pour inactivité. Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
+  "claim.alreadyResolved": () => "Cette demande a déjà été résolue.",
 
   "closeevent.unresolved": (p) => `Résolvez d'abord ces positions : ${p.positions}.`,
   "closeevent.finalMessage": (p) => `Passcode final de "${p.name}" :`,

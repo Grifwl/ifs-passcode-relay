@@ -185,6 +185,15 @@ export async function getEventTrustMap(db: D1Database, eventId: number): Promise
   return new Map(results.map((r) => [r.user_id, r.status as EventTrustStatus]));
 }
 
+/** One participant's trust status for an event, or null if neutral (no row). */
+export async function getTrustStatus(db: D1Database, eventId: number, userId: number): Promise<EventTrustStatus | null> {
+  const row = await db
+    .prepare("SELECT status FROM event_trust WHERE event_id = ? AND user_id = ?")
+    .bind(eventId, userId)
+    .first<{ status: string }>();
+  return row ? (row.status as EventTrustStatus) : null;
+}
+
 /** Sets (or overwrites) a participant's trust status for one event. */
 export async function setTrust(
   db: D1Database,

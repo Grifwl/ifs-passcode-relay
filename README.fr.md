@@ -126,6 +126,7 @@ dans un groupe de discussion.
 | `/untrust <utilisateur>` | administrateur de l'événement | Retire le marquage de fiabilité d'un participant. |
 | `/kick <utilisateur>` | administrateur de l'événement | Exclut un participant de l'événement. |
 | `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
+| `/claim` | participant | Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse. |
 | `/closeevent` | administrateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
 | `/events` | tout le monde | Liste les événements que vous administrez. |
 

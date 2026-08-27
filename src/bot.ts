@@ -17,6 +17,8 @@ import { handleKick } from "./handlers/kick.js";
 import { handlePromote } from "./handlers/promote.js";
 import { handleCloseEvent, handleCloseEventCallback } from "./handlers/closeevent.js";
 import { handleEvents } from "./handlers/events.js";
+import { handleClaim, handleClaimCallback } from "./handlers/claim.js";
+import { touchParticipantActivity } from "./db/participants.js";
 
 /**
  * Builds a fresh Bot instance bound to this request's environment.
@@ -33,6 +35,16 @@ export function createBot(env: Env): Bot {
   // BotError.ctx.api never gets dumped raw — lives in src/index.ts's
   // webhook route instead, since that's where handleUpdate()'s
   // rejection actually surfaces.
+
+  // Runs for every update — a command, a plain-text report, or a
+  // button tap alike — before any routing below, so /claim's
+  // inactivity check always sees a participant's most recent
+  // interaction of any kind, not just their commands (see CLAUDE.md
+  // "Administrator succession").
+  bot.use(async (ctx, next) => {
+    if (ctx.from) await touchParticipantActivity(env.DB, ctx.from.id);
+    await next();
+  });
 
   bot.command("start", (ctx) => handleStart(ctx, env));
   bot.command("help", (ctx) => handleHelp(ctx, env));
@@ -53,6 +65,7 @@ export function createBot(env: Env): Bot {
   bot.command("promote", (ctx) => handlePromote(ctx, env));
   bot.command("closeevent", (ctx) => handleCloseEvent(ctx, env));
   bot.command("events", (ctx) => handleEvents(ctx, env));
+  bot.command("claim", (ctx) => handleClaim(ctx, env));
 
   // Plain-text "<position> <value>" submissions, for players who'd
   // rather not type /submit every time. Registered after every
@@ -67,6 +80,7 @@ export function createBot(env: Env): Bot {
     if (data.startsWith("sharetext:")) return handleShareTextCallback(ctx, env);
     if (data.startsWith("resolve:") || data.startsWith("resolveall:")) return handleResolveCallback(ctx, env);
     if (data.startsWith("closeevent:")) return handleCloseEventCallback(ctx, env);
+    if (data.startsWith("claimresolve:")) return handleClaimCallback(ctx, env);
     return ctx.answerCallbackQuery();
   });
 

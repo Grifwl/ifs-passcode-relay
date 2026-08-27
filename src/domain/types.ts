@@ -40,4 +40,6 @@ export interface Participant {
   chatId: number;
   statusMessageId: number | null;
   joinedAt: string;
+  /** Last time this participant sent any message or tapped any button, touched on every update (see bot.ts). Used by /claim to judge administrator inactivity. */
+  lastActiveAt: string;
 }

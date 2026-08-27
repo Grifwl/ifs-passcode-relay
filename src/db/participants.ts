@@ -6,6 +6,7 @@ interface ParticipantRow {
   chat_id: number;
   status_message_id: number | null;
   joined_at: string;
+  last_active_at: string;
 }
 
 function fromRow(row: ParticipantRow): Participant {
@@ -15,6 +16,7 @@ function fromRow(row: ParticipantRow): Participant {
     chatId: row.chat_id,
     statusMessageId: row.status_message_id,
     joinedAt: row.joined_at,
+    lastActiveAt: row.last_active_at,
   };
 }
 
@@ -37,13 +39,14 @@ export async function joinEvent(
 ): Promise<void> {
   await db
     .prepare(
-      `INSERT INTO participants (user_id, event_id, chat_id, status_message_id)
-       VALUES (?, ?, ?, NULL)
+      `INSERT INTO participants (user_id, event_id, chat_id, status_message_id, last_active_at)
+       VALUES (?, ?, ?, NULL, datetime('now'))
        ON CONFLICT (user_id) DO UPDATE SET
          event_id = excluded.event_id,
          chat_id = excluded.chat_id,
          status_message_id = NULL,
-         joined_at = datetime('now')`
+         joined_at = datetime('now'),
+         last_active_at = datetime('now')`
     )
     .bind(params.userId, params.eventId, params.chatId)
     .run();
@@ -66,4 +69,15 @@ export async function listParticipants(db: D1Database, eventId: number): Promise
     .bind(eventId)
     .all<ParticipantRow>();
   return results.map(fromRow);
+}
+
+/**
+ * Marks a participant as active right now — called from a bot-wide
+ * middleware on every update (message or button tap), and after an
+ * admin handover so the new administrator's own inactivity clock
+ * starts fresh (see CLAUDE.md "Administrator succession"). A no-op if
+ * the user has no participant row.
+ */
+export async function touchParticipantActivity(db: D1Database, userId: number): Promise<void> {
+  await db.prepare("UPDATE participants SET last_active_at = datetime('now') WHERE user_id = ?").bind(userId).run();
 }
