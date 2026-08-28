@@ -8,6 +8,8 @@
 --   npm run db:reset:remote   -- the live, deployed database
 --   npm run db:reset:local    -- the local `wrangler dev` simulation
 
+DELETE FROM admin_claim_candidates;
+DELETE FROM admin_claims;
 DELETE FROM passcode_resolutions;
 DELETE FROM passcode_reports;
 DELETE FROM event_trust;

@@ -50,8 +50,7 @@ l'administrador — cobert per B i C).
 Si el grup només té 2 o 3 persones disponibles, es pot fer una passada
 reduïda saltant-se la Fase 7 (successió amb desempat/exclusió de troll) i
 la part de `/claim` amb pool de més d'un aspirant — però aleshores **no**
-es cobreixen totes les comandes en tots els escenaris, que és el que has
-demanat.
+es cobreixen totes les comandes en tots els escenaris.
 
 ## Preparació prèvia
 
@@ -66,6 +65,34 @@ demanat.
   perdre el fil — els codis de paraula (`*`) es couen entre els mateixos
   agents, així que cal apuntar-los en algun lloc fora del bot (paper,
   xat extern) tal com passaria en un IFS real.
+
+### Buidar la base de dades abans i després de les proves
+
+El projecte inclou `scripts/reset-db.sql`, pensat exactament per a
+això: esborra totes les files de totes les taules (incloent-hi les de
+`/claim`) i reinicia els comptadors `AUTOINCREMENT`, de manera que els
+primers esdeveniments que es creïn després tornen a tenir `id` 1, 2,
+3... Ja hi ha una comanda `npm` que l'executa contra la base de dades
+real que fa servir `@ifs_relay_bot`:
+
+```bash
+npm run db:reset:remote
+```
+
+**Abans de començar** les proves cal executar-la un cop, perquè el
+grup comenci amb la base de dades completament buida. Com que la
+taula `users` també queda buida, cada agent haurà de tornar a enviar
+`/start` fins i tot si ja havia fet servir el bot abans — això, de
+pas, permet que la Fase 0 (detecció d'idioma) es provi sempre des de
+zero.
+
+**En acabar** les proves cal tornar a executar exactament la mateixa
+comanda, per deixar la base tal com estava abans de la sessió, sense
+cap dels esdeveniments, usuaris ni reports generats durant les proves.
+
+Si en algun moment cal provar contra la rèplica local de
+`wrangler dev` en lloc del bot desplegat, la comanda equivalent és
+`npm run db:reset:local`.
 
 ### Simular inactivitat de l'administrador (sense esperar)
 
@@ -136,7 +163,7 @@ Es poden crear en qualsevol ordre.
 | 1.2 | A | Comprovar els botons EN/CA/ES/FR del segon missatge | Només apareixen els idiomes **diferents** de l'actual d'A, tots en una sola fila |
 | 1.3 | A | Prémer un dels botons d'idioma (p. ex. `ES`) | S'envia un **nou** parell de missatges (bloc + nota), ara en espanyol, i el botó `ES` ja no hi surt (n'hi ha 3 dels altres idiomes) |
 | 1.4 | A | `/myevent` | Mostra que A és participant de l'esdeveniment i n'és l'administrador |
-| 1.5 | A | `/newevent Proves Principal` (mateix nom, un altre cop) | Es crea un **segon** esdeveniment nou amb un codi diferent (el nom duplicat no és un conflicte) — **esborrar aquest esdeveniment duplicat de les notes**, no s'usa més; només confirma que `name` no és únic |
+| 1.5 | A | `/newevent Proves Principal` (mateix nom, un altre cop) | Es crea un **segon** esdeveniment nou amb un codi diferent (el nom duplicat no és un conflicte, confirma que `name` no és únic); anotar aquest codi com a "Event 1b" — es fa servir a la Fase 2 |
 | 1.6 | A | `/sharetext` (sense arguments) | Regenera el text per al codi de l'esdeveniment **actual** d'A, en el seu idioma actual |
 | 1.7 | A | `/sharetext <codi> fr` | Regenera el text per a aquell codi concret en francès, independentment de l'idioma actual d'A |
 | 1.8 | A | Provar `/newevent` amb un patró invàlid, p. ex. `/newevent Proves X | XY1` | Rebutjat (el patró només admet `X`, `9`, `*`) |
@@ -151,13 +178,8 @@ Es poden crear en qualsevol ordre.
 | 2.2 | C | `/join <codi Event 1>` | Igual que B |
 | 2.3 | D | `/join <codi Event 1>` | Igual que B |
 | 2.4 | B | `/join <codi inexistent>` | Error de codi no trobat, sense afectar l'esdeveniment actual de B |
-| 2.5 | B | `/join <codi d'un altre esdeveniment>`* | Es dispara la confirmació "ja ets en un esdeveniment, vols canviar?"; respondre que **no** i confirmar que B segueix a Event 1 |
+| 2.5 | B | `/join <codi Event 1b>` (el duplicat de la Fase 1.5) | Es dispara la confirmació "ja ets en un esdeveniment, vols canviar?"; respondre que **no** i confirmar que B segueix a Event 1 |
 | 2.6 | A, B, C, D | `/myevent` | Cadascú veu el seu rol correcte (A = administrador, B/C/D = participants) |
-
-\* Cap altre esdeveniment existeix encara en aquest punt del pla: es pot
-fer aquest pas més tard (per exemple amb l'esdeveniment de la Fase 7) i
-tornar aquí — l'important és provar la confirmació de canvi
-d'esdeveniment un cop en algun moment del pla.
 
 ---
 
