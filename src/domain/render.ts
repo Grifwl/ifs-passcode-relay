@@ -32,7 +32,7 @@ export function renderStatusMessage(
   }
 
   for (const combo of result.combinations) {
-    lines.push(`<code>${escapeHtml(combo.code)}</code>`);
+    lines.push(`<code>${escapeHtml(combo.passcode)}</code>`);
     if (combo.supporterCount !== null) {
       const names = supporterNames(combo);
       if (names && names.length > 0) {

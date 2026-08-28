@@ -70,7 +70,7 @@ function renderCandidates(
  * `handleResolveCallback` — chains straight into the following one. Once
  * none are left, says so instead — this never offers a shortcut to close
  * the event, since reporter consensus alone (even on every position) is
- * not the same as the administrator having tested a code in-game; only
+ * not the same as the administrator having tested a passcode in-game; only
  * `/verify` can do that (see CLAUDE.md's "Conflict handling"). Positions
  * are recomputed fresh from D1 on every call rather than tracked in any
  * stored "queue" state, so this naturally stays correct even if new

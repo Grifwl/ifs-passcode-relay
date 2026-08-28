@@ -24,7 +24,7 @@ interface CommandGroup {
  * A "How it works" step. Plain steps are a single sentence; a step can
  * also carry `subitems` (e.g. reporting a new value vs. correcting vs.
  * removing your own report all live under one step, since they're all
- * facets of "reporting the code").
+ * facets of "reporting the passcode").
  */
 interface Step {
   text: string;
@@ -66,7 +66,7 @@ const en: LandingContent = {
   aboutHeading: "What is this?",
   aboutBody: [
     "Ingress First Saturday is a recurring in-person event for the mobile game Ingress. During it, players are given the images of a set of portals; visiting each one in the field and inspecting its media reveals one character. Concatenating the characters in the right order produces a passcode redeemable in the in-game store for an IFS item pack.",
-    "This bot lets everyone attending a specific IFS report the character they found and the position it belongs to, and keeps a live, shared view of the code as it fills in. Several IFS events can run at once — each with its own code and its own group of participants.",
+    "This bot lets everyone attending a specific IFS report the character they found and the position it belongs to, and keeps a live, shared view of the passcode as it fills in. Several IFS events can run at once — each with its own join code and its own group of participants.",
   ],
   howHeading: "How it works",
   steps: [
@@ -81,7 +81,7 @@ const en: LandingContent = {
       ],
     },
     { text: "If two different people report different values for the same position, both are kept and shown as separate possibilities — until the event's administrator settles it with /resolve." },
-    { text: "Full agreement isn't the same as verified: the event can only be closed once its administrator has actually tested a code in-game and confirmed it with /verify, which then sends the final passcode to every participant." },
+    { text: "Full agreement isn't the same as verified: the event can only be closed once its administrator has actually tested a passcode in-game and confirmed it with /verify, which then sends the final passcode to every participant." },
   ],
   commandsHeading: "Commands",
   commandsIntro: "Every player sees these in their own language, set once with /language.",
@@ -108,13 +108,13 @@ const en: LandingContent = {
       ],
     },
     {
-      heading: "Reporting the code",
+      heading: "Reporting the passcode",
       rows: [
         { command: '"<position> <value>"', description: "Report the value found at a position." },
         { command: '"<position>" (no value)', description: "Remove your own report at that position, if any." },
         {
           command: "/status",
-          description: "Show the current state of the code on demand, and move future live updates to this new message.",
+          description: "Show the current state of the passcode on demand, and move future live updates to this new message.",
         },
       ],
     },
@@ -128,7 +128,7 @@ const en: LandingContent = {
         { command: "/kick <user>", description: "Remove a participant from the event." },
         { command: "/promote <user>", description: "Hand the administrator role to another participant already in the event; marks them trusted too, the same way /newevent does for its own administrator." },
         { command: "/claim", description: "Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through." },
-        { command: "/verify <code>", description: "The only way to close an event: paste a code confirmed correct at the game's redeem screen; resolves every position from it at once, freezes the event and announces the final code to everyone." },
+        { command: "/verify <passcode>", description: "The only way to close an event: paste a passcode confirmed correct at the game's redeem screen; resolves every position from it at once, freezes the event and announces the final passcode to everyone." },
       ],
     },
   ],
@@ -150,7 +150,7 @@ const ca: LandingContent = {
   aboutHeading: "Què és això?",
   aboutBody: [
     "Ingress First Saturday és un esdeveniment presencial recurrent del joc mòbil Ingress. Durant l'esdeveniment, es mostren als jugadors les imatges d'una sèrie de portals; visitar-los sobre el terreny i inspeccionar-ne el contingut multimèdia revela un caràcter. Concatenant els caràcters en l'ordre correcte s'obté un passcode bescanviable a la botiga del joc per un paquet d'objectes de l'IFS.",
-    "Aquest bot permet a tothom qui assisteix a un IFS concret reportar quin caràcter ha trobat i a quina posició correspon, i manté una vista compartida i en viu del codi a mesura que s'omple. Poden haver-hi diversos IFS en marxa alhora — cadascun amb el seu propi codi i el seu propi grup de participants.",
+    "Aquest bot permet a tothom qui assisteix a un IFS concret reportar quin caràcter ha trobat i a quina posició correspon, i manté una vista compartida i en viu del passcode a mesura que s'omple. Poden haver-hi diversos IFS en marxa alhora — cadascun amb el seu propi codi d'accés i el seu propi grup de participants.",
   ],
   howHeading: "Com funciona",
   steps: [
@@ -165,7 +165,7 @@ const ca: LandingContent = {
       ],
     },
     { text: "Si dues persones diferents reporten valors diferents per a la mateixa posició, totes dues es conserven i es mostren com a possibilitats separades — fins que qui administra l'esdeveniment ho resol amb /resolve." },
-    { text: "L'acord total no és el mateix que verificat: l'esdeveniment només es pot tancar un cop qui l'administra ha provat de veritat un codi al joc i l'ha confirmat amb /verify, que aleshores envia el passcode final a tots els participants." },
+    { text: "L'acord total no és el mateix que verificat: l'esdeveniment només es pot tancar un cop qui l'administra ha provat de veritat un passcode al joc i l'ha confirmat amb /verify, que aleshores envia el passcode final a tots els participants." },
   ],
   commandsHeading: "Comandes",
   commandsIntro: "Cada jugador les veu en el seu propi idioma, establert un cop amb /language.",
@@ -192,13 +192,13 @@ const ca: LandingContent = {
       ],
     },
     {
-      heading: "Reportar el codi",
+      heading: "Reportar el passcode",
       rows: [
         { command: '"<posició> <valor>"', description: "Reporta el valor trobat en una posició." },
         { command: '"<posició>" (sense valor)', description: "Elimina el teu propi report en aquella posició, si n'hi ha." },
         {
           command: "/status",
-          description: "Mostra l'estat actual del codi quan ho vulguis, i trasllada aquí les properes actualitzacions en directe.",
+          description: "Mostra l'estat actual del passcode quan ho vulguis, i trasllada aquí les properes actualitzacions en directe.",
         },
       ],
     },
@@ -212,7 +212,7 @@ const ca: LandingContent = {
         { command: "/kick <usuari>", description: "Expulsa un participant de l'esdeveniment." },
         { command: "/promote <usuari>", description: "Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que /newevent fa amb qui crea l'esdeveniment." },
         { command: "/claim", description: "Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu." },
-        { command: "/verify <codi>", description: "L'única manera de tancar un esdeveniment: enganxa un codi confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el codi final a tothom." },
+        { command: "/verify <passcode>", description: "L'única manera de tancar un esdeveniment: enganxa un passcode confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el passcode final a tothom." },
       ],
     },
   ],
@@ -234,7 +234,7 @@ const es: LandingContent = {
   aboutHeading: "¿Qué es esto?",
   aboutBody: [
     "Ingress First Saturday es un evento presencial recurrente del juego móvil Ingress. Durante el evento, se muestran a los jugadores las imágenes de una serie de portales; visitarlos sobre el terreno e inspeccionar su contenido multimedia revela un carácter. Concatenando los caracteres en el orden correcto se obtiene un passcode canjeable en la tienda del juego por un paquete de objetos del IFS.",
-    "Este bot permite a todos los asistentes a un IFS concreto reportar qué carácter han encontrado y en qué posición corresponde, y mantiene una vista compartida y en vivo del código a medida que se completa. Puede haber varios IFS en marcha a la vez — cada uno con su propio código y su propio grupo de participantes.",
+    "Este bot permite a todos los asistentes a un IFS concreto reportar qué carácter han encontrado y en qué posición corresponde, y mantiene una vista compartida y en vivo del passcode a medida que se completa. Puede haber varios IFS en marcha a la vez — cada uno con su propio código de acceso y su propio grupo de participantes.",
   ],
   howHeading: "Cómo funciona",
   steps: [
@@ -249,7 +249,7 @@ const es: LandingContent = {
       ],
     },
     { text: "Si dos personas distintas reportan valores distintos para la misma posición, ambos se conservan y se muestran como posibilidades separadas — hasta que quien administra el evento lo resuelve con /resolve." },
-    { text: "El acuerdo total no es lo mismo que verificado: el evento solo se puede cerrar cuando quien lo administra ha probado de verdad un código en el juego y lo ha confirmado con /verify, que entonces envía el passcode final a todos los participantes." },
+    { text: "El acuerdo total no es lo mismo que verificado: el evento solo se puede cerrar cuando quien lo administra ha probado de verdad un passcode en el juego y lo ha confirmado con /verify, que entonces envía el passcode final a todos los participantes." },
   ],
   commandsHeading: "Comandos",
   commandsIntro: "Cada jugador los ve en su propio idioma, establecido una vez con /language.",
@@ -276,13 +276,13 @@ const es: LandingContent = {
       ],
     },
     {
-      heading: "Reportar el código",
+      heading: "Reportar el passcode",
       rows: [
         { command: '"<posición> <valor>"', description: "Reporta el valor encontrado en una posición." },
         { command: '"<posición>" (sin valor)', description: "Elimina tu propio reporte en esa posición, si existe." },
         {
           command: "/status",
-          description: "Muestra el estado actual del código cuando quieras, y traslada aquí las próximas actualizaciones en directo.",
+          description: "Muestra el estado actual del passcode cuando quieras, y traslada aquí las próximas actualizaciones en directo.",
         },
       ],
     },
@@ -296,7 +296,7 @@ const es: LandingContent = {
         { command: "/kick <usuario>", description: "Expulsa a un participante del evento." },
         { command: "/promote <usuario>", description: "Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que /newevent hace con quien crea el evento." },
         { command: "/claim", description: "Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo." },
-        { command: "/verify <código>", description: "La única forma de cerrar un evento: pega un código confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez, congela el evento y anuncia el código final a todos." },
+        { command: "/verify <passcode>", description: "La única forma de cerrar un evento: pega un passcode confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez, congela el evento y anuncia el passcode final a todos." },
       ],
     },
   ],
@@ -318,7 +318,7 @@ const fr: LandingContent = {
   aboutHeading: "De quoi s'agit-il ?",
   aboutBody: [
     "Ingress First Saturday est un événement en présentiel récurrent du jeu mobile Ingress. Pendant l'événement, les joueurs reçoivent les images d'une série de portails ; les visiter sur le terrain et examiner leur contenu multimédia révèle un caractère. En concaténant les caractères dans le bon ordre, on obtient un passcode échangeable dans la boutique du jeu contre un pack d'objets IFS.",
-    "Ce bot permet à tous les participants d'un IFS donné de signaler le caractère trouvé et la position correspondante, et maintient une vue partagée et en direct du code au fur et à mesure qu'il se complète. Plusieurs IFS peuvent se dérouler en même temps — chacun avec son propre code et son propre groupe de participants.",
+    "Ce bot permet à tous les participants d'un IFS donné de signaler le caractère trouvé et la position correspondante, et maintient une vue partagée et en direct du passcode au fur et à mesure qu'il se complète. Plusieurs IFS peuvent se dérouler en même temps — chacun avec son propre code d'accès et son propre groupe de participants.",
   ],
   howHeading: "Comment ça marche",
   steps: [
@@ -333,7 +333,7 @@ const fr: LandingContent = {
       ],
     },
     { text: "Si deux personnes différentes signalent des valeurs différentes pour la même position, les deux sont conservées et affichées comme des possibilités distinctes — jusqu'à ce que la personne qui administre l'événement tranche avec /resolve." },
-    { text: "Un accord total n'est pas la même chose qu'une vérification : l'événement ne peut être clôturé qu'une fois que son administrateur a réellement testé un code en jeu et l'a confirmé avec /verify, qui envoie alors le passcode final à tous les participants." },
+    { text: "Un accord total n'est pas la même chose qu'une vérification : l'événement ne peut être clôturé qu'une fois que son administrateur a réellement testé un passcode en jeu et l'a confirmé avec /verify, qui envoie alors le passcode final à tous les participants." },
   ],
   commandsHeading: "Commandes",
   commandsIntro: "Chaque joueur les voit dans sa propre langue, définie une fois avec /language.",
@@ -360,13 +360,13 @@ const fr: LandingContent = {
       ],
     },
     {
-      heading: "Signaler le code",
+      heading: "Signaler le passcode",
       rows: [
         { command: '"<position> <valeur>"', description: "Signale la valeur trouvée à une position." },
         { command: '"<position>" (sans valeur)', description: "Supprime votre propre signalement à cette position, s'il existe." },
         {
           command: "/status",
-          description: "Affiche l'état actuel du code à la demande, et y déplace les prochaines mises à jour en direct.",
+          description: "Affiche l'état actuel du passcode à la demande, et y déplace les prochaines mises à jour en direct.",
         },
       ],
     },
@@ -380,7 +380,7 @@ const fr: LandingContent = {
         { command: "/kick <utilisateur>", description: "Exclut un participant de l'événement." },
         { command: "/promote <utilisateur>", description: "Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme /newevent le fait pour son propre administrateur." },
         { command: "/claim", description: "Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse." },
-        { command: "/verify <code>", description: "La seule façon de clôturer un événement : colle un code confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup, fige l'événement et annonce le code final à tout le monde." },
+        { command: "/verify <passcode>", description: "La seule façon de clôturer un événement : colle un passcode confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup, fige l'événement et annonce le passcode final à tout le monde." },
       ],
     },
   ],

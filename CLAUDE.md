@@ -3,12 +3,39 @@
 Telegram bot that lets attendees of an *Ingress First Saturday* (IFS) event
 collaboratively assemble a redeemable in-game passcode in real time, by
 reporting the character they found at each position of a portal-derived
-code.
+passcode.
 
 This file documents project-specific architecture and conventions for
 whoever (human or Claude) works on this codebase. Global conventions
 (commit style, docstrings, Git Flow, etc.) live in the user's global
 `CLAUDE.md` and always apply on top of what's written here.
+
+## Terminology
+
+Three unrelated things in this project can get called "a code" in casual
+speech, and mixing them up is an easy, recurring mistake — this file, the
+codebase, and any conversation about the project must keep them distinct:
+
+- **passcode** — the redeemable in-game string assembled position by
+  position from what agents report (see "Passcode pattern" below). This
+  is what `/verify` matches against, what `/status`/`/code` renders, and
+  what the final message contains. Always call this the **passcode** —
+  untranslated, in every language (see Internationalization) — never
+  "the code" / "el codi" / "el código" / "le code".
+- **join code** — `events.code`, the short, random string (e.g.
+  `7KPQ2M`) an event is created with, used only with `/join <code>`,
+  `/sharetext [code]`, and shown back by `/myevent`/`/events`; it
+  identifies *which event*, not anything about the passcode inside it.
+  This is the one thing that's actually called "code" (`codi`/`código`)
+  in bot text, and only this.
+- **language code** — the two-letter argument to `/language <code>`
+  (`en`/`ca`/`es`/`fr`), unrelated to either of the above.
+
+If a conversation about this project — including with the human
+maintainer — uses "code"/"codi" ambiguously or where "passcode" is
+meant, resolve it from context and use the correct term going forward
+(usually **passcode**) rather than carrying the ambiguity into code,
+docs, or bot text.
 
 ## Domain context
 
@@ -241,11 +268,11 @@ reporters is not proof the passcode is actually correct — everyone
 could still be systematically wrong about the same position (e.g.
 misreading a portal's glyph the same way) — so it is deliberately not
 sufficient grounds to close. The message instead points the
-administrator at `/verify`: only a code the game itself has confirmed
-at the redeem screen can close the event (see "Confirming a
-store-validated code with `/verify`" below, which is why that command
-is no longer just a convenience for brute-forcing multiple candidates
-but the sole path to completing an event).
+administrator at `/verify`: only a passcode the game itself has
+confirmed at the redeem screen can close the event (see "Confirming a
+store-validated passcode with `/verify`" below, which is why that
+command is no longer just a convenience for brute-forcing multiple
+candidates but the sole path to completing an event).
 
 Because the number of unresolved positions with more than one candidate
 must be kept from exploding combinatorially in the rendered message,
@@ -256,7 +283,7 @@ some of them, rather than printing an unreadable wall of codes.
 
 ### Rendering combinations
 
-Every distinct full-code combination (one value per slot, taken from
+Every distinct full-passcode combination (one value per slot, taken from
 each position's candidates) is rendered in its own Telegram monospace
 code block, so it can be tap-to-copied on mobile directly into the
 in-game redeem screen — "fixed-size block" here means a consistent
@@ -277,15 +304,15 @@ ABC12GLIPH345XY
 ```
 👥 1 — @suspicious_agent ⚠️
 
-### Confirming a store-validated code with `/verify`
+### Confirming a store-validated passcode with `/verify`
 
-`/verify <code>` (administrator-only) is the **only** way to complete
+`/verify <passcode>` (administrator-only) is the **only** way to complete
 and close an event — there is no separate `/closeevent` command. Even
 when every position has a single, unanimous candidate (or has all been
 individually `/resolve`d), that reflects agreement among reporters, not
 confirmation that the passcode actually works: reporters can be
 unanimous and still wrong. Requiring `/verify` forces the administrator
-to have actually copied a candidate code, pasted it into the game's
+to have actually copied a candidate passcode, pasted it into the game's
 redeem screen, and had the game confirm it, before the event can be
 declared done. When there are few enough conflicting positions that
 brute-forcing the redeem screen with a handful of the rendered
@@ -294,38 +321,38 @@ settle every remaining disagreement in one shot instead of resolving
 each conflicting position by hand — but that convenience is secondary
 to it being mandatory.
 
-Because that code can only ever have been copied from one of the
+Because that passcode can only ever have been copied from one of the
 combinations implied by the event's current reports, matching it
 against every such combination (the same cross product `/status` and
 this section's rendering already compute, just without capping to 16 or
-sorting by supporter count — see `domain/passcode.ts`'s `matchCode`)
+sorting by supporter count — see `domain/passcode.ts`'s `matchPasscode`)
 identifies, for every position at once, which reported value was the
 right one, including positions with more than one live candidate that a
 supporter-count ranking alone couldn't settle. This also means `/verify`
 never needs to work out a word slot's variable-length span by manually
 slicing the string: whichever candidate values line up to reproduce the
-pasted code character-for-character *are* the boundaries, implicitly.
+pasted passcode character-for-character *are* the boundaries, implicitly.
 
 A successful match resolves every position to the value implied by that
 combination (even ones that weren't in dispute — harmless, since it's
 the same value they already had) and immediately closes the event,
-since a store-confirmed code leaves nothing further for the
+since a store-confirmed passcode leaves nothing further for the
 administrator to decide.
 
 Two things can keep `/verify` from settling anything, both reported to
 the administrator instead of guessing:
 
 - **No combination matches.** In ordinary use this shouldn't happen —
-  the code was copied verbatim from an already-rendered combination —
-  but state can shift between testing the code in-game and running
+  the passcode was copied verbatim from an already-rendered combination —
+  but state can shift between testing the passcode in-game and running
   `/verify`: a report might get self-corrected, another position might
-  get `/resolve`d to a different value in the meantime, or the code was
-  simply mistyped or missing a candidate that was never reported at
+  get `/resolve`d to a different value in the meantime, or the passcode
+  was simply mistyped or missing a candidate that was never reported at
   all. `/verify` reports this rather than resolving nothing silently.
 - **More than one combination matches.** Structurally impossible for a
   pattern with a single word slot (`*`), since every `X`/`9` slot is
   exactly one character and the word slot's span is then fully
-  determined by the total code length — no candidate matching is even
+  determined by the total passcode length — no candidate matching is even
   needed to disambiguate. It only becomes possible with a pattern
   configured with **two or more** word slots, where two different
   candidate splits can concatenate into an identical string (e.g. `"AB"
@@ -696,7 +723,7 @@ word too.
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
-| `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
+| `/status`, `/code` | participant | On-demand snapshot (progress + variant passcode blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | administrator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | administrator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, points the administrator at `/verify` — full consensus alone never closes the event. |
 | `/unresolve <position>` | administrator | Reopen a resolved position. |
@@ -706,7 +733,7 @@ word too.
 | `/kick <user>` | administrator | Remove a participant from the event. |
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |
-| `/verify <code>` | administrator | The only way to complete and close an event: match a store-confirmed code against current candidates to resolve every position at once, then push a **new** message (not an edit) with the final passcode to every participant and freeze the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated code with `/verify`"). |
+| `/verify <passcode>` | administrator | The only way to complete and close an event: match a store-confirmed passcode against current candidates to resolve every position at once, then push a **new** message (not an edit) with the final passcode to every participant and freeze the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated passcode with `/verify`"). |
 | `/events` | anyone | List events the caller administers. |
 
 Letters and word slots are always **displayed uppercase**; input is

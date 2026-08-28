@@ -61,10 +61,10 @@ es cobreixen totes les comandes en tots els escenaris.
   del navegador/sistema per poder comprovar que `language_code` es
   detecta bé la primera vegada (opcional, però aprofita per provar la
   detecció automàtica descrita a Internacionalització).
-- Algú ha d'anar prenent nota de qui fa `/verify` amb quin codi, per no
-  perdre el fil — els codis de paraula (`*`) es couen entre els mateixos
-  agents, així que cal apuntar-los en algun lloc fora del bot (paper,
-  xat extern) tal com passaria en un IFS real.
+- Algú ha d'anar prenent nota de qui fa `/verify` amb quin passcode, per
+  no perdre el fil — les paraules dels slots `*` es couen entre els
+  mateixos agents, així que cal apuntar-les en algun lloc fora del bot
+  (paper, xat extern) tal com passaria en un IFS real.
 
 ### Buidar la base de dades abans i després de les proves
 
@@ -216,7 +216,7 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 4.1 | A | `/status` (o `/code`) | Mostra el progrés i totes les combinacions possibles com a blocs de codi monoespaiat, cadascun amb el recompte de suports; com que només hi ha una posició en conflicte (2 candidats), hi ha 2 combinacions, per sota del límit de 16 |
+| 4.1 | A | `/status` (o `/code`) | Mostra el progrés i totes les combinacions possibles del passcode com a blocs monoespaiats, cadascun amb el recompte de suports; com que només hi ha una posició en conflicte (2 candidats), hi ha 2 combinacions, per sota del límit de 16 |
 | 4.2 | B | `/status` una altra vegada | Es reenvia com a missatge **nou** i `status_message_id` de B queda repuntat cap a aquest; les properes actualitzacions en viu editaran aquest nou missatge, no l'antic |
 | 4.3 | A | `/resolve 2` (sense valor) | Llista els candidats de la posició 2 (p. ex. `K` amb 1 suport, `Z` amb 2 suports) amb un botó per candidat, en ordre de més a menys suportat; com que A és `trusted` per defecte i no ha reportat aquí, cap candidat mostra desglossament de confiança encara |
 | 4.4 | A | `/trust B` abans de continuar (avançant una mica la Fase 5) i tornar a `/resolve 2` | Ara el candidat suportat per B mostra el desglossament `n (m)` amb `m ≥ 1` de confiança |
@@ -356,9 +356,9 @@ amb candidats vius coneguts.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 10.1 | A | Construir, fora del bot, un codi que **no** coincideixi amb cap combinació possible (p. ex. agafar una combinació vàlida i alterar-ne un caràcter) i fer `/verify <aquest codi>` | Cap combinació coincideix; el bot ho informa explícitament i **no** resol ni tanca res; l'esdeveniment segueix obert |
+| 10.1 | A | Construir, fora del bot, un passcode que **no** coincideixi amb cap combinació possible (p. ex. agafar una combinació vàlida i alterar-ne un caràcter) i fer `/verify <aquest passcode>` | Cap combinació coincideix; el bot ho informa explícitament i **no** resol ni tanca res; l'esdeveniment segueix obert |
 | 10.2 | A | Recopilar, fora del bot, una combinació completa vàlida (una per cada posició, agafant els valors ja acordats/resolts) | Preparació manual, tal com faria un jugador real al taulell de canvi del joc |
-| 10.3 | A | `/verify <codi construït al pas anterior>` (com a administrador vigent) | Coincideix amb exactament una combinació: resol totes les posicions implicades (fins i tot les que no estaven en disputa), tanca l'esdeveniment com `completed`, i envia un missatge **nou** (no una edició) amb el passcode final a tots els participants **excepte** els trolls actuals |
+| 10.3 | A | `/verify <passcode construït al pas anterior>` (com a administrador vigent) | Coincideix amb exactament una combinació: resol totes les posicions implicades (fins i tot les que no estaven en disputa), tanca l'esdeveniment com `completed`, i envia un missatge **nou** (no una edició) amb el passcode final a tots els participants **excepte** els trolls actuals |
 | 10.4 | A | `/status` després de tancat | Ha de reflectir que l'esdeveniment ja no és actiu (o rebutjar la comanda amb un missatge adequat, segons el comportament implementat per a esdeveniments tancats) |
 | 10.5 | B, C | Comprovar que han rebut el missatge nou del passcode final | Sí, tots dos, ja que cap dels dos és troll en aquest punt |
 
@@ -381,7 +381,7 @@ per defecte, no només per casualitat d'aquell patró concret.
 | 11.5 | B | Reportar, a **les 5 primeres posicions només** (1-5), un valor diferent del d'A a cadascuna, del tipus correcte (p. ex. `1 7`, `2 3`, `3 4`, `4 X`, `5 Y`) | 5 posicions amb 2 candidats cadascuna = 2⁵ = 32 combinacions possibles, per sobre del límit de renderització (16) |
 | 11.6 | A | `/status` | En comptes de llistar les 32 combinacions, mostra un resum (progrés + quines posicions segueixen en conflicte) i convida a fer `/resolve` d'algunes abans de tornar-ho a intentar |
 | 11.7 | B | Reportar també a les 6 posicions restants (6-11) un valor diferent del d'A, del tipus correcte (p. ex. `6 BETA`, `7 F`, `8 G`, `9 H`, `10 0`, `11 1`) | Ara les 11 posicions tenen 2 candidats cadascuna = 2¹¹ = 2048 combinacions, per sobre també del límit de seguretat intern (2000) |
-| 11.8 | A | `/verify <qualsevol codi plausible>` | Com que el nombre brut de combinacions supera el límit de seguretat abans fins i tot de comparar-les, el bot demana explícitament que es resolguin algunes posicions manualment primer, en lloc d'intentar-ho i penjar-se o trigar excessivament |
+| 11.8 | A | `/verify <qualsevol passcode plausible>` | Com que el nombre brut de combinacions supera el límit de seguretat abans fins i tot de comparar-les, el bot demana explícitament que es resolguin algunes posicions manualment primer, en lloc d'intentar-ho i penjar-se o trigar excessivament |
 | 11.9 | A | `/resolve` (sense arguments) diverses vegades fins reduir prou el nombre de posicions en conflicte | Un cop per sota del límit, `/status` torna a mostrar combinacions concretes i `/verify` torna a poder-se intentar amb normalitat |
 
 ---

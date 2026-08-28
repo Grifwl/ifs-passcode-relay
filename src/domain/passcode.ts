@@ -21,7 +21,7 @@ interface BranchOption {
 }
 
 export interface Combination {
-  code: string;
+  passcode: string;
   /** null when nothing about this combination is in dispute (no candidates were scored). */
   supporterCount: number | null;
   weakestPosition: number | null;
@@ -75,7 +75,7 @@ export function getConflictingPositions(slots: SlotState[]): number[] {
  * Positions still missing a resolution: unresolved and not narrowed down
  * to exactly one live candidate (i.e. still blank, or still genuinely
  * conflicting). Used only as a defensive safety net right before
- * `/verify` finalizes an event — by the time a code has matched, every
+ * `/verify` finalizes an event — by the time a passcode has matched, every
  * position should already have been resolved as part of that match, so
  * this should always come back empty in practice. A non-empty result
  * here is never itself grounds to close an event: only `/verify`'s
@@ -104,7 +104,7 @@ function slotBranches(slot: SlotState): BranchOption[] {
 }
 
 /**
- * Builds every full-code combination implied by the current state: the
+ * Builds every full-passcode combination implied by the current state: the
  * cross product of each position's live candidates, with resolved and
  * unambiguous positions contributing a single fixed value rather than
  * branching. A combination's "supporter count" is the minimum supporter
@@ -149,14 +149,14 @@ export function buildCombinations(slots: SlotState[]): BuildResult {
   const combos = crossProduct(branchLists);
 
   const scored: Combination[] = combos.map((combo) => {
-    const code = combo.map((o) => o.value).join("");
+    const passcode = combo.map((o) => o.value).join("");
     const scoredOptions = combo.filter((o): o is BranchOption & { supporterCount: number } => o.supporterCount !== null);
     if (scoredOptions.length === 0) {
-      return { code, supporterCount: null, weakestPosition: null, weakestValue: null };
+      return { passcode, supporterCount: null, weakestPosition: null, weakestValue: null };
     }
     const weakest = scoredOptions.reduce((min, o) => (o.supporterCount < min.supporterCount ? o : min));
     return {
-      code,
+      passcode,
       supporterCount: weakest.supporterCount,
       weakestPosition: weakest.position,
       weakestValue: weakest.value,
@@ -192,7 +192,7 @@ export interface MatchResult {
  * candidate strings themselves does that implicitly, since a slot's
  * option list only ever contains values people actually reported.
  */
-export function matchCode(slots: SlotState[], code: string): MatchResult {
+export function matchPasscode(slots: SlotState[], passcode: string): MatchResult {
   const ordered = [...slots].sort((a, b) => a.position - b.position);
   const branchLists = ordered.map(slotBranches);
 
@@ -201,7 +201,7 @@ export function matchCode(slots: SlotState[], code: string): MatchResult {
     return { status: "overwhelmed" };
   }
 
-  const normalized = code.replace(/\s+/g, "").toUpperCase();
+  const normalized = passcode.replace(/\s+/g, "").toUpperCase();
   const matches = crossProduct(branchLists).filter((combo) => combo.map((o) => o.value).join("") === normalized);
 
   if (matches.length === 0) return { status: "noMatch" };

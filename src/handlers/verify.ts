@@ -8,22 +8,22 @@ import { getEventById, closeEvent } from "../db/events.js";
 import { getCandidates, getEventTrustMap, getResolutions, setResolution } from "../db/passcode.js";
 import { getUser } from "../db/users.js";
 import { parsePattern } from "../domain/pattern.js";
-import { buildSlotStates, buildCombinations, getUnresolvedPositions, matchCode } from "../domain/passcode.js";
+import { buildSlotStates, buildCombinations, getUnresolvedPositions, matchPasscode } from "../domain/passcode.js";
 import { escapeHtml } from "../domain/html.js";
 import type { IfsEvent } from "../domain/types.js";
 
 /**
- * Resolves every position from a store-confirmed code and closes the
+ * Resolves every position from a store-confirmed passcode and closes the
  * event as `completed`, sending the final passcode to every participant
  * as a brand new message (except anyone flagged `troll`). This is the
  * only path that can complete-close an event: unlike a mere consensus
  * among reporters (everyone happening to report the same value), a
  * successful `/verify` means the administrator actually copied a
- * candidate code, pasted it into the game's redeem screen, and had the
+ * candidate passcode, pasted it into the game's redeem screen, and had the
  * game itself confirm it — which is the only thing that can catch every
  * participant being systematically wrong about the same position (e.g.
  * misreading a portal's glyph). `getUnresolvedPositions` is checked here
- * only as a defensive safety net; `matchCode` having returned "match"
+ * only as a defensive safety net; `matchPasscode` having returned "match"
  * already means a resolution was just written for every position.
  */
 async function closeVerifiedEvent(
@@ -43,7 +43,7 @@ async function closeVerifiedEvent(
   }
 
   const result = buildCombinations(slotStates);
-  const finalCode = result.combinations[0]!.code;
+  const finalPasscode = result.combinations[0]!.passcode;
 
   await closeEvent(env.DB, event.id);
 
@@ -55,7 +55,7 @@ async function closeVerifiedEvent(
     if (trustMap.get(p.userId) === "troll") continue;
     const participantUser = await getUser(env.DB, p.userId);
     const participantLang = participantUser?.language ?? "en";
-    const text = `${escapeHtml(t(participantLang, "verify.finalMessage", { name: event.name }))}\n<code>${escapeHtml(finalCode)}</code>`;
+    const text = `${escapeHtml(t(participantLang, "verify.finalMessage", { name: event.name }))}\n<code>${escapeHtml(finalPasscode)}</code>`;
     await ctx.api.sendMessage(p.chatId, text, { parse_mode: "HTML" });
   }
 
@@ -63,7 +63,7 @@ async function closeVerifiedEvent(
 }
 
 /**
- * `/verify <code>` lets the event's administrator paste the exact code
+ * `/verify <passcode>` lets the event's administrator paste the exact passcode
  * that was just confirmed correct at the game's redeem screen. Since
  * that string can only have been copied from one of the combinations
  * implied by the event's current reports (a resolved position
@@ -75,7 +75,7 @@ async function closeVerifiedEvent(
  * resolves every position accordingly and immediately closes the event
  * (see `closeVerifiedEvent` above and CLAUDE.md's "Conflict handling") —
  * this is the only way an event can be completed, precisely because it
- * requires the administrator to have actually tested the code in-game
+ * requires the administrator to have actually tested the passcode in-game
  * rather than merely trusting reporter consensus.
  */
 export async function handleVerify(ctx: Context, env: Env): Promise<void> {
@@ -92,8 +92,8 @@ export async function handleVerify(ctx: Context, env: Env): Promise<void> {
     return;
   }
 
-  const code = String(ctx.match ?? "").trim();
-  if (!code) {
+  const passcode = String(ctx.match ?? "").trim();
+  if (!passcode) {
     await ctx.reply(t(user.language, "verify.usage"));
     return;
   }
@@ -105,7 +105,7 @@ export async function handleVerify(ctx: Context, env: Env): Promise<void> {
   ]);
   const slotStates = buildSlotStates(slots, resolutions, candidates);
 
-  const result = matchCode(slotStates, code);
+  const result = matchPasscode(slotStates, passcode);
 
   switch (result.status) {
     case "overwhelmed":

@@ -20,7 +20,7 @@ bescanviable a la botiga del joc per un paquet d'objectes de l'IFS.
 Poden haver-hi diversos IFS en marxa alhora, cadascun amb el seu propi
 passcode. Aquest bot permet a tothom qui assisteix a un IFS concret
 reportar quin caràcter ha trobat i a quina posició correspon, i manté una
-vista compartida i en viu del codi a mesura que s'omple — sense haver de
+vista compartida i en viu del passcode a mesura que s'omple — sense haver de
 recollir captures de pantalla manualment en un grup de xat.
 
 ## Com funciona, des del punt de vista d'un jugador
@@ -54,11 +54,11 @@ recollir captures de pantalla manualment en un grup de xat.
    comanda. Les lletres es mostren en majúscules, però les pots escriure
    com vulguis.
 4. El bot manté un únic missatge per participant actualitzat amb l'estat
-   actual del codi, editant-lo cada cop que algú reporta alguna cosa
+   actual del passcode, editant-lo cada cop que algú reporta alguna cosa
    nova — no inunda el xat amb un missatge nou per cada report.
 5. Si dues persones diferents reporten valors diferents per a la
    mateixa posició, totes dues es conserven: el bot mostra cada possible
-   codi complet en un bloc fàcil de copiar, amb quantes persones el
+   passcode complet en un bloc fàcil de copiar, amb quantes persones el
    donen per bo — i, en els menys donats per bons, qui els ha reportat,
    perquè qui administra l'esdeveniment pugui detectar un error o un
    troll. Si el que envies no encaixa amb la posició esperada, o
@@ -95,17 +95,17 @@ recollir captures de pantalla manualment en un grup de xat.
    tanqui l'esdeveniment.
 
    Quan només queden poques posicions en discrepància, pot ser més ràpid
-   provar directament uns quants dels blocs de codi renderitzats a la
+   provar directament uns quants dels blocs de passcode renderitzats a la
    pantalla de bescanvi del joc. Un cop un d'ells es confirma correcte
    allà, qui administra l'esdeveniment l'enganxa de tornada amb
-   `/verify <codi>` i el bot esbrina, per a totes les posicions alhora,
+   `/verify <passcode>` i el bot esbrina, per a totes les posicions alhora,
    quin valor reportat l'ha produït.
-7. `/verify <codi>` és l'**única** manera de completar i tancar un
+7. `/verify <passcode>` és l'**única** manera de completar i tancar un
    esdeveniment — no hi ha una comanda separada per "tancar". Encara que
    totes les posicions ja coincideixin, aquest acord no s'ha comprovat
-   contra el joc en si, així que qui administra ha de copiar un codi
+   contra el joc en si, així que qui administra ha de copiar un passcode
    candidat, enganxar-lo a la botiga, confirmar que s'accepta, i
-   enganxar aquest mateix codi a `/verify`. Un cop coincideix, el bot
+   enganxar aquest mateix passcode a `/verify`. Un cop coincideix, el bot
    resol totes les posicions a partir d'ell i envia el passcode final
    com a missatge **nou** a tots els participants — no només una edició
    — perquè a ningú se li escapi encara que no hagi estat seguint-ho
@@ -124,7 +124,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
-| `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
+| `/status` (o `/code`) | participant | Mostra l'estat actual del passcode quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | administrador/a de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
 | `/resolve` (sense arguments) | administrador/a de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, remet a `/verify` — el consens per si sol mai tanca l'esdeveniment. |
 | `/unresolve <posició>` | administrador/a de l'esdeveniment | Reobre una posició resolta. |
@@ -134,7 +134,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/kick <usuari>` | administrador/a de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
 | `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
 | `/claim` | participant | Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu. |
-| `/verify <codi>` | administrador/a de l'esdeveniment | L'única manera de tancar un esdeveniment: enganxa un codi confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el codi final a tothom. |
+| `/verify <passcode>` | administrador/a de l'esdeveniment | L'única manera de tancar un esdeveniment: enganxa un passcode confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el passcode final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que administres. |
 
 Cada jugador veu els missatges del bot en el seu propi idioma, establert
@@ -200,10 +200,10 @@ a descripcions per idioma.
 
 | Idioma | `/setdescription` (llarga) | `/setabouttext` (curta) |
 |---|---|---|
-| `en` | Collaboratively build your Ingress First Saturday event's redeemable passcode in real time. Report the character you found and its position — the bot keeps everyone's code in sync, flags disagreements, and announces the final result. Available in English, Català, Castellano and Français. Send /help to start, or /newevent to create one for your IFS. | Real-time collaborative passcode relay for Ingress First Saturday events. |
-| `ca` | Construeix en temps real, de manera col·laborativa, el passcode bescanviable del teu esdeveniment Ingress First Saturday. Reporta el caràcter que has trobat i la seva posició — el bot manté el codi sincronitzat per a tothom, marca les discrepàncies i anuncia el resultat final. Disponible en català, anglès, castellà i francès. Envia /help per començar, o /newevent per crear-ne un pel teu IFS. | Relleu col·laboratiu en temps real del passcode d'un Ingress First Saturday. |
-| `es` | Construye en tiempo real, de forma colaborativa, el passcode canjeable de tu evento Ingress First Saturday. Reporta el carácter que has encontrado y su posición — el bot mantiene el código sincronizado para todos, marca las discrepancias y anuncia el resultado final. Disponible en español, inglés, catalán y francés. Envía /help para empezar, o /newevent para crear uno para tu IFS. | Relevo colaborativo en tiempo real del passcode de un Ingress First Saturday. |
-| `fr` | Construisez en temps réel, de façon collaborative, le passcode échangeable de votre événement Ingress First Saturday. Signalez le caractère trouvé et sa position — le bot garde le code synchronisé pour tout le monde, signale les désaccords et annonce le résultat final. Disponible en français, anglais, catalan et espagnol. Envoyez /help pour commencer, ou /newevent pour en créer un pour votre IFS. | Relais collaboratif en temps réel du passcode d'un Ingress First Saturday. |
+| `en` | Collaboratively build your Ingress First Saturday event's redeemable passcode in real time. Report the character you found and its position — the bot keeps everyone's passcode in sync, flags disagreements, and announces the final result. Available in English, Català, Castellano and Français. Send /help to start, or /newevent to create one for your IFS. | Real-time collaborative passcode relay for Ingress First Saturday events. |
+| `ca` | Construeix en temps real, de manera col·laborativa, el passcode bescanviable del teu esdeveniment Ingress First Saturday. Reporta el caràcter que has trobat i la seva posició — el bot manté el passcode sincronitzat per a tothom, marca les discrepàncies i anuncia el resultat final. Disponible en català, anglès, castellà i francès. Envia /help per començar, o /newevent per crear-ne un pel teu IFS. | Relleu col·laboratiu en temps real del passcode d'un Ingress First Saturday. |
+| `es` | Construye en tiempo real, de forma colaborativa, el passcode canjeable de tu evento Ingress First Saturday. Reporta el carácter que has encontrado y su posición — el bot mantiene el passcode sincronizado para todos, marca las discrepancias y anuncia el resultado final. Disponible en español, inglés, catalán y francés. Envía /help para empezar, o /newevent para crear uno para tu IFS. | Relevo colaborativo en tiempo real del passcode de un Ingress First Saturday. |
+| `fr` | Construisez en temps réel, de façon collaborative, le passcode échangeable de votre événement Ingress First Saturday. Signalez le caractère trouvé et sa position — le bot garde le passcode synchronisé pour tout le monde, signale les désaccords et annonce le résultat final. Disponible en français, anglais, catalan et espagnol. Envoyez /help pour commencer, ou /newevent pour en créer un pour votre IFS. | Relais collaboratif en temps réel du passcode d'un Ingress First Saturday. |
 
 ### 2. Crear el Worker de Cloudflare i la base de dades D1
 

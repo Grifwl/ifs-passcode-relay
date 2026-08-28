@@ -19,7 +19,7 @@ const en = {
     "/myevent - show which event you're in\n" +
     '"<position> <value>" or /submit - report a value\n' +
     '"<position>" alone (no value) - remove your own report at that position\n' +
-    "/status - show the current code\n" +
+    "/status - show the current passcode\n" +
     "/resolve <position> [<value|@user>] - settle a disagreement, or list current candidates as buttons (administrator)\n" +
     "/resolve - go through every position still in disagreement, one at a time (administrator)\n" +
     "/unresolve <position> - reopen a resolved position (administrator)\n" +
@@ -27,7 +27,7 @@ const en = {
     "/kick <@user> - remove a participant (administrator)\n" +
     "/promote <@user> - hand the administrator role to another participant (administrator)\n" +
     "/claim - take over as administrator if the current one has been inactive a while\n" +
-    "/verify <code> - confirm a store-validated code, resolve every position from it and close the event (administrator)\n" +
+    "/verify <passcode> - confirm a store-validated passcode, resolve every position from it and close the event (administrator)\n" +
     "/events - list the events you administer",
 
   "language.usage": () => "Usage: /language <code>. Supported: en, ca, es, fr.",
@@ -116,7 +116,7 @@ const en = {
   "resolve.candidatesPrompt": () => "Tap a button below to resolve to that value.",
   "resolve.allHeader": (p) => `${p.count} positions still in disagreement. Next: position ${p.position} — reported values:`,
   "resolve.allDone": () =>
-    "No positions are currently in disagreement. That's not the same as verified, though — once you've tested a code at the game's redeem screen, confirm it with /verify <code> to finalize and close the event.",
+    "No positions are currently in disagreement. That's not the same as verified, though — once you've tested a passcode at the game's redeem screen, confirm it with /verify <passcode> to finalize and close the event.",
 
   "unresolve.usage": () => "Usage: /unresolve <position>.",
   "unresolve.notResolved": (p) => `Position ${p.position} isn't resolved.`,
@@ -159,15 +159,15 @@ const en = {
     `You are now the administrator of "${p.name}" after claiming the role due to inactivity. Send /help to see the commands you can now use.`,
   "claim.alreadyResolved": () => "This request has already been resolved.",
 
-  "verify.usage": () => "Usage: /verify <code>. Paste the exact code the game confirmed as correct when redeemed.",
-  "verify.matched": () => "Code confirmed — every position has been resolved to match it. Closing the event…",
+  "verify.usage": () => "Usage: /verify <passcode>. Paste the exact passcode the game confirmed as correct when redeemed.",
+  "verify.matched": () => "Passcode confirmed — every position has been resolved to match it. Closing the event…",
   "verify.stillUnresolved": (p) => `Resolve these positions first: ${p.positions}.`,
   "verify.finalMessage": (p) => `Final passcode for "${p.name}":`,
   "verify.closed": () => "Event closed. Final passcode sent to every participant.",
   "verify.noMatch": () =>
-    "That code doesn't match any combination of currently reported values. Double-check what you pasted — it may also mean a candidate is missing.",
+    "That passcode doesn't match any combination of currently reported values. Double-check what you pasted — it may also mean a candidate is missing.",
   "verify.ambiguous": () =>
-    "That code matches more than one possible combination of currently reported values, so it can't tell which one is right on its own. Resolve some positions manually first.",
+    "That passcode matches more than one possible combination of currently reported values, so it can't tell which one is right on its own. Resolve some positions manually first.",
   "verify.overwhelmed": () =>
     "There are too many open possibilities to check right now. Resolve some positions manually first, then try /verify again.",
 
@@ -197,7 +197,7 @@ const ca: Catalog = {
     "/myevent - mostra a quin esdeveniment estàs\n" +
     '"<posició> <valor>" o /submit - reporta un valor\n' +
     '"<posició>" sola (sense valor) - elimina el teu report en aquella posició\n' +
-    "/status - mostra el codi actual\n" +
+    "/status - mostra el passcode actual\n" +
     "/resolve <posició> [<valor|@usuari>] - resol una discrepància, o llista els valors reportats com a botons (administrador)\n" +
     "/resolve - repassa totes les posicions encara en discrepància, una per una (administrador)\n" +
     "/unresolve <posició> - reobre una posició resolta (administrador)\n" +
@@ -205,7 +205,7 @@ const ca: Catalog = {
     "/kick <@usuari> - expulsa un participant (administrador)\n" +
     "/promote <@usuari> - cedeix el rol d'administrador a un altre participant (administrador)\n" +
     "/claim - assumeix el càrrec d'administrador si l'actual fa temps que és inactiu\n" +
-    "/verify <codi> - confirma un codi validat a la botiga, resol totes les posicions a partir d'ell i tanca l'esdeveniment (administrador)\n" +
+    "/verify <passcode> - confirma un passcode validat a la botiga, resol totes les posicions a partir d'ell i tanca l'esdeveniment (administrador)\n" +
     "/events - llista els esdeveniments que administres",
 
   "language.usage": () => "Ús: /language <codi>. Suportats: en, ca, es, fr.",
@@ -295,7 +295,7 @@ const ca: Catalog = {
   "resolve.candidatesPrompt": () => "Toca un botó a sota per resoldre amb aquell valor.",
   "resolve.allHeader": (p) => `${p.count} posicions encara en discrepància. Següent: posició ${p.position} — valors reportats:`,
   "resolve.allDone": () =>
-    "Ara mateix no hi ha cap posició en discrepància. Això no vol dir que estigui verificat: quan hagis provat un codi a la pantalla de bescanvi del joc, confirma'l amb /verify <codi> per finalitzar i tancar l'esdeveniment.",
+    "Ara mateix no hi ha cap posició en discrepància. Això no vol dir que estigui verificat: quan hagis provat un passcode a la pantalla de bescanvi del joc, confirma'l amb /verify <passcode> per finalitzar i tancar l'esdeveniment.",
 
   "unresolve.usage": () => "Ús: /unresolve <posició>.",
   "unresolve.notResolved": (p) => `La posició ${p.position} no està resolta.`,
@@ -338,15 +338,15 @@ const ca: Catalog = {
     `Ara ets la persona administradora de "${p.name}" després de reclamar el càrrec per inactivitat. Envia /help per veure les comandes que ja pots fer servir.`,
   "claim.alreadyResolved": () => "Aquesta petició ja s'ha resolt.",
 
-  "verify.usage": () => "Ús: /verify <codi>. Enganxa el codi exacte que el joc ha confirmat com a correcte en bescanviar-lo.",
-  "verify.matched": () => "Codi confirmat — totes les posicions s'han resolt en conseqüència. Tancant l'esdeveniment…",
+  "verify.usage": () => "Ús: /verify <passcode>. Enganxa el passcode exacte que el joc ha confirmat com a correcte en bescanviar-lo.",
+  "verify.matched": () => "Passcode confirmat — totes les posicions s'han resolt en conseqüència. Tancant l'esdeveniment…",
   "verify.stillUnresolved": (p) => `Resol primer aquestes posicions: ${p.positions}.`,
   "verify.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "verify.closed": () => "Esdeveniment tancat. El passcode final s'ha enviat a tots els participants.",
   "verify.noMatch": () =>
-    "Aquest codi no coincideix amb cap combinació dels valors reportats actualment. Comprova el que has enganxat — també pot ser que falti algun candidat per reportar.",
+    "Aquest passcode no coincideix amb cap combinació dels valors reportats actualment. Comprova el que has enganxat — també pot ser que falti algun candidat per reportar.",
   "verify.ambiguous": () =>
-    "Aquest codi coincideix amb més d'una combinació possible dels valors reportats actualment, així que no es pot saber quina és la correcta automàticament. Resol algunes posicions manualment primer.",
+    "Aquest passcode coincideix amb més d'una combinació possible dels valors reportats actualment, així que no es pot saber quina és la correcta automàticament. Resol algunes posicions manualment primer.",
   "verify.overwhelmed": () =>
     "Hi ha massa possibilitats obertes per comprovar-ho ara mateix. Resol algunes posicions manualment primer i torna a provar /verify.",
 
@@ -373,7 +373,7 @@ const es: Catalog = {
     "/myevent - muestra en qué evento estás\n" +
     '"<posición> <valor>" o /submit - reporta un valor\n' +
     '"<posición>" sola (sin valor) - elimina tu reporte en esa posición\n' +
-    "/status - muestra el código actual\n" +
+    "/status - muestra el passcode actual\n" +
     "/resolve <posición> [<valor|@usuario>] - resuelve una discrepancia, o lista los valores reportados como botones (administrador)\n" +
     "/resolve - repasa todas las posiciones todavía en discrepancia, una por una (administrador)\n" +
     "/unresolve <posición> - reabre una posición resuelta (administrador)\n" +
@@ -381,7 +381,7 @@ const es: Catalog = {
     "/kick <@usuario> - expulsa a un participante (administrador)\n" +
     "/promote <@usuario> - cede el rol de administrador a otro participante (administrador)\n" +
     "/claim - asume el cargo de administrador si el actual lleva tiempo inactivo\n" +
-    "/verify <código> - confirma un código validado en la tienda, resuelve todas las posiciones a partir de él y cierra el evento (administrador)\n" +
+    "/verify <passcode> - confirma un passcode validado en la tienda, resuelve todas las posiciones a partir de él y cierra el evento (administrador)\n" +
     "/events - lista los eventos que administras",
 
   "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr.",
@@ -471,7 +471,7 @@ const es: Catalog = {
   "resolve.candidatesPrompt": () => "Toca un botón debajo para resolver con ese valor.",
   "resolve.allHeader": (p) => `${p.count} posiciones todavía en discrepancia. Siguiente: posición ${p.position} — valores reportados:`,
   "resolve.allDone": () =>
-    "Ahora mismo no hay ninguna posición en discrepancia. Eso no significa que esté verificado: cuando hayas probado un código en la pantalla de canje del juego, confírmalo con /verify <código> para finalizar y cerrar el evento.",
+    "Ahora mismo no hay ninguna posición en discrepancia. Eso no significa que esté verificado: cuando hayas probado un passcode en la pantalla de canje del juego, confírmalo con /verify <passcode> para finalizar y cerrar el evento.",
 
   "unresolve.usage": () => "Uso: /unresolve <posición>.",
   "unresolve.notResolved": (p) => `La posición ${p.position} no está resuelta.`,
@@ -514,15 +514,15 @@ const es: Catalog = {
     `Ahora eres quien administra "${p.name}" tras reclamar el cargo por inactividad. Envía /help para ver los comandos que ya puedes usar.`,
   "claim.alreadyResolved": () => "Esta petición ya se ha resuelto.",
 
-  "verify.usage": () => "Uso: /verify <código>. Pega el código exacto que el juego ha confirmado como correcto al canjearlo.",
-  "verify.matched": () => "Código confirmado — todas las posiciones se han resuelto en consecuencia. Cerrando el evento…",
+  "verify.usage": () => "Uso: /verify <passcode>. Pega el passcode exacto que el juego ha confirmado como correcto al canjearlo.",
+  "verify.matched": () => "Passcode confirmado — todas las posiciones se han resuelto en consecuencia. Cerrando el evento…",
   "verify.stillUnresolved": (p) => `Resuelve antes estas posiciones: ${p.positions}.`,
   "verify.finalMessage": (p) => `Passcode final de "${p.name}":`,
   "verify.closed": () => "Evento cerrado. El passcode final se ha enviado a todos los participantes.",
   "verify.noMatch": () =>
-    "Ese código no coincide con ninguna combinación de los valores reportados actualmente. Comprueba lo que has pegado — también puede ser que falte algún candidato por reportar.",
+    "Ese passcode no coincide con ninguna combinación de los valores reportados actualmente. Comprueba lo que has pegado — también puede ser que falte algún candidato por reportar.",
   "verify.ambiguous": () =>
-    "Ese código coincide con más de una combinación posible de los valores reportados actualmente, así que no se puede saber cuál es la correcta automáticamente. Resuelve antes algunas posiciones manualmente.",
+    "Ese passcode coincide con más de una combinación posible de los valores reportados actualmente, así que no se puede saber cuál es la correcta automáticamente. Resuelve antes algunas posiciones manualmente.",
   "verify.overwhelmed": () =>
     "Hay demasiadas posibilidades abiertas para comprobarlo ahora mismo. Resuelve antes algunas posiciones manualmente y vuelve a intentar /verify.",
 
@@ -549,7 +549,7 @@ const fr: Catalog = {
     "/myevent - affiche dans quel événement vous êtes\n" +
     '"<position> <valeur>" ou /submit - signaler une valeur\n' +
     '"<position>" seule (sans valeur) - supprime votre signalement à cette position\n' +
-    "/status - affiche le code actuel\n" +
+    "/status - affiche le passcode actuel\n" +
     "/resolve <position> [<valeur|@utilisateur>] - règle un désaccord, ou liste les valeurs signalées sous forme de boutons (administrateur)\n" +
     "/resolve - parcourt toutes les positions encore en désaccord, une par une (administrateur)\n" +
     "/unresolve <position> - rouvre une position résolue (administrateur)\n" +
@@ -557,7 +557,7 @@ const fr: Catalog = {
     "/kick <@utilisateur> - exclut un participant (administrateur)\n" +
     "/promote <@utilisateur> - transfère le rôle d'administrateur à un autre participant (administrateur)\n" +
     "/claim - reprend le rôle d'administrateur si l'actuel est inactif depuis un moment\n" +
-    "/verify <code> - confirme un code validé en boutique, résout toutes les positions à partir de lui et clôture l'événement (administrateur)\n" +
+    "/verify <passcode> - confirme un passcode validé en boutique, résout toutes les positions à partir de lui et clôture l'événement (administrateur)\n" +
     "/events - liste les événements que vous administrez",
 
   "language.usage": () => "Utilisation : /language <code>. Langues gérées : en, ca, es, fr.",
@@ -651,7 +651,7 @@ const fr: Catalog = {
   "resolve.candidatesPrompt": () => "Touchez un bouton ci-dessous pour résoudre avec cette valeur.",
   "resolve.allHeader": (p) => `${p.count} positions encore en désaccord. Suivante : position ${p.position} — valeurs signalées :`,
   "resolve.allDone": () =>
-    "Aucune position n'est actuellement en désaccord. Cela ne veut pas dire que c'est vérifié : une fois que vous avez testé un code sur l'écran d'échange du jeu, confirmez-le avec /verify <code> pour finaliser et clôturer l'événement.",
+    "Aucune position n'est actuellement en désaccord. Cela ne veut pas dire que c'est vérifié : une fois que vous avez testé un passcode sur l'écran d'échange du jeu, confirmez-le avec /verify <passcode> pour finaliser et clôturer l'événement.",
 
   "unresolve.usage": () => "Utilisation : /unresolve <position>.",
   "unresolve.notResolved": (p) => `La position ${p.position} n'est pas résolue.`,
@@ -695,15 +695,15 @@ const fr: Catalog = {
     `Vous êtes désormais l'administrateur de "${p.name}" après avoir réclamé le rôle pour inactivité. Envoyez /help pour voir les commandes que vous pouvez maintenant utiliser.`,
   "claim.alreadyResolved": () => "Cette demande a déjà été résolue.",
 
-  "verify.usage": () => "Utilisation : /verify <code>. Collez le code exact confirmé comme correct par le jeu lors de l'échange.",
-  "verify.matched": () => "Code confirmé — toutes les positions ont été résolues en conséquence. Clôture de l'événement…",
+  "verify.usage": () => "Utilisation : /verify <passcode>. Collez le passcode exact confirmé comme correct par le jeu lors de l'échange.",
+  "verify.matched": () => "Passcode confirmé — toutes les positions ont été résolues en conséquence. Clôture de l'événement…",
   "verify.stillUnresolved": (p) => `Résolvez d'abord ces positions : ${p.positions}.`,
   "verify.finalMessage": (p) => `Passcode final de "${p.name}" :`,
   "verify.closed": () => "Événement clôturé. Le passcode final a été envoyé à tous les participants.",
   "verify.noMatch": () =>
-    "Ce code ne correspond à aucune combinaison des valeurs actuellement signalées. Vérifiez ce que vous avez collé — il se peut aussi qu'il manque un candidat signalé.",
+    "Ce passcode ne correspond à aucune combinaison des valeurs actuellement signalées. Vérifiez ce que vous avez collé — il se peut aussi qu'il manque un candidat signalé.",
   "verify.ambiguous": () =>
-    "Ce code correspond à plusieurs combinaisons possibles des valeurs actuellement signalées, impossible de savoir automatiquement laquelle est la bonne. Résolvez d'abord certaines positions manuellement.",
+    "Ce passcode correspond à plusieurs combinaisons possibles des valeurs actuellement signalées, impossible de savoir automatiquement laquelle est la bonne. Résolvez d'abord certaines positions manuellement.",
   "verify.overwhelmed": () =>
     "Il y a trop de possibilités ouvertes pour vérifier cela maintenant. Résolvez d'abord certaines positions manuellement, puis réessayez /verify.",
 
