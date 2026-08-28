@@ -125,7 +125,7 @@ grupo de chat.
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
-| `/status` (o `/code`) | participante | Muestra el estado actual del passcode cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
+| `/status` | participante | Muestra el estado actual del passcode cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
 | `/resolve <posición> [<valor \| @usuario>]` | administrador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
 | `/resolve` (sin argumentos) | administrador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, remite a `/verify` — el consenso por sí solo nunca cierra el evento. |
 | `/unresolve <posición>` | administrador del evento | Reabre una posición resuelta. |

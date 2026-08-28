@@ -17,7 +17,7 @@ const COMMANDS = [
   { command: "leave", description: "Leave your current event" },
   { command: "myevent", description: "Show which event you're in" },
   { command: "submit", description: "Report a value: /submit <position> <value>" },
-  { command: "status", description: "Show the current state of the code" },
+  { command: "status", description: "Show the current state of the passcode" },
   { command: "resolve", description: "Settle a disagreement (administrator)" },
   { command: "unresolve", description: "Reopen a resolved position (administrator)" },
   { command: "trust", description: "Mark a participant as trusted (administrator)" },
@@ -26,7 +26,7 @@ const COMMANDS = [
   { command: "kick", description: "Remove a participant from the event (administrator)" },
   { command: "promote", description: "Hand the administrator role to another participant (administrator)" },
   { command: "claim", description: "Take over as administrator if the current one has been inactive" },
-  { command: "verify", description: "Confirm a store-validated code, resolve every position and close the event (administrator)" },
+  { command: "verify", description: "Confirm a store-validated passcode, resolve every position and close the event (administrator)" },
   { command: "events", description: "List the events you administer" },
 ];
 

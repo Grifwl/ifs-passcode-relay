@@ -18,7 +18,7 @@ codebase, and any conversation about the project must keep them distinct:
 
 - **passcode** — the redeemable in-game string assembled position by
   position from what agents report (see "Passcode pattern" below). This
-  is what `/verify` matches against, what `/status`/`/code` renders, and
+  is what `/verify` matches against, what `/status` renders, and
   what the final message contains. Always call this the **passcode** —
   untranslated, in every language (see Internationalization) — never
   "the code" / "el codi" / "el código" / "le code".
@@ -632,7 +632,7 @@ to every participant instead of editing — again except anyone flagged
 `troll`, who receives neither this nor any further live update.
 
 A participant can pull the live view back down themselves at any time
-by running `/status` (or `/code`): rather than sending a disconnected,
+by running `/status`: rather than sending a disconnected,
 one-off snapshot, it sends a brand new message and re-points
 `participants.status_message_id` at it, so every future live update
 edits *that* message from then on. The old message is left as it was
@@ -723,7 +723,7 @@ word too.
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
-| `/status`, `/code` | participant | On-demand snapshot (progress + variant passcode blocks/conflicts); also relocates the live-update target to this new message. |
+| `/status` | participant | On-demand snapshot (progress + variant passcode blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | administrator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | administrator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, points the administrator at `/verify` — full consensus alone never closes the event. |
 | `/unresolve <position>` | administrator | Reopen a resolved position. |

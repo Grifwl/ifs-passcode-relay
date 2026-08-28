@@ -124,7 +124,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
-| `/status` (o `/code`) | participant | Mostra l'estat actual del passcode quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
+| `/status` | participant | Mostra l'estat actual del passcode quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | administrador/a de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
 | `/resolve` (sense arguments) | administrador/a de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, remet a `/verify` — el consens per si sol mai tanca l'esdeveniment. |
 | `/unresolve <posició>` | administrador/a de l'esdeveniment | Reobre una posició resolta. |

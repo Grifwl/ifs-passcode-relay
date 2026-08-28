@@ -120,7 +120,7 @@ group chat.
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
-| `/status` (or `/code`) | participant | Show the current state of the passcode on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
+| `/status` | participant | Show the current state of the passcode on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
 | `/resolve <position> [<value \| @user>]` | event administrator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
 | `/resolve` (no arguments) | event administrator | Walk through every position still in disagreement, one at a time; once none are left, points the administrator at `/verify` — consensus alone never closes the event. |
 | `/unresolve <position>` | event administrator | Reopen a resolved position. |

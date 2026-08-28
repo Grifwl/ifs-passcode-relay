@@ -131,7 +131,7 @@ dans un groupe de discussion.
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
-| `/status` (ou `/code`) | participant | Affiche l'état actuel du passcode à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
+| `/status` | participant | Affiche l'état actuel du passcode à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
 | `/resolve <position> [<valeur \| @utilisateur>]` | administrateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
 | `/resolve` (sans argument) | administrateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, renvoie vers `/verify` — le consensus seul ne clôture jamais l'événement. |
 | `/unresolve <position>` | administrateur de l'événement | Rouvre une position résolue. |

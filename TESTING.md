@@ -216,7 +216,7 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 4.1 | A | `/status` (o `/code`) | Mostra el progrés i totes les combinacions possibles del passcode com a blocs monoespaiats, cadascun amb el recompte de suports; com que només hi ha una posició en conflicte (2 candidats), hi ha 2 combinacions, per sota del límit de 16 |
+| 4.1 | A | `/status` | Mostra el progrés i totes les combinacions possibles del passcode com a blocs monoespaiats, cadascun amb el recompte de suports; com que només hi ha una posició en conflicte (2 candidats), hi ha 2 combinacions, per sota del límit de 16 |
 | 4.2 | B | `/status` una altra vegada | Es reenvia com a missatge **nou** i `status_message_id` de B queda repuntat cap a aquest; les properes actualitzacions en viu editaran aquest nou missatge, no l'antic |
 | 4.3 | A | `/resolve 2` (sense valor) | Llista els candidats de la posició 2 (p. ex. `K` amb 1 suport, `Z` amb 2 suports) amb un botó per candidat, en ordre de més a menys suportat; com que A és `trusted` per defecte i no ha reportat aquí, cap candidat mostra desglossament de confiança encara |
 | 4.4 | A | `/trust B` abans de continuar (avançant una mica la Fase 5) i tornar a `/resolve 2` | Ara el candidat suportat per B mostra el desglossament `n (m)` amb `m ≥ 1` de confiança |
@@ -409,7 +409,7 @@ per defecte, no només per casualitat d'aquell patró concret.
 | `/myevent` | 0, 1, 2 |
 | `<posició> <valor>` / `/submit` (nou, no-op, autocorrecció, desacord, tipus incorrecte, ambdós alhora) | 3, 11 |
 | `<posició>` sola / `/submit <posició>` (eliminar) | 3 |
-| `/status`, `/code` (normal, relocalització, límit de 16) | 4, 11 |
+| `/status` (normal, relocalització, límit de 16) | 4, 11 |
 | `/resolve <posició> <valor>` | 4 |
 | `/resolve <posició> @user` | 4 |
 | `/resolve <posició>` (llistat amb botons, amb desglossament de confiança) | 4 |

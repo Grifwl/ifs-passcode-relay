@@ -55,7 +55,7 @@ export function createBot(env: Env): Bot {
   bot.command("leave", (ctx) => handleLeave(ctx, env));
   bot.command("myevent", (ctx) => handleMyEvent(ctx, env));
   bot.command("submit", (ctx) => handleSubmit(ctx, env, String(ctx.match ?? "")));
-  bot.command(["status", "code"], (ctx) => handleStatus(ctx, env));
+  bot.command("status", (ctx) => handleStatus(ctx, env));
   bot.command("resolve", (ctx) => handleResolve(ctx, env));
   bot.command("unresolve", (ctx) => handleUnresolve(ctx, env));
   bot.command("trust", (ctx) => handleTrust(ctx, env));
