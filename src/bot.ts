@@ -15,7 +15,6 @@ import { handleUnresolve } from "./handlers/unresolve.js";
 import { handleTrust, handleTroll, handleUntrust } from "./handlers/trust.js";
 import { handleKick } from "./handlers/kick.js";
 import { handlePromote } from "./handlers/promote.js";
-import { handleCloseEvent, handleCloseEventCallback } from "./handlers/closeevent.js";
 import { handleVerify } from "./handlers/verify.js";
 import { handleEvents } from "./handlers/events.js";
 import { handleClaim, handleClaimCallback } from "./handlers/claim.js";
@@ -65,7 +64,6 @@ export function createBot(env: Env): Bot {
   bot.command("kick", (ctx) => handleKick(ctx, env));
   bot.command("promote", (ctx) => handlePromote(ctx, env));
   bot.command("verify", (ctx) => handleVerify(ctx, env));
-  bot.command("closeevent", (ctx) => handleCloseEvent(ctx, env));
   bot.command("events", (ctx) => handleEvents(ctx, env));
   bot.command("claim", (ctx) => handleClaim(ctx, env));
 
@@ -81,7 +79,6 @@ export function createBot(env: Env): Bot {
     if (data.startsWith("submit:")) return handleSubmitCallback(ctx, env);
     if (data.startsWith("sharetext:")) return handleShareTextCallback(ctx, env);
     if (data.startsWith("resolve:") || data.startsWith("resolveall:")) return handleResolveCallback(ctx, env);
-    if (data.startsWith("closeevent:")) return handleCloseEventCallback(ctx, env);
     if (data.startsWith("claimresolve:")) return handleClaimCallback(ctx, env);
     return ctx.answerCallbackQuery();
   });

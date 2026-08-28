@@ -83,27 +83,33 @@ recollir captures de pantalla manualment en un grup de xat.
    sol, sense arguments, repassa en canvi totes les posicions encara en
    discrepància una per una: en resoldre la que es mostra amb els seus
    botons, el bot envia de seguida la següent, fins que avisa que ja no
-   en queda cap — i, si en aquell moment totes les posicions tenen ja un
-   valor establert (resolta, o amb un únic candidat reportat), aquest
-   avís porta un botó per tancar l'esdeveniment allà mateix, fent
-   exactament el mateix que `/closeevent`. Qui administra l'esdeveniment també pot marcar un
-   participant com a de confiança o com a troll si cal.
-   Marcar algú com a troll, només per a aquell esdeveniment, descarta la
-   resta de les seves aportacions i deixa d'enviar-li actualitzacions —
-   tampoc rebrà el passcode final quan es tanqui l'esdeveniment.
+   en queda cap. Aquest avís mai porta una drecera per tancar
+   l'esdeveniment, encara que en aquell moment totes les posicions
+   tinguin ja un valor establert — que qui reporta hi estigui d'acord no
+   és el mateix que el passcode funcioni de veritat, així que el bot
+   remet qui administra a `/verify` (vegeu més avall). Qui administra
+   l'esdeveniment també pot marcar un participant com a de confiança o
+   com a troll si cal. Marcar algú com a troll, només per a aquell
+   esdeveniment, descarta la resta de les seves aportacions i deixa
+   d'enviar-li actualitzacions — tampoc rebrà el passcode final quan es
+   tanqui l'esdeveniment.
 
    Quan només queden poques posicions en discrepància, pot ser més ràpid
    provar directament uns quants dels blocs de codi renderitzats a la
    pantalla de bescanvi del joc. Un cop un d'ells es confirma correcte
-   allà, qui administra l'esdeveniment el pot enganxar de tornada amb
+   allà, qui administra l'esdeveniment l'enganxa de tornada amb
    `/verify <codi>` i el bot esbrina, per a totes les posicions alhora,
-   quin valor reportat l'ha produït — i tot seguit resol totes les
-   posicions i tanca l'esdeveniment, ja que un codi confirmat a la
-   botiga no deixa res més per decidir.
-7. Quan l'esdeveniment s'acaba, qui l'administra el tanca amb
-   `/closeevent`, que envia el passcode final com a missatge **nou** a
-   tots els participants — no només una edició — perquè a ningú se li
-   escapi encara que no hagi estat seguint-ho activament.
+   quin valor reportat l'ha produït.
+7. `/verify <codi>` és l'**única** manera de completar i tancar un
+   esdeveniment — no hi ha una comanda separada per "tancar". Encara que
+   totes les posicions ja coincideixin, aquest acord no s'ha comprovat
+   contra el joc en si, així que qui administra ha de copiar un codi
+   candidat, enganxar-lo a la botiga, confirmar que s'accepta, i
+   enganxar aquest mateix codi a `/verify`. Un cop coincideix, el bot
+   resol totes les posicions a partir d'ell i envia el passcode final
+   com a missatge **nou** a tots els participants — no només una edició
+   — perquè a ningú se li escapi encara que no hagi estat seguint-ho
+   activament.
 
 ### Referència de comandes
 
@@ -120,7 +126,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
 | `/status` (o `/code`) | participant | Mostra l'estat actual del codi quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
 | `/resolve <posició> [<valor \| @usuari>]` | administrador/a de l'esdeveniment | Tria el valor correcte quan hi ha discrepància; sense valor, llista els valors reportats (amb el desglossament de suports de confiança) com a botons per resoldre. |
-| `/resolve` (sense arguments) | administrador/a de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, ofereix un botó per tancar l'esdeveniment si totes les posicions tenen ja un valor establert. |
+| `/resolve` (sense arguments) | administrador/a de l'esdeveniment | Repassa totes les posicions encara en discrepància, una per una; quan ja no en queda cap, remet a `/verify` — el consens per si sol mai tanca l'esdeveniment. |
 | `/unresolve <posició>` | administrador/a de l'esdeveniment | Reobre una posició resolta. |
 | `/trust <usuari>` | administrador/a de l'esdeveniment | Marca un participant com a de confiança, perquè el seu suport es destaqui a la llista de candidats de `/resolve`. |
 | `/troll <usuari>` | administrador/a de l'esdeveniment | Descarta les aportacions d'un participant i deixa d'actualitzar-lo (només aquest esdeveniment). |
@@ -128,8 +134,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/kick <usuari>` | administrador/a de l'esdeveniment | Expulsa un participant de l'esdeveniment. |
 | `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
 | `/claim` | participant | Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu. |
-| `/verify <codi>` | administrador/a de l'esdeveniment | Enganxa un codi confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora i tanca l'esdeveniment. |
-| `/closeevent` | administrador/a de l'esdeveniment | Congela l'esdeveniment i anuncia el codi final a tothom. |
+| `/verify <codi>` | administrador/a de l'esdeveniment | L'única manera de tancar un esdeveniment: enganxa un codi confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el codi final a tothom. |
 | `/events` | tothom | Llista els esdeveniments que administres. |
 
 Cada jugador veu els missatges del bot en el seu propi idioma, establert

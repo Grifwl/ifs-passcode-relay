@@ -72,12 +72,15 @@ export function getConflictingPositions(slots: SlotState[]): number[] {
 }
 
 /**
- * Positions that are not yet ready for `/closeevent`: unresolved and not
- * narrowed down to exactly one live candidate (i.e. still blank, or still
- * genuinely conflicting). Empty means every position is unambiguous and
- * the event can be closed. Shared between `/closeevent` (which blocks on
- * this) and `/resolve`'s walkthrough (which uses it to decide whether to
- * offer a "close event" button once no conflicts remain).
+ * Positions still missing a resolution: unresolved and not narrowed down
+ * to exactly one live candidate (i.e. still blank, or still genuinely
+ * conflicting). Used only as a defensive safety net right before
+ * `/verify` finalizes an event — by the time a code has matched, every
+ * position should already have been resolved as part of that match, so
+ * this should always come back empty in practice. A non-empty result
+ * here is never itself grounds to close an event: only `/verify`'s
+ * store-confirmed match can do that (see CLAUDE.md's "Conflict
+ * handling").
  */
 export function getUnresolvedPositions(slots: SlotState[]): number[] {
   return slots

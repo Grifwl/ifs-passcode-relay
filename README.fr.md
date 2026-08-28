@@ -89,13 +89,14 @@ dans un groupe de discussion.
    résoudre d'un seul geste. Taper `/resolve` seul, sans argument,
    parcourt à la place toutes les positions encore en désaccord une par
    une : résoudre celle affichée via ses boutons envoie aussitôt la
-   suivante, jusqu'à ce qu'il n'en reste plus aucune — et, si à ce
-   moment-là toutes les positions ont déjà une valeur établie (résolue,
-   ou avec un seul candidat signalé), cet avis est accompagné d'un
-   bouton pour clôturer l'événement sur-le-champ, faisant exactement ce
-   que fait `/closeevent`. La personne qui
-   administre l'événement peut
-   aussi marquer un participant comme fiable ou comme troll si besoin. Marquer quelqu'un comme troll, pour cet événement
+   suivante, jusqu'à ce qu'il n'en reste plus aucune. Cet avis n'offre
+   jamais de raccourci pour clôturer l'événement, même si à ce
+   moment-là toutes les positions ont déjà une valeur établie — que les
+   personnes qui signalent soient d'accord entre elles n'est pas la
+   même chose que le passcode fonctionne réellement, donc le bot
+   renvoie la personne qui administre vers `/verify` (voir plus bas).
+   Elle peut aussi marquer un participant comme fiable ou comme troll
+   si besoin. Marquer quelqu'un comme troll, pour cet événement
    uniquement, écarte le reste de ses contributions et arrête de lui
    envoyer des mises à jour — il ne recevra pas non plus le passcode
    final à la clôture de l'événement.
@@ -103,15 +104,19 @@ dans un groupe de discussion.
    Quand il ne reste que peu de positions en désaccord, il peut être
    plus rapide d'essayer directement quelques-uns des blocs de code
    affichés à l'écran d'échange du jeu. Une fois que l'un d'eux y est
-   confirmé correct, la personne qui administre l'événement peut le
-   recoller avec `/verify <code>` et le bot détermine, pour toutes les
-   positions à la fois, quelle valeur signalée l'a produit — puis résout
-   toutes les positions et clôture l'événement, puisqu'un code confirmé
-   en boutique ne laisse plus rien à décider.
-7. Une fois l'événement terminé, son administrateur le clôture avec
-   `/closeevent`, ce qui envoie le passcode final comme **nouveau**
-   message à tous les participants — pas seulement une modification —
-   pour que personne ne le rate même sans avoir suivi activement.
+   confirmé correct, la personne qui administre l'événement le recolle
+   avec `/verify <code>` et le bot détermine, pour toutes les positions
+   à la fois, quelle valeur signalée l'a produit.
+7. `/verify <code>` est la **seule** façon de compléter et de clôturer
+   un événement — il n'existe pas de commande séparée pour « clôturer ».
+   Même si toutes les positions concordent déjà, cette concordance n'a
+   pas été vérifiée face au jeu lui-même : la personne qui administre
+   doit copier un code candidat, le coller dans la boutique, confirmer
+   qu'il est accepté, puis coller ce même code dans `/verify`. Une fois
+   qu'il correspond, le bot résout toutes les positions à partir de lui
+   et envoie le passcode final comme **nouveau** message à tous les
+   participants — pas seulement une modification — pour que personne ne
+   le rate même sans avoir suivi activement.
 
 ### Référence des commandes
 
@@ -128,7 +133,7 @@ dans un groupe de discussion.
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
 | `/status` (ou `/code`) | participant | Affiche l'état actuel du code à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
 | `/resolve <position> [<valeur \| @utilisateur>]` | administrateur de l'événement | Choisit la valeur correcte en cas de désaccord ; sans valeur, liste les valeurs signalées (avec la répartition des soutiens fiables) sous forme de boutons à résoudre. |
-| `/resolve` (sans argument) | administrateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, propose un bouton pour clôturer l'événement si toutes les positions ont déjà une valeur établie. |
+| `/resolve` (sans argument) | administrateur de l'événement | Parcourt toutes les positions encore en désaccord, une par une ; une fois qu'il n'en reste plus, renvoie vers `/verify` — le consensus seul ne clôture jamais l'événement. |
 | `/unresolve <position>` | administrateur de l'événement | Rouvre une position résolue. |
 | `/trust <utilisateur>` | administrateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
 | `/troll <utilisateur>` | administrateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
@@ -136,8 +141,7 @@ dans un groupe de discussion.
 | `/kick <utilisateur>` | administrateur de l'événement | Exclut un participant de l'événement. |
 | `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
 | `/claim` | participant | Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse. |
-| `/verify <code>` | administrateur de l'événement | Colle un code confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup et clôture l'événement. |
-| `/closeevent` | administrateur de l'événement | Fige l'événement et annonce le code final à tout le monde. |
+| `/verify <code>` | administrateur de l'événement | La seule façon de clôturer un événement : colle un code confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup, fige l'événement et annonce le code final à tout le monde. |
 | `/events` | tout le monde | Liste les événements que vous administrez. |
 
 Chaque joueur voit les messages du bot dans sa propre langue, définie une

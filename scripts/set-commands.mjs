@@ -26,8 +26,7 @@ const COMMANDS = [
   { command: "kick", description: "Remove a participant from the event (administrator)" },
   { command: "promote", description: "Hand the administrator role to another participant (administrator)" },
   { command: "claim", description: "Take over as administrator if the current one has been inactive" },
-  { command: "verify", description: "Confirm a store-validated code and resolve every position (administrator)" },
-  { command: "closeevent", description: "Freeze the event and announce the result (administrator)" },
+  { command: "verify", description: "Confirm a store-validated code, resolve every position and close the event (administrator)" },
   { command: "events", description: "List the events you administer" },
 ];
 

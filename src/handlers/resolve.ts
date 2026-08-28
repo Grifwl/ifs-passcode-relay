@@ -9,9 +9,8 @@ import { getEventById } from "../db/events.js";
 import { getCandidates, getCandidatesAtPosition, getOwnReport, getResolutions, setResolution } from "../db/passcode.js";
 import { getUserByUsername } from "../db/users.js";
 import { parsePattern, normalizeValue } from "../domain/pattern.js";
-import { buildSlotStates, getConflictingPositions, getUnresolvedPositions } from "../domain/passcode.js";
+import { buildSlotStates, getConflictingPositions } from "../domain/passcode.js";
 import { broadcastPasscodeUpdate } from "../services/broadcast.js";
-import { CLOSEEVENT_CALLBACK_PREFIX } from "./closeevent.js";
 import type { CandidateRow } from "../db/passcode.js";
 import type { IfsEvent } from "../domain/types.js";
 
@@ -69,9 +68,13 @@ function renderCandidates(
  * still in genuine disagreement (unresolved, more than one live
  * candidate), with resolveall-tagged buttons so resolving it — see
  * `handleResolveCallback` — chains straight into the following one. Once
- * none are left, says so instead. Positions are recomputed fresh from D1
- * on every call rather than tracked in any stored "queue" state, so this
- * naturally stays correct even if new reports come in mid-walkthrough.
+ * none are left, says so instead — this never offers a shortcut to close
+ * the event, since reporter consensus alone (even on every position) is
+ * not the same as the administrator having tested a code in-game; only
+ * `/verify` can do that (see CLAUDE.md's "Conflict handling"). Positions
+ * are recomputed fresh from D1 on every call rather than tracked in any
+ * stored "queue" state, so this naturally stays correct even if new
+ * reports come in mid-walkthrough.
  */
 async function sendConflictWalkthroughStep(ctx: Context, env: Env, lang: SupportedLanguage, event: IfsEvent): Promise<void> {
   const slots = parsePattern(event.pattern);
@@ -83,11 +86,7 @@ async function sendConflictWalkthroughStep(ctx: Context, env: Env, lang: Support
   const conflicting = getConflictingPositions(slotStates);
 
   if (conflicting.length === 0) {
-    const readyToClose = getUnresolvedPositions(slotStates).length === 0;
-    const keyboard = readyToClose
-      ? new InlineKeyboard().text(t(lang, "resolve.closeEventButton"), `${CLOSEEVENT_CALLBACK_PREFIX}${event.id}`)
-      : undefined;
-    await ctx.reply(t(lang, "resolve.allDone"), keyboard ? { reply_markup: keyboard } : undefined);
+    await ctx.reply(t(lang, "resolve.allDone"));
     return;
   }
 

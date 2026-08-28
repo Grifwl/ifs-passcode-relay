@@ -81,25 +81,29 @@ group chat.
    resolve it with a single tap. Running bare `/resolve`, with no arguments,
    instead walks through every position still in disagreement one at a
    time: resolve the one shown via its buttons and the bot immediately
-   sends the next, until it reports there are no more left — and if, by
-   then, every position also has a settled value (resolved, or with a
-   single reported candidate), that message comes with a button to
-   close the event on the spot, doing exactly what `/closeevent` does.
-   The administrator
-   can also mark a participant as trusted or as a troll if needed. Marking
-   someone a troll, for that event only, discards the rest of their
-   reports and stops sending them further updates — including the final
-   passcode when the event closes.
+   sends the next, until it reports there are no more left. That message
+   never offers a shortcut to close the event, even if every position
+   also has a settled value by then — reporters agreeing with each
+   other isn't the same as the passcode actually working, so the bot
+   points the administrator at `/verify` instead (see below). The
+   administrator can also mark a participant as trusted or as a troll if
+   needed. Marking someone a troll, for that event only, discards the
+   rest of their reports and stops sending them further updates —
+   including the final passcode when the event closes.
 
    When there are only a few positions still in disagreement, it can be
    faster to just try a handful of the rendered code blocks directly at
    the game's redeem screen. Once one of them is confirmed correct
-   there, the administrator can paste it back with `/verify <code>` and
-   the bot figures out, for every position at once, which reported value
-   produced it — then resolves everything and closes the event right
-   away, since a store-confirmed code leaves nothing left to decide.
-7. When the event is over, its administrator closes it with `/closeevent`,
-   which sends the final passcode as a **new** message to every
+   there, the administrator pastes it back with `/verify <code>` and the
+   bot figures out, for every position at once, which reported value
+   produced it.
+7. `/verify <code>` is the **only** way to complete and close an
+   event — there is no separate "close" command. Even if every position
+   already agrees, that agreement hasn't been tested against the game
+   itself, so the administrator must copy a candidate code, paste it
+   into the store, confirm it's accepted, and paste that exact code
+   into `/verify`. Once it matches, the bot resolves every position from
+   it and sends the final passcode as a **new** message to every
    participant — not just an edit — so nobody misses it even if they
    weren't actively following along.
 
@@ -118,7 +122,7 @@ group chat.
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
 | `/status` (or `/code`) | participant | Show the current state of the code on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
 | `/resolve <position> [<value \| @user>]` | event administrator | Pick the correct value when there's a disagreement; with no value, lists reported values (with trusted-supporter breakdown) as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | event administrator | Walk through every position still in disagreement, one at a time; once none are left, offers a button to close the event if every position also has a settled value. |
+| `/resolve` (no arguments) | event administrator | Walk through every position still in disagreement, one at a time; once none are left, points the administrator at `/verify` — consensus alone never closes the event. |
 | `/unresolve <position>` | event administrator | Reopen a resolved position. |
 | `/trust <user>` | event administrator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
 | `/troll <user>` | event administrator | Discard a participant's reports and stop updating them (this event only). |
@@ -126,8 +130,7 @@ group chat.
 | `/kick <user>` | event administrator | Remove a participant from the event. |
 | `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through. |
-| `/verify <code>` | event administrator | Paste a code confirmed correct at the game's redeem screen; resolves every position from it at once and closes the event. |
-| `/closeevent` | event administrator | Freeze the event and announce the final code to everyone. |
+| `/verify <code>` | event administrator | The only way to close an event: paste a code confirmed correct at the game's redeem screen; resolves every position from it at once, freezes the event and announces the final code to everyone. |
 | `/events` | anyone | List the events you administer. |
 
 Every player sees the bot's messages in their own language, set once with

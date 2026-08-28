@@ -84,27 +84,33 @@ grupo de chat.
    sin argumentos, repasa en cambio todas las posiciones todavía en
    discrepancia una por una: al resolver la que se muestra con sus
    botones, el bot envía enseguida la siguiente, hasta que avisa de que
-   ya no queda ninguna — y, si en ese momento todas las posiciones ya
-   tienen un valor establecido (resuelta, o con un único candidato
-   reportado), ese aviso trae un botón para cerrar el evento ahí mismo,
-   haciendo exactamente lo mismo que `/closeevent`. Quien administra el
+   ya no queda ninguna. Ese aviso nunca ofrece un atajo para cerrar el
+   evento, aunque en ese momento todas las posiciones ya tengan un valor
+   establecido — que quienes reportan estén de acuerdo entre sí no es lo
+   mismo que el passcode funcione de verdad, así que el bot remite a
+   quien administra a `/verify` (ver más abajo). Quien administra el
    evento también puede marcar a un participante como de confianza o
-   como troll si hace falta. Marcar a alguien como troll, solo para ese evento, descarta el
-   resto de sus aportaciones y deja de enviarle actualizaciones —
-   tampoco recibirá el passcode final cuando se cierre el evento.
+   como troll si hace falta. Marcar a alguien como troll, solo para ese
+   evento, descarta el resto de sus aportaciones y deja de enviarle
+   actualizaciones — tampoco recibirá el passcode final cuando se cierre
+   el evento.
 
    Cuando solo quedan pocas posiciones en discrepancia, puede ser más
    rápido probar directamente unos cuantos de los bloques de código
    renderizados en la pantalla de canje del juego. Una vez que uno de
-   ellos se confirma correcto allí, quien administra el evento puede
-   pegarlo de vuelta con `/verify <código>` y el bot averigua, para
-   todas las posiciones a la vez, qué valor reportado lo produjo — y a
-   continuación resuelve todas las posiciones y cierra el evento, ya que
-   un código confirmado en la tienda no deja nada más por decidir.
-7. Cuando el evento termina, quien lo administra lo cierra con
-   `/closeevent`, que envía el passcode final como un mensaje **nuevo**
-   a todos los participantes — no solo una edición — para que a nadie se
-   le escape aunque no lo haya estado siguiendo activamente.
+   ellos se confirma correcto allí, quien administra el evento lo pega
+   de vuelta con `/verify <código>` y el bot averigua, para todas las
+   posiciones a la vez, qué valor reportado lo produjo.
+7. `/verify <código>` es la **única** forma de completar y cerrar un
+   evento — no existe un comando separado para "cerrar". Aunque todas
+   las posiciones ya coincidan, ese acuerdo no se ha comprobado contra
+   el propio juego, así que quien administra debe copiar un código
+   candidato, pegarlo en la tienda, confirmar que se acepta, y pegar ese
+   mismo código en `/verify`. Una vez coincide, el bot resuelve todas
+   las posiciones a partir de él y envía el passcode final como un
+   mensaje **nuevo** a todos los participantes — no solo una edición —
+   para que a nadie se le escape aunque no lo haya estado siguiendo
+   activamente.
 
 ### Referencia de comandos
 
@@ -121,7 +127,7 @@ grupo de chat.
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
 | `/status` (o `/code`) | participante | Muestra el estado actual del código cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
 | `/resolve <posición> [<valor \| @usuario>]` | administrador del evento | Elige el valor correcto cuando hay discrepancia; sin valor, lista los valores reportados (con el desglose de apoyos de confianza) como botones para resolver. |
-| `/resolve` (sin argumentos) | administrador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, ofrece un botón para cerrar el evento si todas las posiciones ya tienen un valor establecido. |
+| `/resolve` (sin argumentos) | administrador del evento | Repasa todas las posiciones todavía en discrepancia, una por una; cuando ya no queda ninguna, remite a `/verify` — el consenso por sí solo nunca cierra el evento. |
 | `/unresolve <posición>` | administrador del evento | Reabre una posición resuelta. |
 | `/trust <usuario>` | administrador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
 | `/troll <usuario>` | administrador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
@@ -129,8 +135,7 @@ grupo de chat.
 | `/kick <usuario>` | administrador del evento | Expulsa a un participante del evento. |
 | `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
 | `/claim` | participante | Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo. |
-| `/verify <código>` | administrador del evento | Pega un código confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez y cierra el evento. |
-| `/closeevent` | administrador del evento | Congela el evento y anuncia el código final a todos. |
+| `/verify <código>` | administrador del evento | La única forma de cerrar un evento: pega un código confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez, congela el evento y anuncia el código final a todos. |
 | `/events` | cualquiera | Lista los eventos que administras. |
 
 Cada jugador ve los mensajes del bot en su propio idioma, establecido una

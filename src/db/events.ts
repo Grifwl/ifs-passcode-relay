@@ -85,9 +85,9 @@ export async function createEvent(
 
 /**
  * Marks an event as closed, freezing it against further joins/submissions.
- * `reason` records whether it completed normally (`/closeevent`) or was
- * auto-closed because `/leave` ran out of eligible successors (see
- * CLAUDE.md "Administrator succession").
+ * `reason` records whether it completed normally (a store-confirmed
+ * `/verify`) or was auto-closed because `/leave` ran out of eligible
+ * successors (see CLAUDE.md "Administrator succession").
  */
 export async function closeEvent(
   db: D1Database,

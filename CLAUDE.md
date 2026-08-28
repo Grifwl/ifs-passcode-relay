@@ -234,19 +234,18 @@ by someone else, simply won't reappear in the next recomputation). If
 there is nothing in disagreement when `/resolve` is run bare, it says
 so immediately instead of listing anything.
 
-Whenever that "nothing in disagreement" message is the one shown —
-either immediately, because `/resolve` found no conflicts to begin
-with, or as the last step of a walkthrough that just resolved the
-final one — the bot additionally checks whether the event is fully
-ready to close: every position resolved, or reduced to exactly one
-live candidate (the same condition `/closeevent` itself enforces, see
-`domain/passcode.ts`'s `getUnresolvedPositions`). If so, the message
-carries one extra inline button that closes the event right there,
-running the exact same logic as `/closeevent` (see
-`handlers/closeevent.ts`'s shared core, invoked from both the command
-and this button's callback, tagged `closeevent:<eventId>`). This is a
-convenience only — it changes nothing about when a position counts as
-resolved or how `/closeevent` itself behaves when run as a command.
+That "nothing in disagreement" message never offers a shortcut to
+close the event, even when every position also happens to be resolved
+or narrowed down to exactly one live candidate. Full consensus among
+reporters is not proof the passcode is actually correct — everyone
+could still be systematically wrong about the same position (e.g.
+misreading a portal's glyph the same way) — so it is deliberately not
+sufficient grounds to close. The message instead points the
+administrator at `/verify`: only a code the game itself has confirmed
+at the redeem screen can close the event (see "Confirming a
+store-validated code with `/verify`" below, which is why that command
+is no longer just a convenience for brute-forcing multiple candidates
+but the sole path to completing an event).
 
 Because the number of unresolved positions with more than one candidate
 must be kept from exploding combinatorially in the rendered message,
@@ -280,12 +279,20 @@ ABC12GLIPH345XY
 
 ### Confirming a store-validated code with `/verify`
 
-When there are few enough conflicting positions that brute-forcing the
-redeem screen with a handful of the rendered combinations above is
-practical, `/verify <code>` (administrator-only) lets the administrator
-paste back the exact code the game just confirmed as correct, and have
-the bot settle every position from it in one shot instead of resolving
-each conflicting position by hand.
+`/verify <code>` (administrator-only) is the **only** way to complete
+and close an event — there is no separate `/closeevent` command. Even
+when every position has a single, unanimous candidate (or has all been
+individually `/resolve`d), that reflects agreement among reporters, not
+confirmation that the passcode actually works: reporters can be
+unanimous and still wrong. Requiring `/verify` forces the administrator
+to have actually copied a candidate code, pasted it into the game's
+redeem screen, and had the game confirm it, before the event can be
+declared done. When there are few enough conflicting positions that
+brute-forcing the redeem screen with a handful of the rendered
+combinations above is practical, this is also a convenient way to
+settle every remaining disagreement in one shot instead of resolving
+each conflicting position by hand — but that convenience is secondary
+to it being mandatory.
 
 Because that code can only ever have been copied from one of the
 combinations implied by the event's current reports, matching it
@@ -301,8 +308,7 @@ pasted code character-for-character *are* the boundaries, implicitly.
 
 A successful match resolves every position to the value implied by that
 combination (even ones that weren't in dispute — harmless, since it's
-the same value they already had) and immediately closes the event, the
-same way `/closeevent` itself would once nothing is left unresolved,
+the same value they already had) and immediately closes the event,
 since a store-confirmed code leaves nothing further for the
 administrator to decide.
 
@@ -422,8 +428,8 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   see below) and can still technically send reports, but from the
   moment they're flagged: they stop being included in the live
   status-message broadcast (their own message is simply left un-edited
-  from then on) and they are skipped when `/closeevent` pushes the final
-  passcode to everyone — a troll gets neither further live updates nor
+  from then on) and they are skipped when `/verify` closes the event and
+  pushes the final passcode to everyone — a troll gets neither further live updates nor
   the final result. `/untrust` reverses all of this (candidates,
   broadcasts) going forward, but does not retroactively resend broadcasts
   that were skipped while they were flagged.
@@ -463,7 +469,7 @@ commands.
 An event has exactly one administrator at a time (`events.admin_user_id`,
 set to whoever ran `/newevent` at creation time), and only that person
 can run any of the administrator-only commands above, plus `/resolve`,
-`/unresolve` and `/closeevent`. `/promote <user>` transfers this role
+`/unresolve` and `/verify`. `/promote <user>` transfers this role
 outright: the target must already be a participant of the same event,
 becomes the new `admin_user_id`, and is marked `trusted` for the event
 the same way `/newevent` marks its own first administrator (see Trust &
@@ -517,11 +523,11 @@ follows a strict order:
    `troll`, or there are no other participants left at all — there is
    no one to hand the role to. The event is closed instead
    (`events.status = 'closed'`, `events.closed_reason = 'abandoned'`,
-   distinct from a normal `/closeevent` completion which records
+   distinct from a normal completion via `/verify`, which records
    `'completed'`), and the departing administrator is told so. No final
    passcode is sent to anyone in this case — an abandoned event never
-   had every position settled, or someone would already have run
-   `/closeevent`.
+   had every position settled and store-confirmed, or someone would
+   already have run `/verify`.
 
 A successful auto-promotion mirrors `/promote`'s own conventions: the
 new administrator is marked `trusted` for the event the same way, and
@@ -594,9 +600,9 @@ This in-place edit is not a reliable way to make sure everyone actually
 participant sends is itself a new outgoing message, which pushes the
 bot's single edited status message further up their own scrollback each
 time — an active participant can easily bury it without noticing. For
-that reason, `/closeevent` sends a brand new message to every
-participant instead of editing — again except anyone flagged `troll`,
-who receives neither this nor any further live update.
+that reason, closing the event via `/verify` sends a brand new message
+to every participant instead of editing — again except anyone flagged
+`troll`, who receives neither this nor any further live update.
 
 A participant can pull the live view back down themselves at any time
 by running `/status` (or `/code`): rather than sending a disconnected,
@@ -692,7 +698,7 @@ word too.
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
 | `/status`, `/code` | participant | On-demand snapshot (progress + variant code blocks/conflicts); also relocates the live-update target to this new message. |
 | `/resolve <position> [<value \| @user>]` | administrator | Fix the canonical value for a position, optionally by pointing at who reported it; with no value, lists current candidates as tap-to-resolve buttons. |
-| `/resolve` (no arguments) | administrator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, offers a button to close the event if every position also has a settled value. |
+| `/resolve` (no arguments) | administrator | Walk through every position still in disagreement, one at a time, resolving each via its buttons before moving to the next; once none are left, points the administrator at `/verify` — full consensus alone never closes the event. |
 | `/unresolve <position>` | administrator | Reopen a resolved position. |
 | `/trust <user>` | administrator | Flag a participant as trusted. |
 | `/troll <user>` | administrator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
@@ -700,8 +706,7 @@ word too.
 | `/kick <user>` | administrator | Remove a participant from the event. |
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |
-| `/verify <code>` | administrator | Match a store-confirmed code against current candidates to resolve every position at once, then close the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated code with `/verify`"). |
-| `/closeevent` | administrator | Requires every position to be unambiguous (resolved, or with exactly one live candidate — not blank, not still conflicting); pushes a **new** message (not an edit) with the final passcode to every participant and freezes the event. |
+| `/verify <code>` | administrator | The only way to complete and close an event: match a store-confirmed code against current candidates to resolve every position at once, then push a **new** message (not an edit) with the final passcode to every participant and freeze the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated code with `/verify`"). |
 | `/events` | anyone | List events the caller administers. |
 
 Letters and word slots are always **displayed uppercase**; input is
