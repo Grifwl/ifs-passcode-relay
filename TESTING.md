@@ -106,21 +106,26 @@ ha cap `wrangler dev` pel mig quan es prova contra `@ifs_relay_bot`
 real —, així que cal fer servir sempre `--remote`:
 
 ```bash
-# Fer que l'administrador actual de l'esdeveniment de codi <CODI>
-# aparegui com si portés 31 minuts sense interactuar amb el bot:
-npx wrangler d1 execute ifs-passcode-relay --remote --command "UPDATE participants SET last_active_at = datetime('now', '-31 minutes') WHERE event_id = (SELECT id FROM events WHERE code = '<CODI>') AND user_id = (SELECT admin_user_id FROM events WHERE code = '<CODI>');"
+# Fer que l'administrador de qualsevol esdeveniment actiu aparegui com
+# si portés 31 minuts sense interactuar amb el bot:
+npx wrangler d1 execute ifs-passcode-relay --remote --command "UPDATE participants SET last_active_at = datetime('now', '-31 minutes') WHERE user_id IN (SELECT admin_user_id FROM events WHERE status = 'active');"
 ```
 
 ```bash
 # Un cop oberta la negociació (després del primer /claim vàlid), fer
-# que sembli que ja han passat els 5 minuts de marge de resposta:
-npx wrangler d1 execute ifs-passcode-relay --remote --command "UPDATE admin_claims SET initiated_at = datetime('now', '-6 minutes') WHERE event_id = (SELECT id FROM events WHERE code = '<CODI>');"
+# que sembli que ja han passat els 5 minuts de marge de resposta a
+# qualsevol negociació oberta:
+npx wrangler d1 execute ifs-passcode-relay --remote --command "UPDATE admin_claims SET initiated_at = datetime('now', '-6 minutes');"
 ```
 
-Cal substituir `<CODI>` pel codi de l'esdeveniment cada vegada (el que
-dona `/myevent` o el que es va compartir en crear-lo). No cal conèixer
-l'identificador numèric de Telegram de l'administrador: la subconsulta
-`SELECT admin_user_id FROM events WHERE code = ...` ja el resol.
+Aquestes dues comandes són genèriques a propòsit — no cal indicar-hi
+cap codi d'esdeveniment ni identificador de Telegram — perquè durant
+una sessió de proves no hi ha cap esdeveniment real en curs: la
+primera afecta l'administrador de **tots** els esdeveniments actius en
+aquell moment, i la segona, totes les negociacions de `/claim`
+obertes en aquell moment. Si mai s'executessin amb esdeveniments reals
+d'un IFS en marxa, caldria tornar a restringir-les per `event_id`
+perquè no n'afectessin l'administrador real.
 
 Aquesta és la manera amb què es fa la Fase 9 en aquest pla — **no cal
 esperar cap dels dos temps reals** en cap moment.
@@ -315,7 +320,7 @@ addicionals). No cal cap espera real en tota la fase.
 |---|---|---|---|
 | 9a.1 | A | `/newevent Proves Claim Keep`, B s'hi uneix | Preparació |
 | 9a.2 | B | Intentar `/claim` immediatament | Rebutjat: l'administrador (A) encara no porta prou temps inactiu |
-| 9a.3 | — | Executar la `UPDATE participants SET last_active_at = ...` sobre l'administrador (A) d'aquest esdeveniment | Simula 31 minuts d'inactivitat sense esperar-los |
+| 9a.3 | — | Executar la comanda genèrica `UPDATE participants SET last_active_at = ...` | Simula 31 minuts d'inactivitat de l'administrador (A) sense esperar-los |
 | 9a.4 | B | `/claim` | Ara sí: s'obre la negociació; A rep un missatge amb botons "Mantenir el rol" / "Cedir el rol" |
 | 9a.5 | A | Prémer **"Mantenir el rol"** | La negociació es descarta; A segueix sent administrador; res canvia |
 | 9a.6 | B | `/claim` una altra vegada tot seguit | Torna a ser rebutjat: prémer el botó és activitat real d'A, així que el rellotge d'inactivitat s'ha reiniciat de debò (aquesta vegada sense truc de base de dades) |
@@ -338,7 +343,7 @@ addicionals). No cal cap espera real en tota la fase.
 | 9c.1 | A | `/newevent Proves Claim Timeout`, B s'hi uneix | Preparació |
 | 9c.2 | — | Executar la `UPDATE` de `last_active_at` sobre l'administrador (A) | Simula la inactivitat |
 | 9c.3 | B | `/claim` | Obre negociació; A notificat; queda pendent el botó "Mantenir el rol" / "Cedir el rol" al xat d'A |
-| 9c.4 | — | Executar la `UPDATE admin_claims SET initiated_at = ...` sobre aquest esdeveniment | Simula que ja han passat els 5 minuts de marge sense esperar-los |
+| 9c.4 | — | Executar la comanda genèrica `UPDATE admin_claims SET initiated_at = ...` | Simula que ja han passat els 5 minuts de marge sense esperar-los |
 | 9c.5 | B | `/claim` una altra vegada | Aquesta crida és la que **dispara** la resolució pendent en favor del pool acumulat (només B); B esdevé administrador i queda `trusted` |
 | 9c.6 | A | Prémer, **després** del pas anterior, el botó "Mantenir el rol" del missatge original (ara obsolet) | Ha de trobar que la negociació ja no existeix i informar-ho amb gràcia, sense duplicar cap resolució ni deixar l'estat inconsistent |
 
