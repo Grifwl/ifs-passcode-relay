@@ -477,8 +477,11 @@ or `/untrust <user>` (back to neutral/default), writing `event_trust`.
   from then on) and they are skipped when `/verify` closes the event and
   pushes the final passcode to everyone — a troll gets neither further live updates nor
   the final result. `/untrust` reverses all of this (candidates,
-  broadcasts) going forward, but does not retroactively resend broadcasts
-  that were skipped while they were flagged.
+  broadcasts) going forward, and additionally refreshes that
+  participant's status message once, immediately, to the passcode's
+  current state — catching them up on everything they missed while
+  flagged, in a single edit rather than by replaying each update they
+  were skipped.
   This status is scoped to a single `(event_id, user_id)` pair in
   `event_trust` — it never carries over to another event, past or
   future; the same agent starts neutral every time they join a
@@ -804,7 +807,7 @@ word too.
 | `/unresolve <position>` | administrator | Reopen a resolved position. |
 | `/trust <user>` | administrator | Flag a participant as trusted. |
 | `/troll <user>` | administrator | Discard a participant's contributions from candidates and stop sending them live/final updates, for this event only. |
-| `/untrust <user>` | administrator | Clear a participant's trust flag back to neutral. |
+| `/untrust <user>` | administrator | Clear a participant's trust flag back to neutral; if they were `troll`, also catches their status message up to the current passcode state in one refresh. |
 | `/kick <user>` | administrator | Remove a participant from the event. |
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |

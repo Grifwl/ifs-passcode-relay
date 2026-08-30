@@ -153,7 +153,7 @@ dans un groupe de discussion.
 | `/unresolve <position>` | administrateur de l'événement | Rouvre une position résolue. |
 | `/trust <utilisateur>` | administrateur de l'événement | Marque un participant comme fiable, pour que son soutien soit mis en avant dans la liste de candidats de `/resolve`. |
 | `/troll <utilisateur>` | administrateur de l'événement | Écarte les contributions d'un participant et arrête de le mettre à jour (cet événement uniquement). |
-| `/untrust <utilisateur>` | administrateur de l'événement | Retire le marquage de fiabilité d'un participant. |
+| `/untrust <utilisateur>` | administrateur de l'événement | Retire le marquage de fiabilité d'un participant ; s'il était marqué troll, rafraîchit aussi son message de statut d'un coup. |
 | `/kick <utilisateur>` | administrateur de l'événement | Exclut un participant de l'événement. |
 | `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
 | `/claim` | participant | Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse. |

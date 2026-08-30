@@ -145,7 +145,7 @@ grupo de chat.
 | `/unresolve <posición>` | administrador del evento | Reabre una posición resuelta. |
 | `/trust <usuario>` | administrador del evento | Marca a un participante como de confianza, para que su apoyo se destaque en la lista de candidatos de `/resolve`. |
 | `/troll <usuario>` | administrador del evento | Descarta las aportaciones de un participante y deja de actualizarlo (solo este evento). |
-| `/untrust <usuario>` | administrador del evento | Quita la marca de confianza a un participante. |
+| `/untrust <usuario>` | administrador del evento | Quita la marca de confianza a un participante; si estaba marcado troll, también le actualiza el mensaje de estado de golpe. |
 | `/kick <usuario>` | administrador del evento | Expulsa a un participante del evento. |
 | `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
 | `/claim` | participante | Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo. |

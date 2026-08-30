@@ -140,7 +140,7 @@ group chat.
 | `/unresolve <position>` | event administrator | Reopen a resolved position. |
 | `/trust <user>` | event administrator | Flag a participant as trusted, so their support is called out in `/resolve`'s candidate listing. |
 | `/troll <user>` | event administrator | Discard a participant's reports and stop updating them (this event only). |
-| `/untrust <user>` | event administrator | Clear a participant's trust flag. |
+| `/untrust <user>` | event administrator | Clear a participant's trust flag; if they'd been trolled, also catches them up with a fresh status message. |
 | `/kick <user>` | event administrator | Remove a participant from the event. |
 | `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through. |

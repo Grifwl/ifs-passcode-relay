@@ -4,8 +4,9 @@ import { ensureUser } from "../session.js";
 import { t, type MessageKey } from "../i18n/index.js";
 import { getParticipant } from "../db/participants.js";
 import { getEventById } from "../db/events.js";
-import { getUserByUsername } from "../db/users.js";
-import { setTrust, clearTrust } from "../db/passcode.js";
+import { getUserByUsername, getUser } from "../db/users.js";
+import { setTrust, clearTrust, getTrustStatus } from "../db/passcode.js";
+import { deliverStatus } from "../services/broadcast.js";
 import type { EventTrustStatus } from "../domain/trust.js";
 import type { IfsEvent } from "../domain/types.js";
 
@@ -77,6 +78,20 @@ export async function handleUntrust(ctx: Context, env: Env): Promise<void> {
   if (!resolved) return;
   const { event, targetUserId, targetName, lang } = resolved;
 
+  const wasTroll = (await getTrustStatus(env.DB, event.id, targetUserId)) === "troll";
   await clearTrust(env.DB, event.id, targetUserId);
   await ctx.reply(t(lang, "untrust.done", { name: targetName }));
+
+  // A troll's status message was frozen the whole time they were
+  // flagged (see CLAUDE.md "Live updates"), so without this they'd only
+  // start seeing changes from here on, not everything they missed.
+  // /untrust catches them up once, immediately, with a single refresh
+  // to the current state — it doesn't replay each missed update.
+  if (wasTroll) {
+    const targetParticipant = await getParticipant(env.DB, targetUserId);
+    if (targetParticipant && targetParticipant.eventId === event.id) {
+      const targetUser = await getUser(env.DB, targetUserId);
+      await deliverStatus(ctx.api, env.DB, event, targetParticipant, targetUser?.language ?? "en");
+    }
+  }
 }
