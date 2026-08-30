@@ -194,10 +194,10 @@ const en = {
   "events.none": () => "You haven't participated in any event yet.",
   "events.list": (p) => `Your events:\n${p.items}`,
   "events.itemLine": (p) => {
-    const status =
+    let status =
       p.status === "active" ? "active" : p.reason === "completed" ? "closed, completed" : p.reason === "abandoned" ? "closed, abandoned" : "closed";
-    const tags = [p.isCurrent ? "current" : null, p.isAdmin ? "you're the administrator" : null].filter(Boolean);
-    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    if (p.isCurrent) status += ", current";
+    const suffix = p.isAdmin ? " — you're the administrator" : "";
     return `• ${p.name} — ${p.code} (${status})${suffix}`;
   },
 } satisfies Record<string, Message>;
@@ -399,10 +399,10 @@ const ca: Catalog = {
   "events.none": () => "Encara no has participat en cap esdeveniment.",
   "events.list": (p) => `Els teus esdeveniments:\n${p.items}`,
   "events.itemLine": (p) => {
-    const status =
+    let status =
       p.status === "active" ? "actiu" : p.reason === "completed" ? "tancat, completat" : p.reason === "abandoned" ? "tancat, abandonat" : "tancat";
-    const tags = [p.isCurrent ? "actual" : null, p.isAdmin ? "n'ets l'administrador/a" : null].filter(Boolean);
-    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    if (p.isCurrent) status += ", actual";
+    const suffix = p.isAdmin ? " — n'ets l'administrador/a" : "";
     return `• ${p.name} — ${p.code} (${status})${suffix}`;
   },
 };
@@ -601,10 +601,10 @@ const es: Catalog = {
   "events.none": () => "Todavía no has participado en ningún evento.",
   "events.list": (p) => `Tus eventos:\n${p.items}`,
   "events.itemLine": (p) => {
-    const status =
+    let status =
       p.status === "active" ? "activo" : p.reason === "completed" ? "cerrado, completado" : p.reason === "abandoned" ? "cerrado, abandonado" : "cerrado";
-    const tags = [p.isCurrent ? "actual" : null, p.isAdmin ? "eres el/la administrador/a" : null].filter(Boolean);
-    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    if (p.isCurrent) status += ", actual";
+    const suffix = p.isAdmin ? " — eres el/la administrador/a" : "";
     return `• ${p.name} — ${p.code} (${status})${suffix}`;
   },
 };
@@ -807,10 +807,10 @@ const fr: Catalog = {
   "events.none": () => "Vous n'avez encore participé à aucun événement.",
   "events.list": (p) => `Vos événements :\n${p.items}`,
   "events.itemLine": (p) => {
-    const status =
+    let status =
       p.status === "active" ? "actif" : p.reason === "completed" ? "clos, terminé" : p.reason === "abandoned" ? "clos, abandonné" : "clos";
-    const tags = [p.isCurrent ? "actuel" : null, p.isAdmin ? "vous en êtes l'administrateur/trice" : null].filter(Boolean);
-    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    if (p.isCurrent) status += ", actuel";
+    const suffix = p.isAdmin ? " — vous en êtes l'administrateur/trice" : "";
     return `• ${p.name} — ${p.code} (${status})${suffix}`;
   },
 };
