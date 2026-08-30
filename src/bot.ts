@@ -7,7 +7,7 @@ import { handleNewEvent, handleNewEventCallback } from "./handlers/newevent.js";
 import { handleShareText, handleShareTextCallback } from "./handlers/sharetext.js";
 import { handleJoin, handleJoinCallback } from "./handlers/join.js";
 import { handleLeave } from "./handlers/leave.js";
-import { handleMyEvent } from "./handlers/myevent.js";
+import { handleCurrent } from "./handlers/current.js";
 import { handleSubmit, handleSubmitCallback } from "./handlers/submit.js";
 import { handleStatus } from "./handlers/status.js";
 import { handleResolve, handleResolveCallback } from "./handlers/resolve.js";
@@ -53,7 +53,7 @@ export function createBot(env: Env): Bot {
   bot.command("sharetext", (ctx) => handleShareText(ctx, env));
   bot.command("join", (ctx) => handleJoin(ctx, env));
   bot.command("leave", (ctx) => handleLeave(ctx, env));
-  bot.command("myevent", (ctx) => handleMyEvent(ctx, env));
+  bot.command("current", (ctx) => handleCurrent(ctx, env));
   bot.command("submit", (ctx) => handleSubmit(ctx, env, String(ctx.match ?? "")));
   bot.command("status", (ctx) => handleStatus(ctx, env));
   bot.command("resolve", (ctx) => handleResolve(ctx, env));

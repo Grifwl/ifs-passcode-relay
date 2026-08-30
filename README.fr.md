@@ -144,7 +144,7 @@ dans un groupe de discussion.
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
 | `/join <code>` | tout le monde | Rejoindre un événement — demande confirmation seulement si votre événement actuel n'est pas encore résolu, en le transmettant si vous l'administriez ; omise si vous n'en avez aucun ou qu'il est déjà clôturé. Un code clôturé sans administrateur se rouvre sous votre responsabilité au lieu d'être rejeté. |
 | `/leave` | participant | Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible — la même transmission se produit si vous partez en créant ou en rejoignant un autre événement au lieu de faire `/leave`. |
-| `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
+| `/current` | tout le monde | Affiche l'événement actuel : nom, code, modèle, nombre de participants et administrateur actuel. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |
 | `/status` | participant | Affiche l'état actuel du passcode à la demande ; déplace aussi les prochaines mises à jour en direct vers ce nouveau message, au cas où le précédent aurait trop remonté dans la conversation. |
@@ -158,7 +158,7 @@ dans un groupe de discussion.
 | `/promote <utilisateur>` | administrateur de l'événement | Transfère le rôle d'administrateur à un autre participant déjà dans l'événement ; le marque aussi comme fiable, comme `/newevent` le fait pour son propre administrateur. |
 | `/claim` | participant | Tente de reprendre le rôle d'administrateur si l'actuel est inactif depuis 30+ minutes ; il a 5 minutes pour accepter, refuser ou ne pas répondre avant que ça se fasse. |
 | `/verify <passcode>` | administrateur de l'événement | La seule façon de clôturer un événement : colle un passcode confirmé correct à l'écran d'échange du jeu ; résout toutes les positions à partir de lui d'un coup, fige l'événement et annonce le passcode final à tout le monde. |
-| `/events` | tout le monde | Liste les événements que vous administrez. |
+| `/events` | tout le monde | Liste tous les événements auxquels vous avez participé, actuels ou passés. |
 
 Chaque joueur voit les messages du bot dans sa propre langue, définie une
 fois avec `/language` et mémorisée par la suite.

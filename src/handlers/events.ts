@@ -2,17 +2,28 @@ import type { Context } from "grammy";
 import type { Env } from "../env.js";
 import { ensureUser } from "../session.js";
 import { t } from "../i18n/index.js";
-import { listEventsAdministeredBy } from "../db/events.js";
+import { listEventsParticipatedIn } from "../db/events.js";
 
 export async function handleEvents(ctx: Context, env: Env): Promise<void> {
   const user = await ensureUser(env.DB, ctx.from!.id, ctx.from!.language_code, ctx.from!.username);
-  const events = await listEventsAdministeredBy(env.DB, user.userId);
+  const entries = await listEventsParticipatedIn(env.DB, user.userId);
 
-  if (events.length === 0) {
+  if (entries.length === 0) {
     await ctx.reply(t(user.language, "events.none"));
     return;
   }
 
-  const items = events.map((e) => t(user.language, "events.itemLine", { name: e.name, code: e.code, status: e.status })).join("\n");
+  const items = entries
+    .map((entry) =>
+      t(user.language, "events.itemLine", {
+        name: entry.event.name,
+        code: entry.event.code,
+        status: entry.event.status,
+        reason: entry.event.closedReason,
+        isCurrent: entry.isCurrent,
+        isAdmin: entry.event.adminUserId === user.userId,
+      })
+    )
+    .join("\n");
   await ctx.reply(t(user.language, "events.list", { items }));
 }

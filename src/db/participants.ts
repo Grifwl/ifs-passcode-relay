@@ -31,12 +31,17 @@ export async function getParticipant(db: D1Database, userId: number): Promise<Pa
 
 /**
  * Joins a user to an event, replacing their previous membership if any
- * — an agent attends at most one event at a time.
+ * — an agent attends at most one event at a time. If they were already
+ * a participant of a *different* event, that membership is archived to
+ * `participant_history` first (see CLAUDE.md "Data model"), so /events
+ * can still show it later even though it's about to be overwritten
+ * here. Rejoining the same event they're already in archives nothing.
  */
 export async function joinEvent(
   db: D1Database,
   params: { userId: number; eventId: number; chatId: number }
 ): Promise<void> {
+  await archivePreviousParticipation(db, params.userId, params.eventId);
   await db
     .prepare(
       `INSERT INTO participants (user_id, event_id, chat_id, status_message_id, last_active_at)
@@ -52,9 +57,27 @@ export async function joinEvent(
     .run();
 }
 
-/** Removes a user's participation row (used by /leave and /kick). */
+/** Removes a user's participation row (used by /leave and /kick), archiving it first. */
 export async function removeParticipant(db: D1Database, userId: number): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO participant_history (event_id, user_id, joined_at)
+       SELECT event_id, user_id, joined_at FROM participants WHERE user_id = ?`
+    )
+    .bind(userId)
+    .run();
   await db.prepare("DELETE FROM participants WHERE user_id = ?").bind(userId).run();
+}
+
+/** Archives a user's current participation row, if it points at a different event than the one they're about to join. */
+async function archivePreviousParticipation(db: D1Database, userId: number, newEventId: number): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO participant_history (event_id, user_id, joined_at)
+       SELECT event_id, user_id, joined_at FROM participants WHERE user_id = ? AND event_id != ?`
+    )
+    .bind(userId, newEventId)
+    .run();
 }
 
 /** Stores the message id of a participant's live-updating status message. */

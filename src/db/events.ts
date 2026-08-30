@@ -1,4 +1,4 @@
-import type { EventStatus, IfsEvent } from "../domain/types.js";
+import type { EventParticipation, EventStatus, IfsEvent } from "../domain/types.js";
 import { generateEventCode } from "../domain/codeGen.js";
 
 interface EventRow {
@@ -41,17 +41,41 @@ export async function getEventById(db: D1Database, id: number): Promise<IfsEvent
 }
 
 /**
- * Lists the events a given user currently administers, most recent
- * first. Since the admin role can move on via `/promote` or `/leave`
- * succession (see CLAUDE.md "Administrator succession"), this reflects
- * who holds the role *now*, not necessarily who ran `/newevent`.
+ * Lists every event a user is or has been part of, for /events — their
+ * *current* one (if any), then every other one they've left behind,
+ * most recently-left first. Filtering by `admin_user_id` alone doesn't
+ * work for this: that field never gets cleared when its holder moves
+ * on without a successor (see CLAUDE.md "Administrator succession"), so
+ * it can keep pointing at someone long after they've stopped being a
+ * participant at all — which is also why each entry also carries
+ * whether the event is still their *current* one, not just whether
+ * they administer it.
  */
-export async function listEventsAdministeredBy(db: D1Database, userId: number): Promise<IfsEvent[]> {
-  const { results } = await db
-    .prepare("SELECT * FROM events WHERE admin_user_id = ? ORDER BY created_at DESC")
+export async function listEventsParticipatedIn(db: D1Database, userId: number): Promise<EventParticipation[]> {
+  const currentRow = await db
+    .prepare("SELECT e.* FROM events e JOIN participants p ON p.event_id = e.id WHERE p.user_id = ?")
     .bind(userId)
-    .all<EventRow>();
-  return results.map(fromRow);
+    .first<EventRow>();
+
+  const { results: historyRows } = await db
+    .prepare(
+      `SELECT e.*, MAX(h.left_at) AS left_at
+       FROM participant_history h
+       JOIN events e ON e.id = h.event_id
+       WHERE h.user_id = ?
+       GROUP BY h.event_id
+       ORDER BY left_at DESC`
+    )
+    .bind(userId)
+    .all<EventRow & { left_at: string }>();
+
+  const entries: EventParticipation[] = [];
+  if (currentRow) entries.push({ event: fromRow(currentRow), isCurrent: true, leftAt: null });
+  for (const row of historyRows) {
+    if (currentRow && row.id === currentRow.id) continue;
+    entries.push({ event: fromRow(row), isCurrent: false, leftAt: row.left_at });
+  }
+  return entries;
 }
 
 /**

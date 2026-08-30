@@ -17,7 +17,7 @@ export {
 export function t(
   lang: SupportedLanguage,
   key: MessageKey,
-  params: Record<string, string | number> = {}
+  params: Record<string, string | number | boolean | null> = {}
 ): string {
   return catalogs[lang][key](params);
 }

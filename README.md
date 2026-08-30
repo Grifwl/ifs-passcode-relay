@@ -131,7 +131,7 @@ group chat.
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event — confirms first only if your current event is still unresolved, handing that one off if you administered it; skipped if you have none or it's already closed. A code closed with no administrator left reopens under you instead of being rejected. |
 | `/leave` | participant | Leave your current event. If you're the administrator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible — the same handoff happens if you leave by creating or joining a different event instead. |
-| `/myevent` | anyone | Show which event you're in, if any. |
+| `/current` | anyone | Show the current event: name, join code, pattern, participant count and current administrator. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |
 | `/status` | participant | Show the current state of the passcode on demand; also moves future live updates to this new message, in case the earlier one has scrolled far up the chat. |
@@ -145,7 +145,7 @@ group chat.
 | `/promote <user>` | event administrator | Hand the administrator role to another participant already in the event; they get flagged trusted too, the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator if the current one has gone quiet for 30+ minutes; they get 5 minutes to accept, decline, or not respond before it goes through. |
 | `/verify <passcode>` | event administrator | The only way to close an event: paste a passcode confirmed correct at the game's redeem screen; resolves every position from it at once, freezes the event and announces the final passcode to everyone. |
-| `/events` | anyone | List the events you administer. |
+| `/events` | anyone | List every event you've been part of, current or past. |
 
 Every player sees the bot's messages in their own language, set once with
 `/language` and remembered from then on.

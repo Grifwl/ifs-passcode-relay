@@ -136,7 +136,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
 | `/join <codi>` | tothom | Uneix-te a un esdeveniment — demana confirmació només si el teu esdeveniment actual encara no està resolt, traspassant-lo si l'administraves; s'omet si no en tens cap o ja està tancat. Un codi tancat sense administrador es reobre sota teu en comptes de rebutjar-se. |
 | `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte — el mateix traspàs passa si en surts creant-ne o unint-te a un altre en comptes de fer `/leave`. |
-| `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
+| `/current` | tothom | Mostra l'esdeveniment actual: nom, codi, patró, nombre de participants i qui l'administra. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
 | `/status` | participant | Mostra l'estat actual del passcode quan ho vulguis; també trasllada les properes actualitzacions en directe a aquest nou missatge, per si l'anterior ha quedat molt amunt a la conversa. |
@@ -150,7 +150,7 @@ recollir captures de pantalla manualment en un grup de xat.
 | `/promote <usuari>` | administrador/a de l'esdeveniment | Cedeix el rol d'administrador/a a un altre participant ja unit a l'esdeveniment; també el marca de confiança, igual que `/newevent` fa amb qui crea l'esdeveniment. |
 | `/claim` | participant | Intenta assumir el càrrec d'administrador si l'actual porta 30+ minuts inactiu; té 5 minuts per acceptar-ho, rebutjar-ho o no respondre abans que es faci efectiu. |
 | `/verify <passcode>` | administrador/a de l'esdeveniment | L'única manera de tancar un esdeveniment: enganxa un passcode confirmat correcte a la pantalla de bescanvi del joc; resol totes les posicions a partir d'ell alhora, congela l'esdeveniment i anuncia el passcode final a tothom. |
-| `/events` | tothom | Llista els esdeveniments que administres. |
+| `/events` | tothom | Llista tots els esdeveniments en què has participat, actuals o passats. |
 
 Cada jugador veu els missatges del bot en el seu propi idioma, establert
 un cop amb `/language` i recordat a partir de llavors.

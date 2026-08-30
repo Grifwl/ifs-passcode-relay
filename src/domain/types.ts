@@ -43,3 +43,15 @@ export interface Participant {
   /** Last time this participant sent any message or tapped any button, touched on every update (see bot.ts). Used by /claim to judge administrator inactivity. */
   lastActiveAt: string;
 }
+
+/**
+ * One event a user is or has been part of, for /events. Distinct from
+ * `Participant`, which only tracks *current* membership — this also
+ * covers events left behind, sourced from `participant_history`.
+ */
+export interface EventParticipation {
+  event: IfsEvent;
+  isCurrent: boolean;
+  /** When this membership ended, or null while it's still current. */
+  leftAt: string | null;
+}

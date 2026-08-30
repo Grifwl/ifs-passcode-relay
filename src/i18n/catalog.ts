@@ -1,4 +1,4 @@
-type Params = Record<string, string | number>;
+type Params = Record<string, string | number | boolean | null>;
 type Message = (params: Params) => string;
 
 const en = {
@@ -16,7 +16,7 @@ const en = {
     "/sharetext [code] [lang] - get an invite message to share (defaults to your current event)\n" +
     "/join <code> - join an event\n" +
     "/leave - leave your current event\n" +
-    "/myevent - show which event you're in\n" +
+    "/current - show your current event, its administrator and participant count\n" +
     '"<position> <value>" or /submit - report a value\n' +
     '"<position>" alone (no value) - remove your own report at that position\n' +
     "/status - show the current passcode\n" +
@@ -28,7 +28,7 @@ const en = {
     "/promote <@user> - hand the administrator role to another participant (administrator)\n" +
     "/claim - take over as administrator if the current one has been inactive a while\n" +
     "/verify <passcode> - confirm a store-validated passcode, resolve every position from it and close the event (administrator)\n" +
-    "/events - list the events you administer",
+    "/events - list every event you've been part of, current or past",
 
   "language.usage": () => "Usage: /language <code>. Supported: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" isn't a supported language. Supported: en, ca, es, fr.`,
@@ -79,8 +79,16 @@ const en = {
     `Left "${p.name}". No one left in the event was eligible to take over as administrator, so it's been closed as unfinished.`,
   "leave.anotherParticipant": () => "Another participant",
 
-  "myevent.notInEvent": () => "You're not currently in any event. Use /join <code> or /newevent to start one.",
-  "myevent.info": (p) => `You're in "${p.name}" (code ${p.code}, pattern ${p.pattern}).`,
+  "current.notInEvent": () => "You're not currently in any event. Use /join <code> or /newevent to start one.",
+  "current.info": (p) =>
+    `Current event:\n` +
+    `• Name: ${p.name}\n` +
+    `• Join code: ${p.code}\n` +
+    `• Passcode pattern: ${p.pattern}\n` +
+    `• Participants: ${p.participantCount}\n` +
+    `• Current administrator: ${p.admin}`,
+  "current.adminNoUsername": () => "(no public @username)",
+  "current.you": () => " (you)",
 
   "status.header": (p) => `${p.name} — ${p.known}/${p.total} known`,
   "status.supportCount": (p) => `Supported by ${p.count}`,
@@ -183,9 +191,15 @@ const en = {
   "verify.overwhelmed": () =>
     "There are too many open possibilities to check right now. Resolve some positions manually first, then try /verify again.",
 
-  "events.none": () => "You don't administer any events yet.",
+  "events.none": () => "You haven't participated in any event yet.",
   "events.list": (p) => `Your events:\n${p.items}`,
-  "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
+  "events.itemLine": (p) => {
+    const status =
+      p.status === "active" ? "active" : p.reason === "completed" ? "closed, completed" : p.reason === "abandoned" ? "closed, abandoned" : "closed";
+    const tags = [p.isCurrent ? "current" : null, p.isAdmin ? "you're the administrator" : null].filter(Boolean);
+    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
 } satisfies Record<string, Message>;
 
 export type MessageKey = keyof typeof en;
@@ -206,7 +220,7 @@ const ca: Catalog = {
     "/sharetext [codi] [idioma] - obté un text d'invitació per compartir (per defecte, el teu esdeveniment actual)\n" +
     "/join <codi> - uneix-te a un esdeveniment\n" +
     "/leave - surt de l'esdeveniment actual\n" +
-    "/myevent - mostra a quin esdeveniment estàs\n" +
+    "/current - mostra l'esdeveniment actual, qui l'administra i el nombre de participants\n" +
     '"<posició> <valor>" o /submit - reporta un valor\n' +
     '"<posició>" sola (sense valor) - elimina el teu report en aquella posició\n' +
     "/status - mostra el passcode actual\n" +
@@ -218,7 +232,7 @@ const ca: Catalog = {
     "/promote <@usuari> - cedeix el rol d'administrador a un altre participant (administrador)\n" +
     "/claim - assumeix el càrrec d'administrador si l'actual fa temps que és inactiu\n" +
     "/verify <passcode> - confirma un passcode validat a la botiga, resol totes les posicions a partir d'ell i tanca l'esdeveniment (administrador)\n" +
-    "/events - llista els esdeveniments que administres",
+    "/events - llista tots els esdeveniments en què has participat, actuals o passats",
 
   "language.usage": () => "Ús: /language <codi>. Suportats: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" no és un idioma suportat. Suportats: en, ca, es, fr.`,
@@ -269,8 +283,16 @@ const ca: Catalog = {
     `Has sortit de "${p.name}". No quedava ningú apte per assumir el rol d'administrador, així que s'ha tancat com a inacabat.`,
   "leave.anotherParticipant": () => "Un altre participant",
 
-  "myevent.notInEvent": () => "Ara mateix no ets a cap esdeveniment. Fes servir /join <codi> o /newevent per crear-ne un.",
-  "myevent.info": (p) => `Ets a "${p.name}" (codi ${p.code}, patró ${p.pattern}).`,
+  "current.notInEvent": () => "Ara mateix no ets a cap esdeveniment. Fes servir /join <codi> o /newevent per crear-ne un.",
+  "current.info": (p) =>
+    `Esdeveniment actual:\n` +
+    `• Nom: ${p.name}\n` +
+    `• Codi per unir-s'hi: ${p.code}\n` +
+    `• Patró del passcode: ${p.pattern}\n` +
+    `• Nombre de participants: ${p.participantCount}\n` +
+    `• Administrador/a actual: ${p.admin}`,
+  "current.adminNoUsername": () => "(sense @usuari públic)",
+  "current.you": () => " (tu)",
 
   "status.header": (p) => `${p.name} — ${p.known}/${p.total} conegudes`,
   "status.supportCount": (p) => `Donat per bo per ${p.count}`,
@@ -374,9 +396,15 @@ const ca: Catalog = {
   "verify.overwhelmed": () =>
     "Hi ha massa possibilitats obertes per comprovar-ho ara mateix. Resol algunes posicions manualment primer i torna a provar /verify.",
 
-  "events.none": () => "Encara no administres cap esdeveniment.",
+  "events.none": () => "Encara no has participat en cap esdeveniment.",
   "events.list": (p) => `Els teus esdeveniments:\n${p.items}`,
-  "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
+  "events.itemLine": (p) => {
+    const status =
+      p.status === "active" ? "actiu" : p.reason === "completed" ? "tancat, completat" : p.reason === "abandoned" ? "tancat, abandonat" : "tancat";
+    const tags = [p.isCurrent ? "actual" : null, p.isAdmin ? "n'ets l'administrador/a" : null].filter(Boolean);
+    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
 };
 
 const es: Catalog = {
@@ -394,7 +422,7 @@ const es: Catalog = {
     "/sharetext [código] [idioma] - obtén un texto de invitación para compartir (por defecto, tu evento actual)\n" +
     "/join <código> - únete a un evento\n" +
     "/leave - sal del evento actual\n" +
-    "/myevent - muestra en qué evento estás\n" +
+    "/current - muestra el evento actual, quién lo administra y el número de participantes\n" +
     '"<posición> <valor>" o /submit - reporta un valor\n' +
     '"<posición>" sola (sin valor) - elimina tu reporte en esa posición\n' +
     "/status - muestra el passcode actual\n" +
@@ -406,7 +434,7 @@ const es: Catalog = {
     "/promote <@usuario> - cede el rol de administrador a otro participante (administrador)\n" +
     "/claim - asume el cargo de administrador si el actual lleva tiempo inactivo\n" +
     "/verify <passcode> - confirma un passcode validado en la tienda, resuelve todas las posiciones a partir de él y cierra el evento (administrador)\n" +
-    "/events - lista los eventos que administras",
+    "/events - lista todos los eventos en los que has participado, actuales o pasados",
 
   "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" no es un idioma soportado. Soportados: en, ca, es, fr.`,
@@ -457,8 +485,16 @@ const es: Catalog = {
     `Has salido de "${p.name}". No quedaba nadie apto para asumir el rol de administrador, así que se ha cerrado como inacabado.`,
   "leave.anotherParticipant": () => "Otro participante",
 
-  "myevent.notInEvent": () => "Ahora mismo no estás en ningún evento. Usa /join <código> o /newevent para crear uno.",
-  "myevent.info": (p) => `Estás en "${p.name}" (código ${p.code}, patrón ${p.pattern}).`,
+  "current.notInEvent": () => "Ahora mismo no estás en ningún evento. Usa /join <código> o /newevent para crear uno.",
+  "current.info": (p) =>
+    `Evento actual:\n` +
+    `• Nombre: ${p.name}\n` +
+    `• Código para unirse: ${p.code}\n` +
+    `• Patrón del passcode: ${p.pattern}\n` +
+    `• Número de participantes: ${p.participantCount}\n` +
+    `• Administrador/a actual: ${p.admin}`,
+  "current.adminNoUsername": () => "(sin @usuario público)",
+  "current.you": () => " (tú)",
 
   "status.header": (p) => `${p.name} — ${p.known}/${p.total} conocidas`,
   "status.supportCount": (p) => `Respaldado por ${p.count}`,
@@ -562,9 +598,15 @@ const es: Catalog = {
   "verify.overwhelmed": () =>
     "Hay demasiadas posibilidades abiertas para comprobarlo ahora mismo. Resuelve antes algunas posiciones manualmente y vuelve a intentar /verify.",
 
-  "events.none": () => "Todavía no administras ningún evento.",
+  "events.none": () => "Todavía no has participado en ningún evento.",
   "events.list": (p) => `Tus eventos:\n${p.items}`,
-  "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
+  "events.itemLine": (p) => {
+    const status =
+      p.status === "active" ? "activo" : p.reason === "completed" ? "cerrado, completado" : p.reason === "abandoned" ? "cerrado, abandonado" : "cerrado";
+    const tags = [p.isCurrent ? "actual" : null, p.isAdmin ? "eres el/la administrador/a" : null].filter(Boolean);
+    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
 };
 
 const fr: Catalog = {
@@ -582,7 +624,7 @@ const fr: Catalog = {
     "/sharetext [code] [langue] - obtient un texte d'invitation à partager (par défaut, votre événement actuel)\n" +
     "/join <code> - rejoindre un événement\n" +
     "/leave - quitter l'événement actuel\n" +
-    "/myevent - affiche dans quel événement vous êtes\n" +
+    "/current - affiche l'événement actuel, son administrateur et le nombre de participants\n" +
     '"<position> <valeur>" ou /submit - signaler une valeur\n' +
     '"<position>" seule (sans valeur) - supprime votre signalement à cette position\n' +
     "/status - affiche le passcode actuel\n" +
@@ -594,7 +636,7 @@ const fr: Catalog = {
     "/promote <@utilisateur> - transfère le rôle d'administrateur à un autre participant (administrateur)\n" +
     "/claim - reprend le rôle d'administrateur si l'actuel est inactif depuis un moment\n" +
     "/verify <passcode> - confirme un passcode validé en boutique, résout toutes les positions à partir de lui et clôture l'événement (administrateur)\n" +
-    "/events - liste les événements que vous administrez",
+    "/events - liste tous les événements auxquels vous avez participé, actuels ou passés",
 
   "language.usage": () => "Utilisation : /language <code>. Langues gérées : en, ca, es, fr.",
   "language.invalid": (p) => `"${p.code}" n'est pas une langue gérée. Langues gérées : en, ca, es, fr.`,
@@ -647,8 +689,16 @@ const fr: Catalog = {
     `Vous avez quitté "${p.name}". Personne d'éligible ne restait pour reprendre le rôle d'administrateur, donc il a été clôturé comme inachevé.`,
   "leave.anotherParticipant": () => "Un autre participant",
 
-  "myevent.notInEvent": () => "Vous n'êtes actuellement dans aucun événement. Utilisez /join <code> ou /newevent pour en créer un.",
-  "myevent.info": (p) => `Vous êtes dans "${p.name}" (code ${p.code}, modèle ${p.pattern}).`,
+  "current.notInEvent": () => "Vous n'êtes actuellement dans aucun événement. Utilisez /join <code> ou /newevent pour en créer un.",
+  "current.info": (p) =>
+    `Événement actuel :\n` +
+    `• Nom : ${p.name}\n` +
+    `• Code pour rejoindre : ${p.code}\n` +
+    `• Modèle du passcode : ${p.pattern}\n` +
+    `• Nombre de participants : ${p.participantCount}\n` +
+    `• Administrateur/trice actuel(le) : ${p.admin}`,
+  "current.adminNoUsername": () => "(pas de @nom d'utilisateur public)",
+  "current.you": () => " (vous)",
 
   "status.header": (p) => `${p.name} — ${p.known}/${p.total} connues`,
   "status.supportCount": (p) => `Confirmé par ${p.count}`,
@@ -754,9 +804,15 @@ const fr: Catalog = {
   "verify.overwhelmed": () =>
     "Il y a trop de possibilités ouvertes pour vérifier cela maintenant. Résolvez d'abord certaines positions manuellement, puis réessayez /verify.",
 
-  "events.none": () => "Vous n'administrez encore aucun événement.",
+  "events.none": () => "Vous n'avez encore participé à aucun événement.",
   "events.list": (p) => `Vos événements :\n${p.items}`,
-  "events.itemLine": (p) => `• ${p.name} — ${p.code} (${p.status})`,
+  "events.itemLine": (p) => {
+    const status =
+      p.status === "active" ? "actif" : p.reason === "completed" ? "clos, terminé" : p.reason === "abandoned" ? "clos, abandonné" : "clos";
+    const tags = [p.isCurrent ? "actuel" : null, p.isAdmin ? "vous en êtes l'administrateur/trice" : null].filter(Boolean);
+    const suffix = tags.length ? ` — ${tags.join(", ")}` : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
 };
 
 export const catalogs = { en, ca, es, fr } satisfies Record<string, Catalog>;

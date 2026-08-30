@@ -24,7 +24,7 @@ codebase, and any conversation about the project must keep them distinct:
   "the code" / "el codi" / "el código" / "le code".
 - **join code** — `events.code`, the short, random string (e.g.
   `7KPQ2M`) an event is created with, used only with `/join <code>`,
-  `/sharetext [code]`, and shown back by `/myevent`/`/events`; it
+  `/sharetext [code]`, and shown back by `/current`/`/events`; it
   identifies *which event*, not anything about the passcode inside it.
   This is the one thing that's actually called "code" (`codi`/`código`)
   in bot text, and only this.
@@ -158,6 +158,15 @@ is ever supplied.
   live-updating status message edited on every passcode change),
   `joined_at`, `last_active_at` (touched on every update from this
   user, of any kind — see "Claiming with `/claim`").
+- **`participant_history`** — append-only trail of every membership
+  `participants` has ever held, archived the moment a row is about to
+  be deleted (`/leave`, `/kick`) or overwritten (a `/join`/`/newevent`
+  switch to a different event) — see `db/participants.ts`'s
+  `removeParticipant` and `joinEvent`. This is what lets `/events` (see
+  below) answer "what have I been part of", something `participants`
+  alone can't, since it only ever holds *current* membership.
+  `id` (PK), `event_id`, `user_id`, `joined_at` (copied from the
+  archived row), `left_at`.
 - **`passcode_reports`** — log of every accepted submission (including
   deliberate duplicates from two different agents disagreeing, created
   via the confirmation prompt below), append-only with exactly one
@@ -786,7 +795,7 @@ word too.
 | `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
 | `/join <code>` | anyone | Join an event (confirmation prompt only if your current event is still active — skipped if you have none, or it's already closed). A code closed as abandoned reopens and hands you its administrator role instead of being rejected (see Reviving an abandoned event); switching away from an event you administered runs succession on it first. |
 | `/leave` | participant | Leave the current event. If you're the administrator, hands the role to another participant automatically (see Administrator succession), or closes the event as abandoned if no one is eligible. |
-| `/myevent` | anyone | Show current event/role. |
+| `/current` | anyone | Show the current event: its name, join code, pattern, participant count and current administrator (`@username`, or a placeholder if they have none set — plus a marker if that's you). |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |
 | `<position>` alone or `/submit <position>` (no value) | participant | Remove your own report at that position, if any; no confirmation, the response names the value removed. |
 | `/status` | participant | On-demand snapshot (progress + variant passcode blocks/conflicts); also relocates the live-update target to this new message. |
@@ -800,7 +809,7 @@ word too.
 | `/promote <user>` | administrator | Hand the administrator role to another participant, who must already be in the event; marks them trusted the same way `/newevent` does for its own administrator. |
 | `/claim` | participant | Try to take over as administrator; only works once the current one has been inactive 30+ minutes, and gives them 5 minutes to accept, decline, or say nothing (see Administrator succession). |
 | `/verify <passcode>` | administrator | The only way to complete and close an event: match a store-confirmed passcode against current candidates to resolve every position at once, then push a **new** message (not an edit) with the final passcode to every participant and freeze the event; reports back instead if no combination matches or more than one does (see "Confirming a store-validated passcode with `/verify`"). |
-| `/events` | anyone | List events the caller administers. |
+| `/events` | anyone | List every event the caller has ever been a participant of — current one first, then past ones most-recently-left first — each tagged with whether it's their current one and whether they're its administrator (see `participant_history`). Not the same as who currently holds `admin_user_id`: that field survives a closure untouched, so it can keep naming someone long after they've moved on. |
 
 Letters and word slots are always **displayed uppercase**; input is
 accepted in any case and normalized on the way in.

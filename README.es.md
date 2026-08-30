@@ -136,7 +136,7 @@ grupo de chat.
 | `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
 | `/join <código>` | cualquiera | Únete a un evento — pide confirmación solo si tu evento actual todavía no está resuelto, traspasándolo si lo administrabas; se omite si no tienes ninguno o ya está cerrado. Un código cerrado sin administrador se reabre bajo tu cargo en vez de rechazarse. |
 | `/leave` | participante | Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (priorizando a los de confianza y, si no, a quien más haya aportado), o se cierra como inacabado si no hay nadie apto — el mismo traspaso ocurre si sales creando o uniéndote a otro evento en vez de hacer `/leave`. |
-| `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
+| `/current` | cualquiera | Muestra el evento actual: nombre, código, patrón, número de participantes y quién lo administra. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |
 | `/status` | participante | Muestra el estado actual del passcode cuando quieras; además traslada las próximas actualizaciones en directo a este nuevo mensaje, por si el anterior ha quedado muy arriba en la conversación. |
@@ -150,7 +150,7 @@ grupo de chat.
 | `/promote <usuario>` | administrador del evento | Cede el rol de administrador a otro participante ya unido al evento; también lo marca de confianza, igual que `/newevent` hace con quien crea el evento. |
 | `/claim` | participante | Intenta asumir el cargo de administrador si el actual lleva 30+ minutos inactivo; tiene 5 minutos para aceptarlo, rechazarlo o no responder antes de que se haga efectivo. |
 | `/verify <passcode>` | administrador del evento | La única forma de cerrar un evento: pega un passcode confirmado correcto en la pantalla de canje del juego; resuelve todas las posiciones a partir de él a la vez, congela el evento y anuncia el passcode final a todos. |
-| `/events` | cualquiera | Lista los eventos que administras. |
+| `/events` | cualquiera | Lista todos los eventos en los que has participado, actuales o pasados. |
 
 Cada jugador ve los mensajes del bot en su propio idioma, establecido una
 vez con `/language` y recordado a partir de entonces.

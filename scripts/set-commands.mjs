@@ -15,7 +15,7 @@ const COMMANDS = [
   { command: "sharetext", description: "Get an invite message to share" },
   { command: "join", description: "Join an event by its code" },
   { command: "leave", description: "Leave your current event" },
-  { command: "myevent", description: "Show which event you're in" },
+  { command: "current", description: "Show your current event, its administrator and participant count" },
   { command: "submit", description: "Report a value: /submit <position> <value>" },
   { command: "status", description: "Show the current state of the passcode" },
   { command: "resolve", description: "Settle a disagreement (administrator)" },
@@ -27,7 +27,7 @@ const COMMANDS = [
   { command: "promote", description: "Hand the administrator role to another participant (administrator)" },
   { command: "claim", description: "Take over as administrator if the current one has been inactive" },
   { command: "verify", description: "Confirm a store-validated passcode, resolve every position and close the event (administrator)" },
-  { command: "events", description: "List the events you administer" },
+  { command: "events", description: "List every event you've been part of, current or past" },
 ];
 
 function readBotToken() {
