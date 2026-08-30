@@ -38,6 +38,13 @@ const en = {
     `Usage: /newevent <name> or /newevent <name> | <pattern>. Default pattern: ${p.defaultPattern}. ` +
     `The "|" separates the name from the pattern, e.g.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "That pattern isn't valid: it can only contain X (letter), 9 (digit) and * (word).",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `You're currently in "${p.currentEventName}", which hasn't been verified yet. Creating a new event will leave it. Continue?`,
+  "newevent.confirmYesButton": () => "Yes, create it",
+  "newevent.confirmNoButton": () => "Cancel",
+  "newevent.cancelled": () => "Cancelled — no event was created.",
+  "newevent.expired": () => "That request is no longer available — send /newevent again if you still want to create it.",
+  "newevent.confirmed": () => "Got it — creating your new event and leaving the previous one.",
   "newevent.created": (p) =>
     `Event "${p.name}" created. Join code: ${p.code}\nPattern: ${p.pattern}\n` +
     `You've been joined automatically and marked as trusted. Report what you find as "<position> <value>", e.g. "6 GLYPH".\n\n` +
@@ -45,16 +52,20 @@ const en = {
 
   "sharetext.text": (p) => `Join the passcode relay for "${p.name}": open the bot ${p.bot} and send:`,
   "sharetext.tapToCopy": () =>
-    "Tap the command above to copy it, then tap the bot's name to open a conversation with it; paste the command there and send it.",
+    "Tap the command above to copy it, then tap the bot's name to open a conversation with it. If it's your first time there, tap Start first; then paste the command and send it.",
   "sharetext.otherLanguages": () => "Need this in another language?\nTap below.",
   "sharetext.noCurrentEvent": () => "You're not in an event. Specify a code: /sharetext <code> [lang].",
 
   "join.usage": () => "Usage: /join <code>.",
   "join.confirmSwitch": (p) => `You're already in "${p.currentEventName}". Switch to "${p.newEventName}"?`,
+  "join.confirmSwitchRevive": (p) =>
+    `You're already in "${p.currentEventName}". "${p.newEventName}" is closed with no administrator — switching will reopen it and make you its administrator. Continue?`,
   "join.confirmYesButton": () => "Yes, switch",
   "join.confirmNoButton": () => "Cancel",
   "join.switched": (p) => `Switched to "${p.name}".`,
   "join.joined": (p) => `Joined "${p.name}". Report what you find as "<position> <value>", e.g. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" was closed with no administrator — you've reopened it and are now its administrator. Report what you find as "<position> <value>", e.g. "6 GLYPH".`,
   "join.shareHint": () => "Want to help others find this event? Run /sharetext to get an invite message to share.",
   "join.alreadyInThisEvent": (p) => `You're already in "${p.name}".`,
   "join.cancelled": (p) => `Cancelled — you're still in "${p.name}".`,
@@ -217,6 +228,13 @@ const ca: Catalog = {
     `Ús: /newevent <nom> o /newevent <nom> | <patró>. Patró per defecte: ${p.defaultPattern}. ` +
     `El "|" separa el nom del patró, p. ex.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Aquest patró no és vàlid: només pot contenir X (lletra), 9 (número) i * (paraula).",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `Ara mateix ets a "${p.currentEventName}", que encara no s'ha verificat. Crear un esdeveniment nou el deixarà enrere. Vols continuar?`,
+  "newevent.confirmYesButton": () => "Sí, crea'l",
+  "newevent.confirmNoButton": () => "Cancel·la",
+  "newevent.cancelled": () => "Cancel·lat — no s'ha creat cap esdeveniment.",
+  "newevent.expired": () => "Aquesta sol·licitud ja no està disponible — torna a enviar /newevent si encara el vols crear.",
+  "newevent.confirmed": () => "Entesos — creant el teu esdeveniment nou i deixant l'anterior.",
   "newevent.created": (p) =>
     `Esdeveniment "${p.name}" creat. Codi d'accés: ${p.code}\nPatró: ${p.pattern}\n` +
     `T'hi has unit automàticament i t'has marcat com a de confiança. Reporta el que trobis com a "<posició> <valor>", p.ex. "6 GLYPH".\n\n` +
@@ -224,16 +242,20 @@ const ca: Catalog = {
 
   "sharetext.text": (p) => `Uneix-te al relleu de passcode de "${p.name}": obre el bot ${p.bot} i envia:`,
   "sharetext.tapToCopy": () =>
-    "Toca la comanda de sobre per copiar-la i després toca el nom del bot per obrir-hi una conversa; enganxa-hi la comanda i envia-la.",
+    "Toca la comanda de sobre per copiar-la i després toca el nom del bot per obrir-hi una conversa. Si és la primera vegada que hi entres, toca primer Start; després enganxa-hi la comanda i envia-la.",
   "sharetext.otherLanguages": () => "Ho vols en un altre idioma?\nClica aquí sota.",
   "sharetext.noCurrentEvent": () => "No estàs en cap esdeveniment. Especifica un codi: /sharetext <codi> [idioma].",
 
   "join.usage": () => "Ús: /join <codi>.",
   "join.confirmSwitch": (p) => `Ja ets a "${p.currentEventName}". Vols canviar a "${p.newEventName}"?`,
+  "join.confirmSwitchRevive": (p) =>
+    `Ja ets a "${p.currentEventName}". "${p.newEventName}" està tancat sense administrador — si hi canvies, el reobriràs i en seràs l'administrador/a. Vols continuar?`,
   "join.confirmYesButton": () => "Sí, canvia",
   "join.confirmNoButton": () => "Cancel·la",
   "join.switched": (p) => `Has canviat a "${p.name}".`,
   "join.joined": (p) => `T'has unit a "${p.name}". Reporta el que trobis com a "<posició> <valor>", p.ex. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" estava tancat sense administrador — l'has reobert i ara n'ets l'administrador/a. Reporta el que trobis com a "<posició> <valor>", p.ex. "6 GLYPH".`,
   "join.shareHint": () => "Vols ajudar a difondre l'esdeveniment? Executa /sharetext per obtenir un text d'invitació.",
   "join.alreadyInThisEvent": (p) => `Ja ets a "${p.name}".`,
   "join.cancelled": (p) => `Cancel·lat — segueixes a "${p.name}".`,
@@ -394,6 +416,13 @@ const es: Catalog = {
     `Uso: /newevent <nombre> o /newevent <nombre> | <patrón>. Patrón por defecto: ${p.defaultPattern}. ` +
     `El "|" separa el nombre del patrón, p. ej.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Ese patrón no es válido: solo puede contener X (letra), 9 (número) y * (palabra).",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `Ahora mismo estás en "${p.currentEventName}", que todavía no se ha verificado. Crear un evento nuevo lo dejará atrás. ¿Quieres continuar?`,
+  "newevent.confirmYesButton": () => "Sí, créalo",
+  "newevent.confirmNoButton": () => "Cancelar",
+  "newevent.cancelled": () => "Cancelado — no se ha creado ningún evento.",
+  "newevent.expired": () => "Esa solicitud ya no está disponible — vuelve a enviar /newevent si todavía quieres crearlo.",
+  "newevent.confirmed": () => "Entendido — creando tu evento nuevo y dejando el anterior.",
   "newevent.created": (p) =>
     `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
     `Te has unido automáticamente y te has marcado como de confianza. Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 GLYPH".\n\n` +
@@ -401,16 +430,20 @@ const es: Catalog = {
 
   "sharetext.text": (p) => `Únete al relevo de passcode de "${p.name}": abre el bot ${p.bot} y envía:`,
   "sharetext.tapToCopy": () =>
-    "Toca el comando de arriba para copiarlo y luego toca el nombre del bot para abrir una conversación con él; pega ahí el comando y envíalo.",
+    "Toca el comando de arriba para copiarlo y luego toca el nombre del bot para abrir una conversación con él. Si es la primera vez que entras ahí, toca primero Start; después pega ahí el comando y envíalo.",
   "sharetext.otherLanguages": () => "¿Lo quieres en otro idioma?\nTócalo aquí abajo.",
   "sharetext.noCurrentEvent": () => "No estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
 
   "join.usage": () => "Uso: /join <código>.",
   "join.confirmSwitch": (p) => `Ya estás en "${p.currentEventName}". ¿Quieres cambiar a "${p.newEventName}"?`,
+  "join.confirmSwitchRevive": (p) =>
+    `Ya estás en "${p.currentEventName}". "${p.newEventName}" está cerrado sin administrador — si cambias, lo reabrirás y serás su administrador/a. ¿Quieres continuar?`,
   "join.confirmYesButton": () => "Sí, cambiar",
   "join.confirmNoButton": () => "Cancelar",
   "join.switched": (p) => `Has cambiado a "${p.name}".`,
   "join.joined": (p) => `Te has unido a "${p.name}". Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" estaba cerrado sin administrador — lo has reabierto y ahora eres su administrador/a. Reporta lo que encuentres como "<posición> <valor>", p.ej. "6 GLYPH".`,
   "join.shareHint": () => "¿Quieres ayudar a difundir el evento? Ejecuta /sharetext para obtener un texto de invitación.",
   "join.alreadyInThisEvent": (p) => `Ya estás en "${p.name}".`,
   "join.cancelled": (p) => `Cancelado — sigues en "${p.name}".`,
@@ -571,6 +604,13 @@ const fr: Catalog = {
     `Utilisation : /newevent <nom> ou /newevent <nom> | <modèle>. Modèle par défaut : ${p.defaultPattern}. ` +
     `Le « | » sépare le nom du modèle, ex. : /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
   "newevent.invalidPattern": () => "Ce modèle n'est pas valide : il ne peut contenir que X (lettre), 9 (chiffre) et * (mot).",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `Vous êtes actuellement dans "${p.currentEventName}", qui n'a pas encore été vérifié. Créer un nouvel événement le quittera. Continuer ?`,
+  "newevent.confirmYesButton": () => "Oui, le créer",
+  "newevent.confirmNoButton": () => "Annuler",
+  "newevent.cancelled": () => "Annulé — aucun événement n'a été créé.",
+  "newevent.expired": () => "Cette demande n'est plus disponible — renvoyez /newevent si vous voulez toujours le créer.",
+  "newevent.confirmed": () => "Compris — création de votre nouvel événement, en quittant le précédent.",
   "newevent.created": (p) =>
     `Événement "${p.name}" créé. Code d'accès : ${p.code}\nModèle : ${p.pattern}\n` +
     `Vous avez été inscrit automatiquement et marqué comme fiable. Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 GLYPH".\n\n` +
@@ -578,17 +618,21 @@ const fr: Catalog = {
 
   "sharetext.text": (p) => `Rejoignez le relais de passcode de "${p.name}" : ouvrez le bot ${p.bot} et envoyez :`,
   "sharetext.tapToCopy": () =>
-    "Touchez la commande ci-dessus pour la copier, puis touchez le nom du bot pour ouvrir une conversation avec lui ; collez-y la commande et envoyez-la.",
+    "Touchez la commande ci-dessus pour la copier, puis touchez le nom du bot pour ouvrir une conversation avec lui. Si c'est la première fois que vous y entrez, touchez d'abord Start ; puis collez-y la commande et envoyez-la.",
   "sharetext.otherLanguages": () => "Vous le voulez dans une autre langue ?\nAppuyez ci-dessous.",
   "sharetext.noCurrentEvent": () =>
     "Vous n'êtes dans aucun événement. Indiquez un code : /sharetext <code> [langue].",
 
   "join.usage": () => "Utilisation : /join <code>.",
   "join.confirmSwitch": (p) => `Vous êtes déjà dans "${p.currentEventName}". Passer à "${p.newEventName}" ?`,
+  "join.confirmSwitchRevive": (p) =>
+    `Vous êtes déjà dans "${p.currentEventName}". "${p.newEventName}" est clôturé sans administrateur — si vous changez, vous le rouvrirez et en deviendrez l'administrateur. Continuer ?`,
   "join.confirmYesButton": () => "Oui, changer",
   "join.confirmNoButton": () => "Annuler",
   "join.switched": (p) => `Vous êtes passé à "${p.name}".`,
   "join.joined": (p) => `Vous avez rejoint "${p.name}". Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" était clôturé sans administrateur — vous l'avez rouvert et en êtes désormais l'administrateur. Signalez ce que vous trouvez sous la forme "<position> <valeur>", ex. "6 GLYPH".`,
   "join.shareHint": () =>
     "Vous voulez aider à faire connaître l'événement ? Lancez /sharetext pour obtenir un texte d'invitation.",
   "join.alreadyInThisEvent": (p) => `Vous êtes déjà dans "${p.name}".`,

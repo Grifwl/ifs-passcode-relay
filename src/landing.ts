@@ -98,10 +98,10 @@ const en: LandingContent = {
       rows: [
         {
           command: "/newevent <name> [| <pattern>]",
-          description: `Create a new IFS event and get its join code; joins you automatically and marks you trusted. The pattern is optional (default ${DEFAULT_PATTERN}); to set your own, type the name, then a "|", then the pattern using X for a letter, 9 for a digit and * for a whole word, e.g. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+          description: `Create a new IFS event and get its join code; joins you automatically and marks you trusted. Confirms first if your current event is still unresolved (declining creates nothing); that one is handed off first. The pattern is optional (default ${DEFAULT_PATTERN}); to set your own, type the name, then a "|", then the pattern using X for a letter, 9 for a digit and * for a whole word, e.g. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
         },
-        { command: "/join <code>", description: "Join an event." },
-        { command: "/leave", description: "Leave your current event. If you're the administrator, another participant automatically takes over (trusted ones first, then whoever's contributed the most), or the event closes as unfinished if no one is eligible." },
+        { command: "/join <code>", description: "Join an event — confirms first only if your current event is still unresolved; reopens one closed with no administrator under you, instead of rejecting the code." },
+        { command: "/leave", description: "Leave your current event. If you're the administrator, another participant automatically takes over (trusted ones first, then whoever's contributed the most), or the event closes as unfinished if no one is eligible — creating or joining a different event hands off the same way." },
         { command: "/myevent", description: "Show which event you're in." },
         { command: "/sharetext [code] [lang]", description: "(Re)get the invite message, defaulting to your current event and own language." },
         { command: "/events", description: "List the events you administer." },
@@ -182,10 +182,10 @@ const ca: LandingContent = {
       rows: [
         {
           command: "/newevent <nom> [| <patró>]",
-          description: `Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. El patró és opcional (per defecte ${DEFAULT_PATTERN}); per posar-ne un de propi, escriu el nom, després un "|", i després el patró fent servir X per a una lletra, 9 per a un número i * per a una paraula sencera, p. ex. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+          description: `Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Demana confirmació primer si el teu esdeveniment actual encara no està resolt (dir que no no crea res); aquell es traspassa primer. El patró és opcional (per defecte ${DEFAULT_PATTERN}); per posar-ne un de propi, escriu el nom, després un "|", i després el patró fent servir X per a una lletra, 9 per a un número i * per a una paraula sencera, p. ex. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
         },
-        { command: "/join <codi>", description: "Uneix-te a un esdeveniment." },
-        { command: "/leave", description: "Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (primer els de confiança, si no qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte." },
+        { command: "/join <codi>", description: "Uneix-te a un esdeveniment — demana confirmació només si el teu esdeveniment actual encara no està resolt; un de tancat sense administrador es reobre sota teu en comptes de rebutjar-se." },
+        { command: "/leave", description: "Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (primer els de confiança, si no qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte — crear-ne o unir-te a un altre esdeveniment traspassa el rol igualment." },
         { command: "/myevent", description: "Mostra a quin esdeveniment estàs." },
         { command: "/sharetext [codi] [idioma]", description: "(Re)obté el text d'invitació, per defecte del teu esdeveniment actual i el teu idioma." },
         { command: "/events", description: "Llista els esdeveniments que administres." },
@@ -266,10 +266,10 @@ const es: LandingContent = {
       rows: [
         {
           command: "/newevent <nombre> [| <patrón>]",
-          description: `Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. El patrón es opcional (por defecto ${DEFAULT_PATTERN}); para poner uno propio, escribe el nombre, luego un "|", y luego el patrón usando X para una letra, 9 para un número y * para una palabra entera, p. ej. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+          description: `Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. Pide confirmación primero si tu evento actual todavía no está resuelto (decir que no no crea nada); ese se traspasa antes. El patrón es opcional (por defecto ${DEFAULT_PATTERN}); para poner uno propio, escribe el nombre, luego un "|", y luego el patrón usando X para una letra, 9 para un número y * para una palabra entera, p. ej. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
         },
-        { command: "/join <código>", description: "Únete a un evento." },
-        { command: "/leave", description: "Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (primero los de confianza, si no quien más haya aportado), o se cierra como inacabado si no hay nadie apto." },
+        { command: "/join <código>", description: "Únete a un evento — pide confirmación solo si tu evento actual todavía no está resuelto; uno cerrado sin administrador se reabre bajo tu cargo en vez de rechazarse." },
+        { command: "/leave", description: "Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (primero los de confianza, si no quien más haya aportado), o se cierra como inacabado si no hay nadie apto — crear o unirte a otro evento traspasa el rol igualmente." },
         { command: "/myevent", description: "Muestra en qué evento estás." },
         { command: "/sharetext [código] [idioma]", description: "(Re)obtén el texto de invitación, por defecto de tu evento actual y tu idioma." },
         { command: "/events", description: "Lista los eventos que administras." },
@@ -350,10 +350,10 @@ const fr: LandingContent = {
       rows: [
         {
           command: "/newevent <nom> [| <modèle>]",
-          description: `Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Le modèle est optionnel (par défaut ${DEFAULT_PATTERN}) ; pour en définir un, tapez le nom, puis un « | », puis le modèle en utilisant X pour une lettre, 9 pour un chiffre et * pour un mot entier, ex. « /newevent Barcelona 2026-08 | XXX99*999XX ».`,
+          description: `Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Demande confirmation d'abord si votre événement actuel n'est pas encore résolu (refuser ne crée rien) ; il est transmis d'abord. Le modèle est optionnel (par défaut ${DEFAULT_PATTERN}) ; pour en définir un, tapez le nom, puis un « | », puis le modèle en utilisant X pour une lettre, 9 pour un chiffre et * pour un mot entier, ex. « /newevent Barcelona 2026-08 | XXX99*999XX ».`,
         },
-        { command: "/join <code>", description: "Rejoindre un événement." },
-        { command: "/leave", description: "Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (les fiables en priorité, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible." },
+        { command: "/join <code>", description: "Rejoindre un événement — demande confirmation seulement si votre événement actuel n'est pas encore résolu ; un événement clôturé sans administrateur se rouvre sous votre responsabilité au lieu d'être rejeté." },
+        { command: "/leave", description: "Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (les fiables en priorité, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible — créer ou rejoindre un autre événement transmet le rôle de la même façon." },
         { command: "/myevent", description: "Affiche dans quel événement vous êtes." },
         { command: "/sharetext [code] [langue]", description: "(Re)obtient le texte d'invitation, par défaut de votre événement actuel et de votre langue." },
         { command: "/events", description: "Liste les événements que vous administrez." },

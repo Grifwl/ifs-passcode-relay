@@ -47,10 +47,26 @@ dans un groupe de discussion.
    événements IFS portant le même nom — par exemple `/newevent
    Barcelona 2026-08`, en incluant l'année et le mois, plutôt qu'un
    simple `/newevent Barcelona` qui entre en collision avec n'importe
-   quel autre IFS de Barcelone.
+   quel autre IFS de Barcelone. Si vous êtes déjà dans un autre
+   événement pas encore résolu (non clôturé), on vous demande d'abord
+   de confirmer — que vous l'administriez ou non — puisque créer
+   celui-ci le laisse derrière vous ; si vous refusez, rien n'est créé.
+   Si cet événement était déjà clôturé, ou que vous n'étiez dans aucun,
+   il est créé immédiatement sans question. Dans tous les cas, si vous
+   administriez celui que vous quittez, il est transmis d'abord, de la
+   même façon que `/leave` (voir le point 6 ci-dessous).
 2. Chaque autre participant envoie `/join <code>` au bot, qui l'invite
    aussi à lancer `/sharetext` s'il souhaite aider à le faire connaître.
-   Un agent ne peut contribuer activement qu'à un seul événement à la fois.
+   Un agent ne peut contribuer activement qu'à un seul événement à la fois,
+   donc rejoindre un événement différent tant que le vôtre n'est pas
+   encore résolu demande d'abord de confirmer le changement — et, si
+   vous l'administriez, le transmet de la même façon. Si votre
+   événement actuel est déjà clôturé, ou que vous n'en avez aucun,
+   `/join` vous change immédiatement sans question. Si le code que vous
+   rejoignez appartient à un événement clôturé parce que son
+   administrateur précédent l'a quitté sans personne d'éligible pour
+   prendre la relève, `/join` le rouvre et fait de vous son
+   administrateur au lieu de rejeter le code.
 3. Quand vous trouvez une valeur, vous envoyez simplement sa position et
    sa valeur : `6 GLYPH` signale que la position 6 (le mot) est
    `GLYPH` ; `7 3` signale que la position 7 est le chiffre `3`. Pas
@@ -124,10 +140,10 @@ dans un groupe de discussion.
 |---|---|---|
 | `/start`, `/help` | tout le monde | Introduction et liste des commandes. |
 | `/language <code>` | tout le monde | Définit votre langue (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Ici, le `\|` sépare le nom du modèle, il ne veut pas dire « choisissez l'un ou l'autre » — ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
+| `/newevent <nom> [\| <modèle>]` | tout le monde | Crée un nouvel événement IFS et obtient son code d'accès ; vous y inscrit automatiquement et vous marque fiable. Ici, le `\|` sépare le nom du modèle, il ne veut pas dire « choisissez l'un ou l'autre » — ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. Demande confirmation d'abord si votre événement actuel n'est pas encore résolu (refuser ne crée rien) ; il est transmis d'abord, comme le ferait `/leave`. |
 | `/sharetext [code] [langue]` | tout le monde | Obtient un texte prêt à partager pour inviter à rejoindre. `code` prend par défaut votre événement actuel, `langue` la vôtre — déjà envoyé une fois automatiquement par `/newevent`. |
-| `/join <code>` | tout le monde | Rejoindre un événement. |
-| `/leave` | participant | Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible. |
+| `/join <code>` | tout le monde | Rejoindre un événement — demande confirmation seulement si votre événement actuel n'est pas encore résolu, en le transmettant si vous l'administriez ; omise si vous n'en avez aucun ou qu'il est déjà clôturé. Un code clôturé sans administrateur se rouvre sous votre responsabilité au lieu d'être rejeté. |
+| `/leave` | participant | Quitter l'événement actuel. Si vous êtes l'administrateur, un autre participant reprend automatiquement le rôle (en priorité les fiables, sinon celui ayant le plus contribué), ou l'événement est clôturé comme inachevé si personne n'est éligible — la même transmission se produit si vous partez en créant ou en rejoignant un autre événement au lieu de faire `/leave`. |
 | `/myevent` | tout le monde | Affiche dans quel événement vous êtes, le cas échéant. |
 | `<position> <valeur>` (ou `/submit <position> <valeur>`) | participant | Signale la valeur trouvée à une position. |
 | `<position>` seule (ou `/submit <position>`) | participant | Supprime votre propre signalement à cette position, s'il existe. |

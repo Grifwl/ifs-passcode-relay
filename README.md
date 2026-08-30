@@ -41,11 +41,25 @@ group chat.
    join, make it specific enough to tell same-named IFS events apart —
    e.g. `/newevent Barcelona 2026-08`, including the year and month,
    rather than a bare `/newevent Barcelona` that collides with every
-   other Barcelona IFS.
+   other Barcelona IFS. If you're currently in another event that's
+   still unresolved (not yet closed), you're asked to confirm first —
+   whether you administer it or not — since creating this one leaves it
+   behind; declining creates nothing at all. If that event was closed
+   already, or you weren't in one, it's created immediately with no
+   prompt. Either way, if you administered the one you left, it's
+   handed off first, the same way `/leave` would (see step 6 below).
 2. Every other attendee sends `/join <code>` to the bot, which also
    nudges them to run `/sharetext` themselves in case they want to help
    spread the word too. An agent can only be actively contributing to
-   one event at a time.
+   one event at a time, so joining a different one while your current
+   one is still unresolved asks you to confirm the switch first — and,
+   if you administered that other one, hands it off the same way. If
+   your current event is already closed, or you don't have one, `/join`
+   switches you over immediately with no prompt. If the code
+   you're joining belongs to an event that got closed because its
+   previous administrator left with nobody eligible to take over, `/join`
+   reopens it and makes you its administrator instead of rejecting the
+   code.
 3. When you find a value, you just send its position and value: `6
    GLYPH` reports that position 6 (the word) is `GLYPH`; `7 3` reports
    that position 7 is the digit `3`. No need to remember a command.
@@ -113,10 +127,10 @@ group chat.
 |---|---|---|
 | `/start`, `/help` | anyone | Introduction and command list. |
 | `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`). |
-| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. Confirms first if your current event is still unresolved (declining creates nothing); that one is handed off first, same as `/leave`. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
-| `/join <code>` | anyone | Join an event. |
-| `/leave` | participant | Leave your current event. If you're the administrator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible. |
+| `/join <code>` | anyone | Join an event — confirms first only if your current event is still unresolved, handing that one off if you administered it; skipped if you have none or it's already closed. A code closed with no administrator left reopens under you instead of being rejected. |
+| `/leave` | participant | Leave your current event. If you're the administrator, another participant automatically takes over the role (preferring trusted ones, then whoever's contributed the most), or the event is closed as unfinished if no one is eligible — the same handoff happens if you leave by creating or joining a different event instead. |
 | `/myevent` | anyone | Show which event you're in, if any. |
 | `<position> <value>` (or `/submit <position> <value>`) | participant | Report the value found at a position. |
 | `<position>` alone (or `/submit <position>`) | participant | Remove your own report at that position, if any. |

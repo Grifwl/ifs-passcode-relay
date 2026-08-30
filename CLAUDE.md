@@ -138,8 +138,9 @@ is ever supplied.
   `id` (PK), `code` (unique short join code, e.g. `7KPQ2M`), `name`,
   `pattern` (e.g. `XXX99*999XX`, see above), `status`
   (`active`|`closed`), `closed_reason` (`completed`|`abandoned`|`NULL`
-  — null while active; see "Succession on `/leave`" for the `abandoned`
-  case), `admin_user_id` (user id of the event's current
+  — null while active; see "Succession on leaving an event" for the
+  `abandoned` case, which — unlike `completed` — is not final: see
+  "Reviving an abandoned event"), `admin_user_id` (user id of the event's current
   administrator — set at creation time, but transferable, see
   Administrator succession), `created_at`. Only `code`
   is unique — `name` is not, so running `/newevent` twice with the exact
@@ -203,6 +204,15 @@ is ever supplied.
   `/claim` during the currently open negotiation for an event.
   `event_id`, `user_id`, `claimed_at`. Primary key: `(event_id,
   user_id)`.
+- **`pending_newevents`** — at most one not-yet-created event per user,
+  waiting on their answer to `/newevent`'s leave-confirmation (see
+  "Succession on leaving an event"). Holds what a confirm button's
+  `callback_data` can't: an arbitrary event name doesn't reliably fit
+  Telegram's 64-byte limit, so the name/pattern are looked up from here
+  by the tapping user's own id instead of being encoded in the button.
+  `user_id` (PK), `name`, `pattern`, `created_at`. A repeat `/newevent`
+  before confirming just overwrites it; confirming or cancelling
+  deletes it.
 
 ## Conflict handling
 
@@ -515,22 +525,57 @@ their own language.
 This is the first of three tools for keeping an event recoverable even
 if its administrator becomes unavailable: `/promote` lets an
 administrator hand off deliberately before stepping away, "Succession
-on `/leave`" below covers them leaving without having promoted anyone,
-and `/claim` below covers them doing neither — just going quiet.
-`/promote` also resets the new administrator's own inactivity clock
-(`participants.last_active_at`, see `/claim`), the same as the other
-two transfer paths, so a fresh handover always starts with a clean
-clock.
+on leaving an event" below covers them leaving without having promoted
+anyone, and `/claim` below covers them doing neither — just going
+quiet. `/promote` also resets the new administrator's own inactivity
+clock (`participants.last_active_at`, see `/claim`), the same as the
+other two transfer paths, so a fresh handover always starts with a
+clean clock.
 
-### Succession on `/leave`
+### Succession on leaving an event
 
-If the administrator runs `/leave` on a still-active event without
-having `/promote`d anyone first, the bot picks a successor automatically
-instead of leaving the event without one — `/leave` itself never
-blocks or asks for confirmation, the departing administrator is removed
-from `participants` exactly as it would for anyone else. The candidate
-pool is every other current participant of the event, and the pick
-follows a strict order:
+An agent stops being a participant of their current event not just via
+an explicit `/leave`, but also implicitly whenever they join a
+*different* one — `/newevent` auto-joins its creator to the event it
+just made, and accepting a `/join` switch-confirmation moves the caller
+away from whatever event they were in (see Domain context — an agent
+contributes to at most one event at a time). If the departing agent was that event's
+administrator, **all three of these paths trigger the exact same
+succession described below** — not just `/leave` — since silently
+letting an administrator wander off to another event would leave the
+old one "orphaned": still `active`, with `admin_user_id` pointing at
+someone no longer participating in it, and nobody able to run any
+administrator command on it (every such command resolves "the event"
+from the caller's *own current* `participants` row, not from a search
+over everything they administer).
+
+Whether the departure needs confirming first depends on the current
+event's own state, not on whether the departing agent administers it:
+
+- **`/leave`** never blocks or asks for confirmation — running it *is*
+  the confirmation; the succession below runs as a side effect before
+  the caller's `participants` row is deleted.
+- **`/newevent`** asks first, but only if the caller currently belongs
+  to a still-**active** (unresolved) event — regardless of whether
+  they administer it or not: leaving any unresolved event behind
+  deserves a heads-up, not just an administrator's own. Declining
+  aborts the whole creation — no event is created at all, not even
+  under the caller. Accepting creates it and *then* runs succession on
+  the event left behind (a no-op if the caller wasn't its
+  administrator). If the caller has no current event, or theirs is
+  already closed (`completed` or `abandoned`), there's nothing
+  meaningful to preserve by asking, so the new event is created
+  immediately, same as before this rule existed.
+- **A `/join` switch** follows the identical rule: the "already in an
+  event, switch?" confirmation only appears when that current event is
+  still active; joining while the caller's current event is already
+  closed, or while they have none, skips the prompt and joins straight
+  through. Confirming (or skipping straight through) then runs
+  succession on the event left behind exactly as `/newevent` does.
+
+The candidate pool for succession itself is every other current
+participant of the event being left, and the pick follows a strict
+order:
 
 1. Prefer participants flagged `trusted` for the event. If that pool is
    non-empty, the winner comes from it exclusively — an untrusted
@@ -558,9 +603,30 @@ follows a strict order:
 
 A successful auto-promotion mirrors `/promote`'s own conventions: the
 new administrator is marked `trusted` for the event the same way, and
-both people are notified — the departing administrator's own `/leave`
-acknowledgement now also names who took over, and the new administrator
+both people are notified — the departing administrator's own
+acknowledgement (whether from `/leave`, `/newevent`, or a confirmed
+`/join` switch) now also names who took over, and the new administrator
 gets a separate message explaining why they suddenly have the role.
+
+### Reviving an abandoned event
+
+An event closed with `closed_reason = 'abandoned'` (point 4 above —
+nobody was eligible to take over) is not necessarily gone for good: the
+**next `/join` on its code** reopens it (`status` back to `active`,
+`closed_reason` cleared) and installs whoever ran that `/join` as its
+new `admin_user_id`, marked `trusted` the same way `/newevent`'s
+creator and `/promote`'s target are. This only applies to `abandoned`
+closures — a `completed` one (a store-confirmed `/verify`) is
+deliberate and final and never reopens; `/join`ing its code is still
+rejected the normal way. If the joiner already belongs to a different,
+active event, the usual switch-confirmation prompt still applies before
+anything happens, worded to say explicitly that accepting will reopen
+the event and make them its administrator — becoming an administrator
+is a bigger commitment than an ordinary switch, so it shouldn't happen
+as a silent side effect of accepting what looks like a plain "do you
+want to switch?" question. If that switch departs the joiner from an
+event they administered, "Succession on leaving an event" above runs
+for it first, same as any other departure.
 
 ### Claiming with `/claim`
 
@@ -716,9 +782,9 @@ word too.
 |---|---|---|
 | `/start`, `/help` | anyone | Onboarding / command list. |
 | `/language <code>` | anyone | Set own interface language. |
-| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins its creator — now the event's first administrator — and marks them trusted. |
+| `/newevent <name> [\| <pattern>]` | anyone | Create an event (default pattern `XXX99*999XX`); auto-sends the shareable join text, then joins its creator — now the event's first administrator — and marks them trusted. If the creator currently belongs to a still-active event (administering it or not), asks to confirm first — declining creates nothing at all — then runs the same succession `/leave` would on it (see Succession on leaving an event). |
 | `/sharetext [code] [lang]` | anyone | (Re)generate the shareable join text — `code` defaults to your current event, `lang` to your own. |
-| `/join <code>` | anyone | Join an event (confirmation prompt if already in one). |
+| `/join <code>` | anyone | Join an event (confirmation prompt only if your current event is still active — skipped if you have none, or it's already closed). A code closed as abandoned reopens and hands you its administrator role instead of being rejected (see Reviving an abandoned event); switching away from an event you administered runs succession on it first. |
 | `/leave` | participant | Leave the current event. If you're the administrator, hands the role to another participant automatically (see Administrator succession), or closes the event as abandoned if no one is eligible. |
 | `/myevent` | anyone | Show current event/role. |
 | `<position> <value>` or `/submit <position> <value>` | participant | Report a slot's value; may trigger a Sí/No confirmation (see Conflict handling). |

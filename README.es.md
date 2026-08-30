@@ -45,10 +45,24 @@ grupo de chat.
    conviene que sea lo bastante específico para distinguir eventos IFS
    con el mismo nombre — por ejemplo, `/newevent Barcelona 2026-08`,
    incluyendo el año y el mes, en lugar de un simple `/newevent
-   Barcelona` que choca con cualquier otro IFS de Barcelona.
+   Barcelona` que choca con cualquier otro IFS de Barcelona. Si estás en
+   otro evento todavía sin resolver (no cerrado), primero te pide
+   confirmación — lo administres o no — ya que crear este lo deja
+   atrás; si dices que no, no se crea nada. Si aquel evento ya estaba
+   cerrado, o no estabas en ninguno, se crea de inmediato sin
+   preguntar. En cualquier caso, si administrabas el que dejas, se
+   traspasa antes, igual que haría `/leave` (ver el punto 6 más abajo).
 2. El resto de asistentes envía `/join <código>` al bot, que también les
    invita a ejecutar `/sharetext` por si quieren ayudar a difundirlo. Un
-   agente solo puede estar contribuyendo activamente a un evento a la vez.
+   agente solo puede estar contribuyendo activamente a un evento a la vez,
+   así que unirse a uno distinto mientras el actual sigue sin resolver
+   pide confirmar el cambio primero — y, si administrabas el anterior,
+   lo traspasa igualmente. Si tu evento actual ya está cerrado, o no
+   tienes ninguno, `/join` te cambia de inmediato sin preguntar. Si el
+   código al que te unes pertenece a un evento que se
+   cerró porque su administrador anterior lo dejó sin nadie elegible
+   para tomar el relevo, `/join` lo reabre y te convierte en su
+   administrador en lugar de rechazar el código.
 3. Cuando encuentras un valor, simplemente envías su posición y el
    valor: `6 GLYPH` reporta que la posición 6 (la palabra) es `GLYPH`;
    `7 3` reporta que la posición 7 es el número `3`. No hace falta
@@ -118,10 +132,10 @@ grupo de chat.
 |---|---|---|
 | `/start`, `/help` | cualquiera | Introducción y lista de comandos. |
 | `/language <código>` | cualquiera | Establece tu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. Aquí la `\|` separa el nombre del patrón, no significa "elige uno u otro" — p. ej. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
+| `/newevent <nombre> [\| <patrón>]` | cualquiera | Crea un nuevo evento IFS y obtiene su código de acceso; te une automáticamente y te marca como de confianza. Aquí la `\|` separa el nombre del patrón, no significa "elige uno u otro" — p. ej. `/newevent Barcelona 2026-08 \| XXX99*999XX`. Pide confirmación primero si tu evento actual todavía no está resuelto (decir que no no crea nada); ese se traspasa antes, igual que haría `/leave`. |
 | `/sharetext [código] [idioma]` | cualquiera | Obtiene un texto listo para compartir invitando a unirse. `código` por defecto es tu evento actual, `idioma` el tuyo propio — ya se envía automáticamente una vez desde `/newevent`. |
-| `/join <código>` | cualquiera | Únete a un evento. |
-| `/leave` | participante | Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (priorizando a los de confianza y, si no, a quien más haya aportado), o se cierra como inacabado si no hay nadie apto. |
+| `/join <código>` | cualquiera | Únete a un evento — pide confirmación solo si tu evento actual todavía no está resuelto, traspasándolo si lo administrabas; se omite si no tienes ninguno o ya está cerrado. Un código cerrado sin administrador se reabre bajo tu cargo en vez de rechazarse. |
+| `/leave` | participante | Sal del evento actual. Si eres quien lo administra, otro participante asume el rol automáticamente (priorizando a los de confianza y, si no, a quien más haya aportado), o se cierra como inacabado si no hay nadie apto — el mismo traspaso ocurre si sales creando o uniéndote a otro evento en vez de hacer `/leave`. |
 | `/myevent` | cualquiera | Muestra en qué evento estás, si hay alguno. |
 | `<posición> <valor>` (o `/submit <posición> <valor>`) | participante | Reporta el valor encontrado en una posición. |
 | `<posición>` sola (o `/submit <posición>`) | participante | Elimina tu propio reporte en esa posición, si existe. |

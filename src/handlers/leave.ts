@@ -2,11 +2,9 @@ import type { Context } from "grammy";
 import type { Env } from "../env.js";
 import { ensureUser } from "../session.js";
 import { t, type SupportedLanguage } from "../i18n/index.js";
-import { getParticipant, removeParticipant, touchParticipantActivity } from "../db/participants.js";
-import { getEventById, transferAdmin, closeEvent } from "../db/events.js";
-import { getSuccessionCandidates, setTrust } from "../db/passcode.js";
-import { getUser } from "../db/users.js";
-import { pickSuccessor } from "../domain/succession.js";
+import { getParticipant, removeParticipant } from "../db/participants.js";
+import { getEventById } from "../db/events.js";
+import { runSuccession } from "../services/succession.js";
 import type { IfsEvent } from "../domain/types.js";
 
 /**
@@ -16,31 +14,14 @@ import type { IfsEvent } from "../domain/types.js";
  * left to the caller, same as the plain-participant path below.
  */
 async function handleAdminLeave(ctx: Context, env: Env, lang: SupportedLanguage, event: IfsEvent): Promise<void> {
-  const candidates = await getSuccessionCandidates(env.DB, event.id, event.adminUserId);
+  const outcome = await runSuccession(env.DB, ctx.api, event, event.adminUserId);
   await removeParticipant(env.DB, event.adminUserId);
 
-  const successorId = pickSuccessor(candidates);
-  if (successorId === null) {
-    await closeEvent(env.DB, event.id, "abandoned");
+  if (outcome.kind === "closedAbandoned") {
     await ctx.reply(t(lang, "leave.closedAbandoned", { name: event.name }));
-    return;
-  }
-
-  await transferAdmin(env.DB, event.id, successorId);
-  // Mirrors /promote's own convention of trusting whoever takes over —
-  // see CLAUDE.md "Administrator succession".
-  await setTrust(env.DB, { eventId: event.id, userId: successorId, status: "trusted", setBy: event.adminUserId });
-  // Starts the new administrator's inactivity clock fresh — see
-  // CLAUDE.md "Administrator succession".
-  await touchParticipantActivity(env.DB, successorId);
-
-  const successorUser = await getUser(env.DB, successorId);
-  const successorName = successorUser?.username ? `@${successorUser.username}` : t(lang, "leave.anotherParticipant");
-  await ctx.reply(t(lang, "leave.leftPromoted", { name: event.name, successor: successorName }));
-
-  const successorParticipant = await getParticipant(env.DB, successorId);
-  if (successorParticipant && successorUser) {
-    await ctx.api.sendMessage(successorParticipant.chatId, t(successorUser.language, "leave.autoPromoted", { name: event.name }));
+  } else if (outcome.kind === "promoted") {
+    const successorName = outcome.successorUsername ? `@${outcome.successorUsername}` : t(lang, "leave.anotherParticipant");
+    await ctx.reply(t(lang, "leave.leftPromoted", { name: event.name, successor: successorName }));
   }
 }
 

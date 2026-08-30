@@ -101,3 +101,18 @@ export async function closeEvent(
 export async function transferAdmin(db: D1Database, eventId: number, newAdminUserId: number): Promise<void> {
   await db.prepare("UPDATE events SET admin_user_id = ? WHERE id = ?").bind(newAdminUserId, eventId).run();
 }
+
+/**
+ * Reactivates an event that was closed as `abandoned` (see CLAUDE.md
+ * "Reviving an abandoned event"), handing it to whoever `/join`s its
+ * code next: clears `status`/`closed_reason` and installs them as the
+ * new `admin_user_id` in the same statement. Never used on a
+ * `completed` event — that closure is deliberate and final, unlike
+ * `abandoned`, which just means nobody was left to take over.
+ */
+export async function reviveAbandonedEvent(db: D1Database, eventId: number, newAdminUserId: number): Promise<void> {
+  await db
+    .prepare("UPDATE events SET status = 'active', closed_reason = NULL, admin_user_id = ? WHERE id = ?")
+    .bind(newAdminUserId, eventId)
+    .run();
+}

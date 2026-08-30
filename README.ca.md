@@ -44,10 +44,25 @@ recollir captures de pantalla manualment en un grup de xat.
    val la pena que sigui prou específic per distingir esdeveniments IFS
    amb el mateix nom — per exemple, `/newevent Barcelona 2026-08`,
    incloent-hi l'any i el mes, en lloc d'un simple `/newevent Barcelona`
-   que col·lisiona amb qualsevol altre IFS de Barcelona.
+   que col·lisiona amb qualsevol altre IFS de Barcelona. Si ets a un
+   altre esdeveniment encara no resolt (no tancat), primer et demana
+   confirmació — l'administris o no — ja que crear-ne un de nou el
+   deixa enrere; si dius que no, no es crea res. Si aquell esdeveniment
+   ja estava tancat, o no eres a cap, es crea de seguida sense
+   preguntar. En qualsevol cas, si n'administraves el que deixes,
+   es traspassa primer, igual com faria `/leave` (vegeu el punt 6 més
+   avall).
 2. La resta d'assistents envien `/join <codi>` al bot, que també els
    convida a executar `/sharetext` per si volen ajudar a difondre'l. Un
-   agent només pot estar contribuint activament a un esdeveniment alhora.
+   agent només pot estar contribuint activament a un esdeveniment alhora,
+   així que unir-se a un de diferent mentre l'actual encara no està
+   resolt demana confirmar el canvi primer — i, si n'administraves
+   l'anterior, el traspassa igualment. Si l'esdeveniment actual ja està
+   tancat, o no en tens cap, `/join` et canvia de seguida sense
+   preguntar. Si el codi al qual t'uneixes pertany a un
+   esdeveniment que es va tancar perquè el seu administrador anterior el
+   va deixar sense ningú elegible per prendre'n el relleu, `/join` el
+   reobre i et fa administrador/a en comptes de rebutjar el codi.
 3. Quan trobes un valor, simplement envies la seva posició i el valor:
    `6 GLYPH` reporta que la posició 6 (la paraula) és `GLYPH`; `7 3`
    reporta que la posició 7 és el número `3`. No cal recordar cap
@@ -117,10 +132,10 @@ recollir captures de pantalla manualment en un grup de xat.
 |---|---|---|
 | `/start`, `/help` | tothom | Introducció i llista de comandes. |
 | `/language <codi>` | tothom | Estableix el teu idioma (`en`, `ca`, `es`, `fr`). |
-| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Aquí la `\|` separa el nom del patró, no vol dir "tria l'un o l'altre" — p. ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. |
+| `/newevent <nom> [\| <patró>]` | tothom | Crea un nou esdeveniment IFS i n'obté el codi d'accés; t'hi uneix automàticament i et marca com a de confiança. Aquí la `\|` separa el nom del patró, no vol dir "tria l'un o l'altre" — p. ex. `/newevent Barcelona 2026-08 \| XXX99*999XX`. Demana confirmació primer si el teu esdeveniment actual encara no està resolt (dir que no no crea res); aquell es traspassa primer, igual com faria `/leave`. |
 | `/sharetext [codi] [idioma]` | tothom | Obté un text llest per compartir convidant a unir-s'hi. `codi` per defecte és el teu esdeveniment actual, `idioma` el teu propi — ja s'envia automàticament un cop des de `/newevent`. |
-| `/join <codi>` | tothom | Uneix-te a un esdeveniment. |
-| `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte. |
+| `/join <codi>` | tothom | Uneix-te a un esdeveniment — demana confirmació només si el teu esdeveniment actual encara no està resolt, traspassant-lo si l'administraves; s'omet si no en tens cap o ja està tancat. Un codi tancat sense administrador es reobre sota teu en comptes de rebutjar-se. |
+| `/leave` | participant | Surt de l'esdeveniment actual. Si ets qui l'administra, un altre participant assumeix el rol automàticament (prioritzant els de confiança i, si no, qui hagi aportat més), o es tanca com a inacabat si no hi ha ningú apte — el mateix traspàs passa si en surts creant-ne o unint-te a un altre en comptes de fer `/leave`. |
 | `/myevent` | tothom | Mostra a quin esdeveniment estàs, si n'hi ha. |
 | `<posició> <valor>` (o `/submit <posició> <valor>`) | participant | Reporta el valor trobat en una posició. |
 | `<posició>` sola (o `/submit <posició>`) | participant | Elimina el teu propi report en aquella posició, si n'hi ha. |
