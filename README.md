@@ -274,6 +274,26 @@ with:
 curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
 ```
 
+### 6. Set up the private admin dashboard
+
+A private, read-only dashboard lives at `/admin` (e.g.
+`https://ifspasscoderelay.grifwl.blue/admin`), for inspecting the live D1
+data without an interactive `wrangler d1 execute` session. It's
+password-gated, and data belonging to a specific event (participants,
+reports, candidates, resolutions, trust flags, admin claims) is only
+shown once you pick that event from a dropdown — global tables (events,
+users, known words, pending event creations) are always visible. Nothing
+auto-refreshes: every view is a snapshot as of the moment you loaded or
+last refreshed it, with a manual refresh button to re-query on demand.
+
+1. Generate a password and a separate random signing key for its session
+   cookies (e.g. `openssl rand -hex 24` for the password, `openssl rand
+   -hex 32` for the key), then publish both the same way as the bot
+   token: `wrangler secret put ADMIN_DASHBOARD_PASSWORD` and `wrangler
+   secret put ADMIN_SESSION_SECRET`.
+2. For local development, add the same two values to `.dev.vars` as
+   `ADMIN_DASHBOARD_PASSWORD=...` and `ADMIN_SESSION_SECRET=...`.
+
 ## License
 
 MIT.

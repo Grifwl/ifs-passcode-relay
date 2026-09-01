@@ -289,6 +289,29 @@ el webhook está registrado con:
 curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
 ```
 
+### 6. Configurar el panel privado de administración
+
+Hay un panel privado, de solo lectura, en `/admin` (p.ej.
+`https://ifspasscoderelay.grifwl.blue/admin`), para inspeccionar los
+datos en vivo de D1 sin abrir una sesión interactiva de `wrangler d1
+execute`. Está protegido con contraseña, y los datos que pertenecen a un
+evento concreto (participantes, reportes, candidatos, resoluciones,
+marcas de confianza, negociaciones de `/claim`) solo se muestran una vez
+eliges uno en el desplegable — las tablas globales (eventos, usuarios,
+palabras conocidas, creaciones de evento pendientes) siempre se ven.
+Nada se actualiza solo: cada vista es una instantánea del momento en que
+la cargaste o actualizaste por última vez, con un botón de actualizar
+manual para volver a consultar cuando quieras.
+
+1. Genera una contraseña y una clave de firma aleatoria separada para
+   sus cookies de sesión (p.ej. `openssl rand -hex 24` para la
+   contraseña, `openssl rand -hex 32` para la clave), y publica ambas
+   igual que el token del bot: `wrangler secret put
+   ADMIN_DASHBOARD_PASSWORD` y `wrangler secret put
+   ADMIN_SESSION_SECRET`.
+2. Para el desarrollo local, añade los mismos dos valores a `.dev.vars`
+   como `ADMIN_DASHBOARD_PASSWORD=...` y `ADMIN_SESSION_SECRET=...`.
+
 ## Licencia
 
 MIT.

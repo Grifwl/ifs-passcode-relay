@@ -285,6 +285,30 @@ el webhook està registrat amb:
 curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
 ```
 
+### 6. Configurar el tauler privat d'administració
+
+Hi ha un tauler privat, de només lectura, a `/admin` (p.ex.
+`https://ifspasscoderelay.grifwl.blue/admin`), per inspeccionar les
+dades en viu de D1 sense obrir una sessió interactiva de `wrangler d1
+execute`. Va protegit amb contrasenya, i les dades que pertanyen a un
+esdeveniment concret (participants, reports, candidats, resolucions,
+marques de confiança, negociacions de `/claim`) només es mostren un cop
+n'esculls un al desplegable — les taules globals (esdeveniments,
+usuaris, paraules conegudes, creacions d'esdeveniment pendents) sempre
+es veuen. Res s'actualitza sol: cada vista és una instantània del moment
+en què l'has carregat o actualitzat per última vegada, amb un botó
+d'actualitzar manual per tornar a consultar quan vulguis.
+
+1. Genera una contrasenya i una clau de signatura aleatòria separada per
+   a les seves cookies de sessió (p.ex. `openssl rand -hex 24` per a la
+   contrasenya, `openssl rand -hex 32` per a la clau), i publica totes
+   dues igual que el token del bot: `wrangler secret put
+   ADMIN_DASHBOARD_PASSWORD` i `wrangler secret put
+   ADMIN_SESSION_SECRET`.
+2. Per al desenvolupament local, afegeix els mateixos dos valors a
+   `.dev.vars` com a `ADMIN_DASHBOARD_PASSWORD=...` i
+   `ADMIN_SESSION_SECRET=...`.
+
 ## Llicència
 
 MIT.

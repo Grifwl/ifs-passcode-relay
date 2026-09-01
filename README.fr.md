@@ -297,6 +297,31 @@ que le webhook est bien enregistré avec :
 curl "https://api.telegram.org/bot<BOT_TOKEN>/getWebhookInfo"
 ```
 
+### 6. Configurer le tableau de bord privé d'administration
+
+Un tableau de bord privé, en lecture seule, se trouve à `/admin` (ex.
+`https://ifspasscoderelay.grifwl.blue/admin`), pour inspecter les
+données D1 en direct sans ouvrir une session interactive de `wrangler d1
+execute`. Il est protégé par mot de passe, et les données appartenant à
+un événement précis (participants, signalements, candidats,
+résolutions, marques de confiance, négociations de `/claim`) ne
+s'affichent qu'une fois cet événement choisi dans une liste déroulante —
+les tables globales (événements, utilisateurs, mots connus, créations
+d'événement en attente) sont toujours visibles. Rien ne se rafraîchit
+tout seul : chaque vue est un instantané au moment où elle a été chargée
+ou rafraîchie pour la dernière fois, avec un bouton de rafraîchissement
+manuel pour relancer la requête à la demande.
+
+1. Générez un mot de passe et une clé de signature aléatoire distincte
+   pour ses cookies de session (ex. `openssl rand -hex 24` pour le mot
+   de passe, `openssl rand -hex 32` pour la clé), puis publiez les deux
+   de la même façon que le token du bot : `wrangler secret put
+   ADMIN_DASHBOARD_PASSWORD` et `wrangler secret put
+   ADMIN_SESSION_SECRET`.
+2. Pour le développement local, ajoutez les deux mêmes valeurs dans
+   `.dev.vars` sous la forme `ADMIN_DASHBOARD_PASSWORD=...` et
+   `ADMIN_SESSION_SECRET=...`.
+
 ## Licence
 
 MIT.

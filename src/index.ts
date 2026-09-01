@@ -4,8 +4,11 @@ import type { Env } from "./env.js";
 import { createBot } from "./bot.js";
 import { renderLandingPage } from "./landing.js";
 import { resolveLanguage } from "./domain/language.js";
+import { adminApp } from "./admin/routes.js";
 
 const app = new Hono<{ Bindings: Env }>();
+
+app.route("/admin", adminApp);
 
 app.get("/", (c) => {
   const preferred = c.req.header("Accept-Language")?.split(",")[0]?.trim();
