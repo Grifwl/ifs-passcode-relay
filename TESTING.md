@@ -94,6 +94,23 @@ Si en algun moment cal provar contra la rèplica local de
 `wrangler dev` en lloc del bot desplegat, la comanda equivalent és
 `npm run db:reset:local`.
 
+### Dashboard local de seguiment (opcional)
+
+`npm run testing:dashboard` aixeca, només en local (mai desplegat), una
+pàgina a `http://localhost:4173` que fa polling contra la D1 **real**
+i guia el grup pas a pas per aquest document: mostra la comanda exacta
+a copiar per a l'agent que toqui (pensada per enganxar-la al xat del
+Meet perquè cadascú la reenganxi al seu Telegram), el canvi de base de
+dades que s'hi espera i, sota, el contingut sencer de totes les taules
+en viu. Quan el canvi arriba a D1 avança sol al pas següent; els passos
+que no deixen cap rastre a la base (contingut d'un missatge, botons,
+etc.) cal marcar-los manualment amb "Fet ✅" un cop comprovats a
+Telegram. Cal indicar-hi primer, al capdamunt, l'`@usuari` de Telegram
+(o el `user_id`, visible a la taula `users` un cop hagi fet `/start`)
+de cadascun dels agents A/B/C/D perquè pugui identificar qui és qui.
+
+Cobreix totes les Fases 0-12.
+
 ### Simular inactivitat de l'administrador (sense esperar)
 
 `/claim` exigeix 30 minuts d'inactivitat de l'administrador abans de
@@ -134,7 +151,7 @@ esperar cap dels dos temps reals** en cap moment.
 
 | # | Nom suggerit | Patró | Objectiu principal |
 |---|---|---|---|
-| 1 | `Proves Principal` | per defecte (`XXX99*999XX`) | Flux complet: submit, resolve, trust, kick, promote, verify amb match únic |
+| 1 | `Proves Principal` | per defecte (`XXX99*999XX`) | Flux complet: submit, resolve, trust, kick, promote, verify amb match únic (queda `abandoned` a la Fase 7a.2 quan tothom se'n va a l'Event 2; es revifa a la Fase 10.1) |
 | 2 | `Proves Successio A` | per defecte | `/leave` — trusted preval per sobre d'aportacions |
 | 3 | `Proves Successio B` | per defecte | `/leave` — empat + exclusió de troll amb més aportacions |
 | 4 | `Proves Abandonat A` | per defecte | `/leave` sense ningú elegible (tothom troll) |
@@ -144,7 +161,11 @@ esperar cap dels dos temps reals** en cap moment.
 | 8 | `Proves Claim Timeout` | per defecte | `/claim` — sense resposta, resolució per temps + condició de cursa |
 | 9 | `Proves Patró Invertit` | `999XX*XXX99` | Comprova el patró invertit (tipus intercanviats) i, sobre aquest mateix esdeveniment, el límit de 16 variants a `/status` i el límit de seguretat (2000) a `/verify` |
 
-Es poden crear en qualsevol ordre.
+Es creen en l'ordre en què apareixen a les Fases 7-11 — no és arbitrari:
+com que cap agent fa mai `/leave` explícit entre un esdeveniment i el
+següent a partir de la Fase 7, qui crea o s'uneix a cadascun encara
+pertany a l'anterior, i això dispara les confirmacions i successions
+descrites a cada fase (vegeu la nota a l'inici de la Fase 7).
 
 ---
 
@@ -154,9 +175,12 @@ Es poden crear en qualsevol ordre.
 |---|---|---|---|
 | 0.1 | A, B, C, D | Enviar `/start` | Missatge de benvinguda en l'idioma detectat automàticament del client de Telegram (`en`/`ca`/`es`/`fr`, o `en` si no és cap d'aquests) |
 | 0.2 | A, B, C, D | Enviar `/help` | Llista de comandes disponibles, en el mateix idioma |
-| 0.3 | A, B, C, D | Enviar `/language xx` amb un idioma diferent de l'actual | Confirmació en el **nou** idioma; els missatges ja enviats no canvien |
-| 0.4 | A | Repetir `/language` amb un codi no suportat (p. ex. `/language de`) | Missatge d'error / ús, sense canviar l'idioma actual |
-| 0.5 | A, B, C, D | Enviar `/myevent` sense estar en cap esdeveniment | Missatge indicant que no es pertany a cap esdeveniment |
+| 0.3 | A, B, C, D | Enviar `/language xx`, on `xx` és un idioma diferent del que cada agent ja tenia detectat al pas 0.1 — triant, entre els 4 agents, una combinació que cobreixi els 4 idiomes suportats (`en`/`ca`/`es`/`fr`) sempre que sigui possible | Confirmació en el **nou** idioma; els missatges ja enviats no canvien |
+| 0.4 | A; després A, B, C, D | Repetir `/language` amb un codi no suportat (p. ex. `/language de`); tot seguit, cadascú estableix amb `/language <codi>` l'idioma amb què vol continuar la resta de les proves | Codi no suportat: missatge d'error / ús, sense canviar l'idioma actual. Idioma final: cadascú pot quedar-se amb el del pas 0.3, tornar al seu original (pas 0.1), o triar-ne un altre — incloent-hi no fer res, per mantenir el del pas 0.3 |
+| 0.5 | A, B, C, D | Enviar `/current` sense estar en cap esdeveniment | Missatge indicant que no es pertany a cap esdeveniment |
+| 0.6 | A, B, C, D | Enviar `/events` sense haver participat mai en cap esdeveniment | Llista buida amb el missatge corresponent — l'única finestra de tot aquest pla en què **cap** dels quatre agents hi ha participat encara; a partir de la Fase 1 tots quatre en van acumulant (vegeu Fase 12), així que aquest és l'únic moment on es pot comprovar el cas buit |
+
+Per triar la combinació del pas 0.3 (a mà, sense el dashboard): cada `xx` ha de ser diferent del que l'agent ja tenia; si els 4 agents no tenen tots exactament el mateix idioma de partida, es pot repartir els 4 idiomes suportats un per agent (p. ex. amb una rotació cíclica: qui tenia `ca` passa a `es`, qui tenia `es` passa a `fr`, etc.); si els 4 ja coincidien exactament en el mateix idioma, no hi ha cap combinació que cobreixi els 4 — n'hi ha prou que cadascú trïi qualsevol altre. El dashboard (vegeu més avall) ho calcula i ho mostra automàticament.
 
 ---
 
@@ -167,11 +191,12 @@ Es poden crear en qualsevol ordre.
 | 1.1 | A | `/newevent Proves Principal` (sense patró) | Es crea l'esdeveniment amb el patró per defecte `XXX99*999XX`; **abans** d'unir-s'hi s'envia automàticament el text per compartir (bloc + esment del bot + codi), en dos missatges separats (bloc + nota en cursiva amb botons d'idioma) |
 | 1.2 | A | Comprovar els botons EN/CA/ES/FR del segon missatge | Només apareixen els idiomes **diferents** de l'actual d'A, tots en una sola fila |
 | 1.3 | A | Prémer un dels botons d'idioma (p. ex. `ES`) | S'envia un **nou** parell de missatges (bloc + nota), ara en espanyol, i el botó `ES` ja no hi surt (n'hi ha 3 dels altres idiomes) |
-| 1.4 | A | `/myevent` | Mostra que A és participant de l'esdeveniment i n'és l'administrador |
-| 1.5 | A | `/newevent Proves Principal` (mateix nom, un altre cop) | Es crea un **segon** esdeveniment nou amb un codi diferent (el nom duplicat no és un conflicte, confirma que `name` no és únic); anotar aquest codi com a "Event 1b" — es fa servir a la Fase 2 |
-| 1.6 | A | `/sharetext` (sense arguments) | Regenera el text per al codi de l'esdeveniment **actual** d'A, en el seu idioma actual |
+| 1.4 | A | `/current` | Mostra el nom, el codi, el patró, 1 participant i A com a administrador actual (marcat "(tu)") |
+| 1.5 | A | `/newevent Proves Principal` (mateix nom, un altre cop) i confirmar amb **Sí** que vol deixar Event 1 | Com que A encara és a Event 1 i aquest segueix actiu/sense resoldre, `/newevent` demana confirmació abans de crear res (vegeu CLAUDE.md "Succession on leaving an event") — provar també de respondre que **no** primer en un assaig i comprovar que llavors **no es crea cap esdeveniment nou**, abans de tornar-ho a fer confirmant que sí. En confirmar, es crea un **segon** esdeveniment nou amb un codi diferent (el nom duplicat no és un conflicte, confirma que `name` no és únic); anotar aquest codi com a "Event 1b" — es fa servir a la Fase 2. Com que `/newevent` també uneix el creador com a participant (vegeu Fase 1.1), això trasllada A cap a Event 1b. Com que A n'era l'administrador d'Event 1 i aquest encara no té cap altre participant (la Fase 2 encara no ha començat), aquest traspàs dispara la successió: com que no hi ha ningú a qui cedir el rol, **Event 1 queda tancat com a `abandoned`** i A en rep avís explícit |
+| 1.6 | A | `/sharetext` (sense arguments) | Regenera el text per al codi de l'esdeveniment **actual** d'A (ara Event 1b), en el seu idioma actual |
 | 1.7 | A | `/sharetext <codi> fr` | Regenera el text per a aquell codi concret en francès, independentment de l'idioma actual d'A |
 | 1.8 | A | Provar `/newevent` amb un patró invàlid, p. ex. `/newevent Proves X | XY1` | Rebutjat (el patró només admet `X`, `9`, `*`) |
+| 1.9 | A | `/join <codi Event 1>` i confirmar amb **Sí** el canvi que es proposa | Com que Event 1 està tancat com a `abandoned` (pas 1.5), el codi el **reviu** en comptes de rebutjar-lo (vegeu CLAUDE.md "Reviving an abandoned event"): es reobre (`status = active`, `closed_reason = NULL`) i A en torna a ser l'administrador (marcat `trusted`, com faria `/newevent`). El diàleg de confirmació ho indica explícitament (avisa que reobrirà l'esdeveniment i et farà administrador/a) — nota: com que Event 1 i Event 1b tenen el mateix nom (pas 1.5), el diàleg mostrarà el mateix nom a banda i banda, això és esperat. Com que A n'era també l'administrador d'Event 1b i hi queda sense cap altre participant, aquest canvi tanca Event 1b com a `abandoned` pel mateix motiu — és inofensiu, ja no es fa servir. Aquest és l'únic pas d'aquest pla que **accepta** (Sí) un canvi d'esdeveniment; la 2.5 en prova el rebuig (No) |
 
 ---
 
@@ -183,8 +208,8 @@ Es poden crear en qualsevol ordre.
 | 2.2 | C | `/join <codi Event 1>` | Igual que B |
 | 2.3 | D | `/join <codi Event 1>` | Igual que B |
 | 2.4 | B | `/join <codi inexistent>` | Error de codi no trobat, sense afectar l'esdeveniment actual de B |
-| 2.5 | B | `/join <codi Event 1b>` (el duplicat de la Fase 1.5) | Es dispara la confirmació "ja ets en un esdeveniment, vols canviar?"; respondre que **no** i confirmar que B segueix a Event 1 |
-| 2.6 | A, B, C, D | `/myevent` | Cadascú veu el seu rol correcte (A = administrador, B/C/D = participants) |
+| 2.5 | B | `/join <codi Event 1b>` (el duplicat de la Fase 1.5) | Com que Event 1b ja està tancat com a `abandoned` (efecte secundari del pas 1.9), la confirmació que es dispara és la variant que avisa que acceptar-la el reviuria i el faria administrador (vegeu 1.9) — respondre que **no** i confirmar que B segueix a Event 1, sense que Event 1b es reobri |
+| 2.6 | A, B, C, D | `/current` | Tots quatre veuen 4 participants i A com a administrador actual; només A hi veu el marcador "(tu)" |
 
 ---
 
@@ -201,14 +226,12 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 | 3.4 | B | `1` (posició sola, sense valor) | Elimina el report actual de B a la posició 1; el missatge confirma quin valor s'ha tret |
 | 3.5 | B | `1` una altra vegada (ja no en té cap) | El bot indica que B no tenia cap report en aquesta posició |
 | 3.6 | B | `/submit 2 K` | Equivalent explícit a `2 K`; acceptat |
-| 3.7 | C | `2 Z` (valor **diferent** al de B per a la mateixa posició) | Es dispara confirmació Sí/No: "aquesta posició ja té un valor diferent d'un altre agent" |
-| 3.8 | C | Confirmar amb **Sí** | S'afegeix `Z` com a candidat addicional a la posició 2 (no substitueix el de B); ara la posició 2 té 2 candidats |
-| 3.9 | D | `2 Z` (mateix valor que C, però D encara no havia reportat res allà) | **No** hi ha confirmació per desacord (coincideix amb un candidat existent), s'afegeix D com a suport addicional del mateix candidat `Z` |
-| 3.10 | C | `4 X` (posició 4 és un dígit segons el patró, `X` no ho és) | Es dispara confirmació Sí/No pel *tipus* (soft-check) |
-| 3.11 | C | Confirmar amb **No** | Res es desa; `4` segueix sense report de C |
-| 3.12 | C | `4 X` una altra vegada, ara confirmar amb **Sí** | S'accepta igualment, malgrat no encaixar amb el tipus esperat de la posició |
-| 3.13 | B | Provar una posició que sigui alhora desacord **i** tipus incorrecte alhora (p. ex. posició 4 amb una lletra diferent de la de C) | El missatge de confirmació esmenta **totes dues** condicions alhora |
-| 3.14 | B, C, D | Omplir la resta de posicions (5, 6 —paraula—, 7, 8, 9, 10, 11) amb valors **consistents** entre ells (sense desacord), deixant **una** posició encara en conflicte (p. ex. la 2, ja treballada) per a la Fase 4 | Prepara el terreny per a `/resolve` i per al `/status` amb un conflicte pendent |
+| 3.7 | C | `2 Z` (valor **diferent** al de B per a la mateixa posició), confirmant amb **Sí** quan es dispari la confirmació Sí/No ("aquesta posició ja té un valor diferent d'un altre agent") | S'afegeix `Z` com a candidat addicional a la posició 2 (no substitueix el de B); ara la posició 2 té 2 candidats |
+| 3.8 | D | `2 Z` (mateix valor que C, però D encara no havia reportat res allà) | **No** hi ha confirmació per desacord (coincideix amb un candidat existent), s'afegeix D com a suport addicional del mateix candidat `Z` |
+| 3.9 | C | `4 X` (posició 4 és un dígit segons el patró, `X` no ho és), confirmant amb **No** | Es dispara la confirmació Sí/No pel *tipus* (soft-check); en confirmar amb No, res es desa i `4` segueix sense report de C |
+| 3.10 | C | `4 X` una altra vegada, ara confirmar amb **Sí** | S'accepta igualment, malgrat no encaixar amb el tipus esperat de la posició |
+| 3.11 | B | `4 Y` (lletra diferent tant de `X` —la de C— com del tipus esperat) | El missatge de confirmació esmenta **totes dues** condicions alhora (desacord amb C i tipus incorrecte) |
+| 3.12 | B, C, D | Cadascú envia, un missatge per posició: `5 7`, `6 GLYPH`, `7 3`, `8 4`, `9 5`, `10 Q`, `11 R` (els mateixos valors els tres, sense desacord) | Cada posició queda amb un únic candidat, suportat pels tres; deixa **una** posició encara en conflicte (la 2, ja treballada a 3.7/3.8) per a la Fase 4 — la posició 9 es reobrirà deliberadament a la Fase 4.10 quan C hi canviï de valor |
 
 ---
 
@@ -224,12 +247,12 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 | 4.6 | A | `/resolve 2` una altra vegada (ja resolta) | Encara llista els candidats vius (la vista no té en compte l'estat de resolució) i permet canviar-lo a un altre valor sense passar per `/unresolve` |
 | 4.7 | A | `/unresolve 2` | La posició torna a quedar oberta |
 | 4.8 | A | `/resolve 2 K` (valor directe) | Resol directament sense passar pel llistat de botons |
-| 4.9 | A | `/resolve 4 @C` | Resol la posició 4 amb el valor que va reportar C (el de la Fase 3.12) |
-| 4.10 | A | `/resolve` (sense arguments), amb **almenys dues** posicions encara en desacord (crear-ne una altra de nova entre B i C si cal, p. ex. la posició 9) | Comença el recorregut: mostra la primera posició en conflicte amb botons `resolveall:...` |
+| 4.9 | A | `/resolve 4 @C` | Resol la posició 4 amb el valor que va reportar C (el de la Fase 3.10) |
+| 4.10 | B, C, A | Abans de continuar, B envia `9 5` (reafirma el valor ja consensuat a la Fase 3.12 — no-op) i C envia `9 8` (autocorrecció, ja que difereix del seu propi report anterior, sense confirmació); llavors A fa `/resolve` (sense arguments), ja amb **dues** posicions en desacord (2 i 9) | Els nous valors de B i C obren un segon conflicte a la posició 9; el `/resolve` comença el recorregut mostrant la primera posició en conflicte amb botons `resolveall:...` |
 | 4.11 | A | Prémer un botó del pas anterior | Resol aquella posició **i** immediatament envia la següent posició encara en conflicte, sense que calgui tornar a escriure `/resolve` |
 | 4.12 | A | Repetir fins que no quedin conflictes | El bot indica que ja no hi ha cap desacord pendent, i **no** ofereix cap drecera per tancar l'esdeveniment — remet a `/verify` |
 | 4.13 | A | `/resolve 99` (posició fora de rang del patró) | Error d'ús / posició invàlida |
-| 4.14 | A | `/resolve 6` (posició de paraula, `*`) amb un valor de paraula reportat prèviament | Funciona igual que per a lletres/dígits — les paraules també es resolen per posició |
+| 4.14 | A | `/resolve 6 GLYPH` (posició de paraula, `*`; `GLYPH` és el valor de consens reportat pels tres a la Fase 3.12 — la posició 6 no ha estat mai en conflicte) | Funciona igual que per a lletres/dígits — les paraules també es resolen per posició |
 
 ---
 
@@ -238,12 +261,12 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
 | 5.1 | A | `/troll D` | D queda marcat `troll` per a aquest esdeveniment |
-| 5.2 | D | Enviar un nou report vàlid, p. ex. `5 3` | S'accepta a `passcode_reports`, però **no** compta a `passcode_candidates` ni a les variants; el missatge d'estat en viu de D **no** es torna a actualitzar a partir d'ara (el seu missatge queda congelat) |
-| 5.3 | A | `/resolve 5` (sense valor) | El candidat de D **no** apareix al llistat, encara que existeixi el report a la base de dades |
+| 5.2 | D | Enviar un report a la posició 3, l'única que segueix buida (ningú l'ha tocada des de la Fase 3): `3 M` | S'accepta a `passcode_reports`, però **no** compta a `passcode_candidates` ni a les variants; el missatge d'estat en viu de D **no** es torna a actualitzar a partir d'ara (el seu missatge queda congelat) |
+| 5.3 | A | `/resolve 3` (sense valor) | El candidat de D (`M`) **no** apareix al llistat, encara que existeixi el report a la base de dades |
 | 5.4 | B, C | `/status` | Segueixen rebent actualitzacions amb normalitat; D és l'única persona que ha deixat de rebre-les |
-| 5.5 | A | `/untrust D` | D torna a l'estat neutral |
-| 5.6 | A | `/resolve 5` (sense valor) | El candidat de D torna a aparèixer al llistat |
-| 5.7 | B, C, D | `/status` | D torna a rebre actualitzacions **a partir d'ara**, però no se li reenvien retroactivament les que es va perdre mentre era troll |
+| 5.5 | A | `/untrust D` | D torna a l'estat neutral; com que estava marcat `troll`, el seu missatge d'estat es refresca **de seguida** (una sola edició) amb l'estat actual del passcode, posant-lo al dia de tot el que s'havia perdut mentre ho era |
+| 5.6 | A | `/resolve 3` (sense valor) | El candidat de D (`M`) torna a aparèixer al llistat |
+| 5.7 | B, C, D | `/status` | Tots reben l'actualització amb normalitat, D inclòs — el seu missatge ja estava al dia des del pas 5.5, i a partir d'ara torna a rebre-les com qualsevol altre participant |
 | 5.8 | A | `/trust C` | C queda marcat `trusted` |
 | 5.9 | A | `/untrust C` | Torna a neutral; comprovar que això **no** dispara cap resolució automàtica de res |
 | 5.10 | A | `/kick D` | D deixa de ser participant; el seu slot queda lliure |
@@ -267,15 +290,31 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 
 ## FASE 7 — Successió automàtica per `/leave` (Events 2 i 3)
 
+Fins ara, cada `/newevent` o `/join` del pla queia sempre en un moment en
+què l'agent que el feia **no pertanyia a cap altre esdeveniment actiu**
+— per això la confirmació de canvi no s'hi havia disparat mai encara
+(no hi havia res a deixar). A partir d'aquí, el pla deixa de tenir
+aquesta cura a propòsit: en diversos punts de les Fases 7-11, l'agent
+que fa `/newevent` o `/join` sí que pertany encara a un esdeveniment
+anterior actiu, així que la confirmació de canvi salta de debò (vegeu
+CLAUDE.md "Succession on leaving an event"); si a més n'és
+l'administrador, en acceptar-la es dispara la successió automàtica. És
+una prova addicional deliberada del mateix mecanisme, ara disparat per
+`/newevent`/`/join` en comptes de per `/leave`, i el resultat es
+documenta explícitament allà on té conseqüències. Quan l'esdeveniment
+d'origen ja estava **tancat** (per exemple, perquè s'ha abandonat un
+pas abans), el canvi es fa directament sense cap confirmació — el pla
+ho assenyala només quan sí que en cal una.
+
 ### 7a. Trusted preval per sobre d'aportacions (Event 2)
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 7a.1 | A | `/newevent Proves Successio A` | Nou esdeveniment; A administrador i trusted |
-| 7a.2 | B, C, D | `/join <codi>` | Els tres s'uneixen (neutral cadascun) |
+| 7a.1 | A | `/newevent Proves Successio A`, confirmant amb **Sí** que vol deixar Event 1 (encara actiu des de la Fase 1-6) | Com que Event 1 segueix actiu i A n'és l'administrador amb un pool `trusted` no buit (només B, des de la Fase 4.4), la successió promociona **B** com a nou administrador d'Event 1 — un cas real de successió disparada per `/newevent`, no per `/leave`. Tot seguit es crea Event 2; A n'és administrador i trusted |
+| 7a.2 | B, C, D | `/join <codi>` (el d'Event 2), **en aquest ordre** (B, després C, després D), cadascun confirmant el canvi respecte Event 1 | Els tres s'uneixen a Event 2 (neutral cadascun). Com que els tres eren encara participants d'Event 1 (ara administrat per B) i el deixen un darrere l'altre en aquest mateix ordre, Event 1 es va buidant fins que no hi queda ningú i acaba **tancant-se com a `abandoned`** — igual que li va passar a la Fase 1.5. Com que D és qui el deixa l'últim, hi queda registrat com el seu darrer administrador (`admin_user_id = D`), encara que mai hagi arribat a fer-hi res com a tal — es revifarà abans de la Fase 10 |
 | 7a.3 | A | `/trust B` | B queda trusted |
-| 7a.4 | B | Reportar **1 sola** posició | Poques aportacions |
-| 7a.5 | C | Reportar **3** posicions | Més aportacions que B, però sense trust |
+| 7a.4 | B | Reportar **1 sola** posició: `1 A` | Poques aportacions |
+| 7a.5 | C | Reportar **3** posicions: `2 B`, `3 C`, `4 1` | Més aportacions que B, però sense trust |
 | 7a.6 | A | `/leave` | A surt; com que hi ha un pool `trusted` no buit (només B), el successor **ha de ser B**, malgrat que C té més aportacions |
 | 7a.7 | A, B | Comprovar notificacions | A rep confirmació de qui ha pres el relleu; B rep l'avís separat |
 
@@ -283,11 +322,11 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 7b.1 | A | `/newevent Proves Successio B` | Nou esdeveniment (trust es reinicia, és independent de l'Event 2) |
-| 7b.2 | B, C, D | `/join <codi>` | S'uneixen neutrals |
+| 7b.1 | A | `/newevent Proves Successio B` | Nou esdeveniment (trust es reinicia, és independent de l'Event 2); A no pertany a cap esdeveniment actiu en aquest moment, així que no hi ha confirmació |
+| 7b.2 | B, C, D | `/join <codi>` (el d'Event 3), **en aquest ordre** (B, després C, després D), cadascun confirmant el canvi respecte Event 2 | S'uneixen a Event 3, neutrals. B encara administrava Event 2 (successió de 7a.6); en deixar-lo primer, com que el pool `trusted` hi és buit, la successió promociona algun dels que hi queden. C i D també el deixen tot seguit, en aquest mateix ordre, així que —igual que a 7a.2— Event 2 acaba buidant-se del tot i **tancant-se com a `abandoned`**, registrat sota `admin_user_id = D` (el darrer a marxar-ne) |
 | 7b.3 | A | `/troll D` | D marcat troll |
-| 7b.4 | D | Reportar **4** posicions (el nombre més alt de tots) | Malgrat ser el que més aporta, ha de quedar exclòs |
-| 7b.5 | B, C | Reportar exactament **2** posicions cadascun (empat entre ells) | Cap trusted, cap troll entre ells dos |
+| 7b.4 | D | Reportar **4** posicions (el nombre més alt de tots): `1 D`, `2 E`, `3 F`, `4 2` | Malgrat ser el que més aporta, ha de quedar exclòs |
+| 7b.5 | B, C | Reportar exactament **2** posicions cadascun (empat entre ells), a posicions diferents perquè no hi hagi desacord: B `5 3` i `7 5`; C `8 6` i `9 7` | Cap trusted, cap troll entre ells dos |
 | 7b.6 | A | `/leave` | Pool `trusted` buit → cau al pool no-troll (B, C; D exclòs) → guanya qui té més aportacions dins d'aquest pool: B i C empatats → desempat aleatori, l'administrador resultant ha de ser **B o C**, mai D |
 | 7b.7 | A, guanyador | Comprovar notificacions i que el nou administrador queda `trusted` automàticament | Igual que a `/promote` |
 
@@ -298,7 +337,7 @@ dígits, 6 paraula, 7-9 dígits, 10-11 lletres.
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
 | 8.1 | A | `/newevent Proves Abandonat A` | Nou esdeveniment |
-| 8.2 | B | `/join <codi>` | Únic altre participant |
+| 8.2 | B | `/join <codi>` (el d'Event 4), confirmant el canvi si es demana | Únic altre participant. B encara pertanyia a Event 3 (Fase 7b.2), que segueix actiu; si en aquell moment n'era l'administrador (depèn del desempat aleatori de la Fase 7b.6), aquest pas hi dispara successió; si no ho era, és només un canvi normal. Cap dels dos casos afecta la resta d'aquesta fase, i no cal fer-ne seguiment |
 | 8.3 | A | `/troll B` | Ara **tots** els participants que no són l'administrador estan trollejats |
 | 8.4 | A | `/leave` | No hi ha ningú elegible → l'esdeveniment es tanca com `abandoned` (no `completed`); A rep un missatge que ho explica; **no** s'envia cap passcode final a ningú |
 | 8.5 | A | `/newevent Proves Abandonat B` | Nou esdeveniment, ningú més s'hi uneix |
@@ -329,8 +368,8 @@ addicionals). No cal cap espera real en tota la fase.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 9b.1 | A | `/newevent Proves Claim Handover`, B i C s'hi uneixen | Preparació |
-| 9b.2 | B | Reportar, p. ex., 1 posició; C reportar 2 posicions | Perquè el desempat per aportacions dins del pool de `/claim` es pugui comprovar més endavant |
+| 9b.1 | A | `/newevent Proves Claim Handover`, confirmant el canvi respecte Event 6 (actiu des de la Fase 9a); tot seguit B i C s'hi uneixen, **en aquest ordre**, B confirmant també el canvi respecte Event 6 | Preparació. A (administrador d'Event 6) i B (participant neutral) el deixen tots dos en aquest pas; com que B és qui el deixa l'últim, Event 6 acaba **tancant-se com a `abandoned`**, registrat sota `admin_user_id = B` (independentment de si B hi arriba a quedar transitòriament promocionat abans de marxar-ne ell mateix). C s'uneix directament des d'Event 3 (Fase 7b.2), on n'havia acabat sent l'administrador després de la successió de 8.2; com que l'únic altre participant que hi queda és D (marcat `troll` des de 7b.3, exclòs de qualsevol pool), no hi ha ningú elegible per succeir-lo i **Event 3 també es tanca com a `abandoned`**, sota `admin_user_id = C` |
+| 9b.2 | B | Reportar `1 A` (1 posició); C reportar `2 B` i `3 C` (2 posicions) | Perquè el desempat per aportacions dins del pool de `/claim` es pugui comprovar més endavant |
 | 9b.3 | — | Executar la `UPDATE` de `last_active_at` sobre l'administrador (A) | Simula la inactivitat |
 | 9b.4 | B | `/claim` | Obre la negociació; A notificat |
 | 9b.5 | C | `/claim` (durant la mateixa negociació oberta) | S'afegeix al pool de candidats **sense** tornar a notificar A |
@@ -340,7 +379,7 @@ addicionals). No cal cap espera real en tota la fase.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 9c.1 | A | `/newevent Proves Claim Timeout`, B s'hi uneix | Preparació |
+| 9c.1 | A | `/newevent Proves Claim Timeout`, confirmant el canvi respecte Event 7 (actiu, on A n'és participant no-administrador des de la Fase 9b.6); tot seguit B s'hi uneix, confirmant també el canvi respecte Event 7 | Preparació. Ni A ni B n'eren l'administrador d'Event 7 (C ho és, des de 9b.6), així que cap dels dos dispara successió en marxar-ne — només hi queda **C**, que hi segueix tranquil·lament com a únic participant i administrador, sense tancar-se |
 | 9c.2 | — | Executar la `UPDATE` de `last_active_at` sobre l'administrador (A) | Simula la inactivitat |
 | 9c.3 | B | `/claim` | Obre negociació; A notificat; queda pendent el botó "Mantenir el rol" / "Cedir el rol" al xat d'A |
 | 9c.4 | — | Executar la comanda genèrica `UPDATE admin_claims SET initiated_at = ...` | Simula que ja han passat els 5 minuts de marge sense esperar-los |
@@ -352,15 +391,19 @@ addicionals). No cal cap espera real en tota la fase.
 ## FASE 10 — Tancament amb `/verify` (Event 1)
 
 Retornant a l'Event 1 (Fases 1-6), amb totes les posicions ja resoltes o
-amb candidats vius coneguts.
+amb candidats vius coneguts. Com que a la Fase 7a.2 en van marxar tots
+els participants originals (B, C i D es van passar a Event 2), Event 1
+va quedar tancat com a `abandoned` — cal revifar-lo abans de poder-hi
+fer res més.
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 10.1 | A | Construir, fora del bot, un passcode que **no** coincideixi amb cap combinació possible (p. ex. agafar una combinació vàlida i alterar-ne un caràcter) i fer `/verify <aquest passcode>` | Cap combinació coincideix; el bot ho informa explícitament i **no** resol ni tanca res; l'esdeveniment segueix obert |
-| 10.2 | A | Recopilar, fora del bot, una combinació completa vàlida (una per cada posició, agafant els valors ja acordats/resolts) | Preparació manual, tal com faria un jugador real al taulell de canvi del joc |
-| 10.3 | A | `/verify <passcode construït al pas anterior>` (com a administrador vigent) | Coincideix amb exactament una combinació: resol totes les posicions implicades (fins i tot les que no estaven en disputa), tanca l'esdeveniment com `completed`, i envia un missatge **nou** (no una edició) amb el passcode final a tots els participants **excepte** els trolls actuals |
-| 10.4 | A | `/status` després de tancat | Ha de reflectir que l'esdeveniment ja no és actiu (o rebutjar la comanda amb un missatge adequat, segons el comportament implementat per a esdeveniments tancats) |
-| 10.5 | B, C | Comprovar que han rebut el missatge nou del passcode final | Sí, tots dos, ja que cap dels dos és troll en aquest punt |
+| 10.1 | A | `/join <codi Event 1>`, confirmant el canvi (respecte Event 8, on A és participant no-administrador des de la Fase 9c.1) i acceptant que reviurà Event 1 | Com que Event 1 està tancat com a `abandoned` des de la Fase 7a.2, el codi el revifa en comptes de rebutjar-lo (igual que a la Fase 1.9): es reobre (`status = active`, `closed_reason = NULL`) i A en torna a ser l'administrador, marcat `trusted`. Totes les dades de posicions, candidats i resolucions de les Fases 3-4 romanen intactes — revifar un esdeveniment només canvia `status`/`admin_user_id`/`closed_reason`, mai els reports |
+| 10.2 | A | Construir, fora del bot, un passcode que **no** coincideixi amb cap combinació possible (p. ex. agafar una combinació vàlida i alterar-ne un caràcter) i fer `/verify <aquest passcode>` | Cap combinació coincideix; el bot ho informa explícitament i **no** resol ni tanca res; l'esdeveniment segueix obert |
+| 10.3 | A | Recopilar, fora del bot, una combinació completa vàlida (una per cada posició, agafant els valors ja acordats/resolts) | Preparació manual, tal com faria un jugador real al taulell de canvi del joc |
+| 10.4 | A | `/verify <passcode construït al pas anterior>` (com a administrador vigent) | Coincideix amb exactament una combinació: resol totes les posicions implicades (fins i tot les que no estaven en disputa), tanca l'esdeveniment com `completed`, i envia un missatge **nou** (no una edició) amb el passcode final a tots els participants **excepte** els trolls actuals |
+| 10.5 | A | `/status` després de tancat | Ha de reflectir que l'esdeveniment ja no és actiu (o rebutjar la comanda amb un missatge adequat, segons el comportament implementat per a esdeveniments tancats) |
+| 10.6 | A | Comprovar que ha rebut el missatge nou del passcode final | És l'únic participant d'Event 1 en aquest punt — B, C i D se'n van anar tots a la Fase 7a.2 i mai hi han tornat — així que no hi ha ningú més a qui comprovar-ho |
 
 ---
 
@@ -375,24 +418,34 @@ per defecte, no només per casualitat d'aquell patró concret.
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
 | 11.1 | A | `/newevent Proves Patró Invertit | 999XX*XXX99` | Nou esdeveniment |
-| 11.2 | B | `/join <codi>` | S'uneix |
+| 11.2 | B | `/join <codi>` (el d'Event 9), confirmant el canvi respecte Event 8 | S'uneix a Event 9. B n'era l'únic participant restant a Event 8 i també l'administrador (des de la Fase 9c.5) — A ja se n'havia anat a la Fase 10.1 per revifar Event 1 — així que en marxar-ne no hi queda ningú elegible i **Event 8 es tanca com a `abandoned`**, sota `admin_user_id = B` |
 | 11.3 | A | `1 X` (posició 1 espera un dígit, `X` no ho és) | Es dispara la confirmació Sí/No pel tipus, igual que a la Fase 3 però ara amb els tipus intercanviats; confirmar amb **Sí** |
-| 11.4 | A | Reportar un valor del tipus correcte a **cada** posició (1-11), p. ex. `1 5`, `2 1`, `3 2`, `4 A`, `5 B`, `6 ALPHA`, `7 C`, `8 D`, `9 E`, `10 9`, `11 8` | Preparació per a l'estrès de variants |
-| 11.5 | B | Reportar, a **les 5 primeres posicions només** (1-5), un valor diferent del d'A a cadascuna, del tipus correcte (p. ex. `1 7`, `2 3`, `3 4`, `4 X`, `5 Y`) | 5 posicions amb 2 candidats cadascuna = 2⁵ = 32 combinacions possibles, per sobre del límit de renderització (16) |
+| 11.4 | A | Reportar un valor del tipus correcte a **cada** posició (1-11): `1 5`, `2 1`, `3 2`, `4 A`, `5 B`, `6 ALPHA`, `7 C`, `8 D`, `9 E`, `10 9`, `11 8` | Preparació per a l'estrès de variants |
+| 11.5 | B | Reportar, a **les 5 primeres posicions només** (1-5), un valor diferent del d'A a cadascuna, del tipus correcte: `1 7`, `2 3`, `3 4`, `4 X`, `5 Y` | 5 posicions amb 2 candidats cadascuna = 2⁵ = 32 combinacions possibles, per sobre del límit de renderització (16) |
 | 11.6 | A | `/status` | En comptes de llistar les 32 combinacions, mostra un resum (progrés + quines posicions segueixen en conflicte) i convida a fer `/resolve` d'algunes abans de tornar-ho a intentar |
-| 11.7 | B | Reportar també a les 6 posicions restants (6-11) un valor diferent del d'A, del tipus correcte (p. ex. `6 BETA`, `7 F`, `8 G`, `9 H`, `10 0`, `11 1`) | Ara les 11 posicions tenen 2 candidats cadascuna = 2¹¹ = 2048 combinacions, per sobre també del límit de seguretat intern (2000) |
-| 11.8 | A | `/verify <qualsevol passcode plausible>` | Com que el nombre brut de combinacions supera el límit de seguretat abans fins i tot de comparar-les, el bot demana explícitament que es resolguin algunes posicions manualment primer, en lloc d'intentar-ho i penjar-se o trigar excessivament |
+| 11.7 | B | Reportar també a les 6 posicions restants (6-11) un valor diferent del d'A, del tipus correcte: `6 BETA`, `7 F`, `8 G`, `9 H`, `10 0`, `11 1` | Ara les 11 posicions tenen 2 candidats cadascuna = 2¹¹ = 2048 combinacions, per sobre també del límit de seguretat intern (2000) |
+| 11.8 | A | `/verify 512ABALPHACDE98` (la combinació de les pròpies dades d'A del pas 11.4; el contingut exacte és irrellevant, ja rebutjat abans de comparar-lo amb res) | Com que el nombre brut de combinacions supera el límit de seguretat abans fins i tot de comparar-les, el bot demana explícitament que es resolguin algunes posicions manualment primer, en lloc d'intentar-ho i penjar-se o trigar excessivament |
 | 11.9 | A | `/resolve` (sense arguments) diverses vegades fins reduir prou el nombre de posicions en conflicte | Un cop per sota del límit, `/status` torna a mostrar combinacions concretes i `/verify` torna a poder-se intentar amb normalitat |
 
 ---
 
 ## FASE 12 — `/events`
 
+`/events` llista **tots** els esdeveniments en què l'agent ha
+participat mai — l'actual (si n'hi ha) primer, i després cada altre en
+què va deixar de ser-hi, del més recent al més antic — provinents de
+`participant_history` (vegeu CLAUDE.md "Data model"), no de qui n'és
+l'`admin_user_id`. Com que cap agent ha fet mai un `/leave` "net" (sense
+encadenar-lo immediatament amb el següent `/newevent`/`/join`) a partir
+de la Fase 7, els quatre acaben acumulant-ne uns quants — per això calia
+comprovar el cas de la llista buida abans, a la Fase 0.6:
+
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 12.1 | A | `/events` | Llista **tots** els esdeveniments que A administra actualment o ha administrat, amb el seu `status` (`active`/`closed`), incloent-hi els duplicats de la Fase 1.5, els abandonats de la Fase 8 i els tancats de les Fases 10-11 |
-| 12.2 | B | `/events` (si en algun moment ha estat administrador, p. ex. gràcies a la Fase 6 o a alguna successió) | Ha de llistar només els que **B** administra/ha administrat, no els d'A |
-| 12.3 | D | `/events` (si mai ha estat administrador) | Llista buida amb el missatge corresponent |
+| 12.1 | A | `/events` | **10** esdeveniments: Event 1 (`completed`), Event 1b, Event 2, Event 3, Event 4, Event 5, Event 6, Event 7 i Event 8, tots com a passats, i **Event 9** com l'actual (`active`, des d'11.1) — literalment tots els esdeveniments creats en aquest pla |
+| 12.2 | B | `/events` | **8** esdeveniments: Event 1, 2, 3, 4, 6, 7, 8 com a passats, i **Event 9** com l'actual (des d'11.2) — mai ha tocat Event 1b ni Event 5 |
+| 12.3 | C | `/events` | **4** esdeveniments: Event 1, 2, 3 com a passats, i **Event 7** com l'actual (des de 9b.1 — no l'ha deixat des de llavors) |
+| 12.4 | D | `/events` | **3** esdeveniments: Event 1, 2 com a passats (Event 1 hi apareix una sola vegada tot i haver-lo deixat dues, per la fila de `/kick` a 5.10 i pel canvi a 7a.2), i **Event 3** com l'actual (des de 7b.2 — mai l'ha deixat) |
 
 ---
 
@@ -402,11 +455,11 @@ per defecte, no només per casualitat d'aquell patró concret.
 |---|---|
 | `/start`, `/help` | 0 |
 | `/language` | 0, 1 |
-| `/newevent` (per defecte, patró personalitzat, patró invàlid, nom duplicat) | 1, 7, 8, 9, 11 |
+| `/newevent` (per defecte, patró personalitzat, patró invàlid, nom duplicat, confirmació de sortida amb rebuig i acceptació, successió sobre l'esdeveniment anterior) | 1, 7, 8, 9, 11 |
 | `/sharetext` (sense args, amb codi, amb idioma, botons) | 1 |
-| `/join` (codi vàlid, invàlid, canvi d'esdeveniment) | 2 |
+| `/join` (codi vàlid, invàlid, canvi d'esdeveniment acceptat i rebutjat, revifada d'un esdeveniment abandonat, successió sobre l'esdeveniment anterior) | 1, 2, 7, 8, 9, 10, 11 |
 | `/leave` (normal, amb successió, abandonament) | 6 (implícit a 6.5 no), 7, 8 |
-| `/myevent` | 0, 1, 2 |
+| `/current` | 0, 1, 2 |
 | `<posició> <valor>` / `/submit` (nou, no-op, autocorrecció, desacord, tipus incorrecte, ambdós alhora) | 3, 11 |
 | `<posició>` sola / `/submit <posició>` (eliminar) | 3 |
 | `/status` (normal, relocalització, límit de 16) | 4, 11 |
@@ -420,10 +473,19 @@ per defecte, no només per casualitat d'aquell patró concret.
 | `/promote` (i reversió) | 6 |
 | `/claim` (rebutjat per poc temps, negociació, keep, handover, timeout, cursa, pool de 2+) | 9 |
 | `/verify` (sense match, match únic que tanca, límit de seguretat) | 10, 11 |
-| `/events` (amb esdeveniments, sense cap) | 12 |
+| `/events` (sense cap, amb esdeveniments) | 0, 12 |
 
 Amb l'excepció ja assenyalada de l'ambigüitat de `/verify` amb dos
 slots de paraula (fora d'abast per decisió, no per oblit), un cop
 completades totes les fases, la resta de comandes de la taula de
 referència de `CLAUDE.md` han estat exercides en tots els escenaris
 descrits al document (èxit, conflicte, límit i frontera).
+
+Una branca que aquest pla **no** exercita explícitament: revifar un
+esdeveniment abandonat amb `/join` quan qui l'executa **no** és a cap
+altre esdeveniment (sense diàleg de confirmació pel mig). Als passos
+1.9/2.5, qui reviu sempre ja és a un altre esdeveniment actiu, així que
+només es prova la variant amb confirmació. Es podria afegir provant
+`/join` amb el codi d'Event 1b des d'un cinquè compte net (sense cap
+esdeveniment previ), però amb els 4 agents mínims ja definits no hi ha
+cap agent lliure per fer-ho sense interferir amb la resta del pla.

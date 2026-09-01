@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8" />
+<title>IFS Passcode Relay — Testing Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --panel2: #1e222c; --border: #2a2f3a;
+    --text: #e8eaf0; --muted: #8b93a7; --accent: #5b9dff; --ok: #35c47c; --warn: #f0b429; --err: #ef5757;
+    font-size: 16px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, Segoe UI, Roboto, sans-serif; }
+  header { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 18px; margin: 0; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  main { padding: 20px 24px 60px; max-width: 1100px; margin: 0 auto; }
+
+  .progress { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+  .progress .bar { flex: 1; height: 8px; background: var(--panel2); border-radius: 4px; overflow: hidden; }
+  .progress .bar > div { height: 100%; background: var(--accent); }
+
+  section.agents { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+  .agent-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+  .agent-card h3 { margin: 0 0 8px; font-size: 14px; }
+  .agent-card input { width: 100%; margin-bottom: 6px; padding: 6px 8px; background: var(--panel2); border: 1px solid var(--border); color: var(--text); border-radius: 6px; font-size: 13px; }
+  .agent-card .status { font-size: 12px; color: var(--muted); }
+  .agent-card .status.ok { color: var(--ok); }
+
+  .step-card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+  .step-card .tag { color: var(--accent); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  .step-card h2 { margin: 4px 0 14px; font-size: 22px; }
+  .copybox { background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-family: 'Cascadia Code', Consolas, monospace; font-size: 18px; white-space: pre-wrap; margin-bottom: 12px; cursor: pointer; position: relative; }
+  .copybox:hover { border-color: var(--accent); }
+  .copybox .hint { position: absolute; top: 6px; right: 10px; font-size: 11px; color: var(--muted); font-family: inherit; }
+  .expected { color: var(--muted); font-size: 14px; margin-bottom: 14px; line-height: 1.5; }
+  .status-line { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 14px; margin-bottom: 14px; }
+  .status-line.waiting { background: rgba(240,180,41,.12); color: var(--warn); }
+  .status-line.done { background: rgba(53,196,124,.12); color: var(--ok); }
+  .status-line.manual { background: rgba(91,157,255,.12); color: var(--accent); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex: none; }
+  .actions { display: flex; gap: 10px; }
+  button { background: var(--panel2); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 7px; cursor: pointer; font-size: 13px; }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #06111f; font-weight: 600; }
+
+  .finished { text-align: center; padding: 40px; font-size: 20px; color: var(--ok); }
+
+  details.table-block { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; }
+  details.table-block > summary { padding: 10px 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; }
+  details.table-block > summary .count { color: var(--muted); font-weight: 400; }
+  .table-wrap { overflow-x: auto; padding: 0 14px 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  th, td { border-bottom: 1px solid var(--border); padding: 5px 8px; text-align: left; white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; }
+  .empty { color: var(--muted); font-size: 13px; padding: 10px 14px; }
+  .err { color: var(--err); font-size: 13px; padding: 10px 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>IFS Passcode Relay — Testing Dashboard</h1>
+  <div class="sub" id="pollstatus">connectant…</div>
+</header>
+<main>
+  <div class="progress">
+    <div id="progresstext">0 / 0</div>
+    <div class="bar"><div id="progressbar" style="width:0%"></div></div>
+  </div>
+
+  <section class="agents" id="agents"></section>
+
+  <div id="stepcard"></div>
+
+  <h2 style="font-size:15px; color: var(--muted); margin: 24px 0 10px;">Contingut complet de les taules (D1 remot)</h2>
+  <div id="tables"></div>
+</main>
+
+<script>
+const AGENT_LABELS = { A: 'Agent A', B: 'Agent B', C: 'Agent C', D: 'Agent D' };
+let lastAgents = {};
+
+function el(tag, attrs = {}, children = []) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'text') e.textContent = v;
+    else if (k === 'html') e.innerHTML = v;
+    else e.setAttribute(k, v);
+  }
+  for (const c of [].concat(children)) if (c) e.appendChild(c);
+  return e;
+}
+
+function renderAgents(agents) {
+  lastAgents = agents;
+  const container = document.getElementById('agents');
+  container.innerHTML = '';
+  for (const letter of ['A', 'B', 'C', 'D']) {
+    const a = agents[letter];
+    const card = el('div', { class: 'agent-card' });
+    card.appendChild(el('h3', { text: AGENT_LABELS[letter] }));
+    const uInput = el('input', { placeholder: '@usuari de Telegram', value: a.username || '' });
+    const idInput = el('input', { placeholder: 'user_id manual (opcional)', value: a.manualId || '' });
+    const status = el('div', { class: 'status' + (a.user_id ? ' ok' : ''), text: a.user_id ? `✅ identificat: ${a.user_id}` : '⏳ pendent' });
+    let t;
+    const save = () => {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        fetch('/api/agents', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ [letter]: { username: uInput.value.trim(), manualId: idInput.value.trim() } }),
+        });
+      }, 400);
+    };
+    uInput.addEventListener('input', save);
+    idInput.addEventListener('input', save);
+    card.appendChild(uInput); card.appendChild(idInput); card.appendChild(status);
+    container.appendChild(card);
+  }
+}
+
+function copy(text, boxEl) {
+  navigator.clipboard.writeText(text).then(() => {
+    const hint = boxEl.querySelector('.hint');
+    const old = hint.textContent;
+    hint.textContent = 'copiat!';
+    setTimeout(() => { hint.textContent = old; }, 1200);
+  }).catch(() => {});
+}
+
+function renderStep(step, stepStatus, stepIndex, totalSteps, finished) {
+  const card = document.getElementById('stepcard');
+  card.innerHTML = '';
+
+  document.getElementById('progresstext').textContent = `${stepIndex} / ${totalSteps}`;
+  document.getElementById('progressbar').style.width = `${totalSteps ? (100 * stepIndex / totalSteps) : 0}%`;
+
+  if (finished || !step) {
+    card.appendChild(el('div', { class: 'finished', text: '🎉 Fases 0-4 completades.' }));
+    return;
+  }
+
+  const box = el('div', { class: 'step-card' });
+  box.appendChild(el('div', { class: 'tag', text: `Fase ${step.phase} · Pas ${step.id} · ${step.agents.join(', ')}` }));
+  box.appendChild(el('h2', { text: step.action }));
+
+  const copyText = step.copyLines.join('\n');
+  const copyBox = el('div', { class: 'copybox' });
+  copyBox.appendChild(el('span', { html: '<span class="hint">clica per copiar</span>' }));
+  copyBox.appendChild(document.createTextNode(copyText));
+  copyBox.addEventListener('click', () => copy(copyText, copyBox));
+  box.appendChild(copyBox);
+
+  box.appendChild(el('div', { class: 'expected', text: step.expected }));
+
+  let statusClass = 'waiting', statusText = 'Esperant el canvi a la base de dades…';
+  if (stepStatus?.manual) { statusClass = 'manual'; statusText = stepStatus.detail; }
+  else if (stepStatus?.done) { statusClass = 'done'; statusText = '✅ ' + (stepStatus.detail || 'Fet.'); }
+  else if (stepStatus?.detail) { statusText = stepStatus.detail; }
+  box.appendChild(el('div', { class: `status-line ${statusClass}` }, [el('div', { class: 'dot' }), el('div', { text: statusText })]));
+
+  const actions = el('div', { class: 'actions' });
+  const back = el('button', { text: '← Enrere' });
+  back.addEventListener('click', () => fetch('/api/back', { method: 'POST' }));
+  actions.appendChild(back);
+
+  if (step.manual) {
+    const done = el('button', { class: 'primary', text: 'Fet ✅' });
+    done.addEventListener('click', () => fetch('/api/advance', { method: 'POST' }));
+    actions.appendChild(done);
+  } else {
+    const skip = el('button', { text: 'Saltar manualment →' });
+    skip.addEventListener('click', () => fetch('/api/advance', { method: 'POST' }));
+    actions.appendChild(skip);
+  }
+  box.appendChild(actions);
+
+  card.appendChild(box);
+}
+
+function renderTables(tables, tableColumns) {
+  const container = document.getElementById('tables');
+  const openState = new Set([...container.querySelectorAll('details[open]')].map(d => d.dataset.name));
+  container.innerHTML = '';
+  for (const [name, rows] of Object.entries(tables)) {
+    const details = el('details', { class: 'table-block', 'data-name': name });
+    if (openState.has(name) || openState.size === 0) details.open = true;
+    const summary = el('summary', {}, [el('span', { text: name }), el('span', { class: 'count', text: `${rows.length} files` })]);
+    details.appendChild(summary);
+    // Column names come from the first row when there's data, or from
+    // the schema (fetched once via PRAGMA table_info) when the table is
+    // empty — either way the header row always renders, just with no
+    // <tbody> rows underneath when there's nothing to show.
+    const cols = rows.length ? Object.keys(rows[0]) : (tableColumns?.[name] || []);
+    if (cols.length) {
+      const table = el('table');
+      const thead = el('thead', {}, el('tr', {}, cols.map(c => el('th', { text: c }))));
+      const tbody = el('tbody', {}, rows.map(r => el('tr', {}, cols.map(c => el('td', { text: r[c] === null ? '·' : String(r[c]) })))));
+      table.appendChild(thead); table.appendChild(tbody);
+      details.appendChild(el('div', { class: 'table-wrap' }, table));
+    } else {
+      details.appendChild(el('div', { class: 'empty', text: '(buida)' }));
+    }
+    container.appendChild(details);
+  }
+}
+
+async function tick() {
+  try {
+    const res = await fetch('/api/state');
+    if (!res.ok) throw new Error((await res.json()).error || res.statusText);
+    const data = await res.json();
+    document.getElementById('pollstatus').textContent = 'en viu — ' + new Date().toLocaleTimeString('ca-ES');
+    renderAgents(data.agents);
+    renderStep(data.step, data.stepStatus, data.stepIndex, data.totalSteps, data.finished);
+    renderTables(data.tables, data.tableColumns);
+  } catch (e) {
+    document.getElementById('pollstatus').textContent = '⚠ ' + e.message;
+  } finally {
+    setTimeout(tick, 3000);
+  }
+}
+tick();
+</script>
+</body>
+</html>

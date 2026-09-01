@@ -6,3 +6,8 @@ dist/
 
 # Wrangler local state
 .wrangler/
+
+# Per-session progress and scratch query file for the local testing
+# dashboard (scripts/testing-dashboard)
+scripts/testing-dashboard/.session-state.json
+scripts/testing-dashboard/.query.sql

@@ -19,7 +19,8 @@
     "db:reset:remote": "wrangler d1 execute ifs-passcode-relay --remote --file=scripts/reset-db.sql",
     "db:seed:local": "wrangler d1 execute ifs-passcode-relay --local --file=scripts/seed-fake-data.sql",
     "db:seed:remote": "wrangler d1 execute ifs-passcode-relay --remote --file=scripts/seed-fake-data.sql",
-    "bot:set-commands": "node scripts/set-commands.mjs"
+    "bot:set-commands": "node scripts/set-commands.mjs",
+    "testing:dashboard": "node scripts/testing-dashboard/server.mjs"
   },
   "dependencies": {
     "grammy": "^1.45.1",
