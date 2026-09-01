@@ -48,3 +48,30 @@ export async function fetchEventTables(db: D1Database, eventId: number): Promise
   });
   return out;
 }
+
+interface ColumnInfoRow {
+  name: string;
+}
+
+/**
+ * Column names for every table (global and event-scoped alike), via
+ * `PRAGMA table_info`. The Worker is stateless between requests (see
+ * CLAUDE.md's Platform section), so unlike scripts/testing-dashboard —
+ * which fetches this once per long-lived session — this runs on every
+ * request; it's cheap enough that caching it isn't worth the added
+ * state. Table names are always drawn from our own fixed list, never
+ * from request input, so interpolating them directly into the PRAGMA
+ * statement (which can't take a bound parameter for an identifier) is
+ * safe. Letting an empty table still render its header row, rather
+ * than falling back to the columns of whatever row happens to be first,
+ * is the whole point of fetching this at all.
+ */
+export async function fetchTableColumns(db: D1Database): Promise<Record<string, string[]>> {
+  const allTables = [...GLOBAL_TABLES, ...EVENT_TABLES];
+  const results = await db.batch<ColumnInfoRow>(allTables.map((t) => db.prepare(`PRAGMA table_info(${t.name})`)));
+  const out: Record<string, string[]> = {};
+  allTables.forEach((t, i) => {
+    out[t.name] = (results[i]?.results ?? []).map((r) => r.name);
+  });
+  return out;
+}

@@ -128,7 +128,7 @@ function el(tag, attrs, children) {
   return e;
 }
 
-function renderTables(container, tables) {
+function renderTables(container, tables, tableColumns) {
   container.innerHTML = '';
   Object.keys(tables).forEach(function (name) {
     const rows = tables[name];
@@ -138,8 +138,12 @@ function renderTables(container, tables) {
       el('span', { text: name }),
       el('span', { class: 'count', text: rows.length + ' files' }),
     ]));
-    if (rows.length) {
-      const cols = Object.keys(rows[0]);
+    // Column names come from the first row when there's data, or from
+    // the schema (fetched fresh on every request via PRAGMA table_info)
+    // when the table is empty — either way the header row always
+    // renders, just with no <tr> underneath when there's nothing to show.
+    const cols = rows.length ? Object.keys(rows[0]) : ((tableColumns && tableColumns[name]) || []);
+    if (cols.length) {
       const table = el('table');
       table.appendChild(el('thead', {}, el('tr', {}, cols.map(function (c) { return el('th', { text: c }); }))));
       const tbody = el('tbody', {}, rows.map(function (r) {
@@ -177,11 +181,11 @@ async function loadData(eventId) {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
 
-    renderTables(globalContainer, data.global);
+    renderTables(globalContainer, data.global, data.tableColumns);
     populateEventSelect(data.global.events, true);
 
     if (data.eventTables) {
-      renderTables(eventContainer, data.eventTables);
+      renderTables(eventContainer, data.eventTables, data.tableColumns);
     } else {
       eventContainer.innerHTML = '';
       eventContainer.appendChild(el('div', { class: 'hint', text: 'Selecciona un esdeveniment per veure\\'n les dades.' }));

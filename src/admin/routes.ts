@@ -3,7 +3,7 @@ import type { MiddlewareHandler } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import type { Env } from "../env.js";
 import { SESSION_COOKIE, SESSION_TTL_MS, createSessionToken, verifyAdminPassword, verifySessionToken } from "./auth.js";
-import { fetchGlobalTables, fetchEventTables } from "./tables.js";
+import { fetchGlobalTables, fetchEventTables, fetchTableColumns } from "./tables.js";
 import { renderLoginPage, renderDashboardShell } from "./dashboardPage.js";
 
 /** Rejects any request without a valid, unexpired session cookie. */
@@ -58,12 +58,13 @@ adminApp.get("/api/data", requireAuth, async (c) => {
   const eventParam = c.req.query("event");
   const eventId = eventParam && /^\d+$/.test(eventParam) ? Number(eventParam) : null;
 
-  const [global, eventTables] = await Promise.all([
+  const [global, eventTables, tableColumns] = await Promise.all([
     fetchGlobalTables(c.env.DB),
     eventId != null ? fetchEventTables(c.env.DB, eventId) : Promise.resolve(null),
+    fetchTableColumns(c.env.DB),
   ]);
 
-  return c.json({ global, eventTables, selectedEvent: eventId });
+  return c.json({ global, eventTables, tableColumns, selectedEvent: eventId });
 });
 
 export default adminApp;
