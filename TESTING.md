@@ -173,14 +173,14 @@ descrites a cada fase (vegeu la nota a l'inici de la Fase 7).
 
 | Pas | Agent | Acció | Resultat esperat |
 |---|---|---|---|
-| 0.1 | A, B, C, D | Enviar `/start` | Missatge de benvinguda en l'idioma detectat automàticament del client de Telegram (`en`/`ca`/`es`/`fr`, o `en` si no és cap d'aquests) |
+| 0.1 | A, B, C, D | Enviar `/start` | Missatge de benvinguda en l'idioma detectat automàticament del client de Telegram (`en`/`ca`/`es`/`fr`/`gl`/`eu`, o `en` si no és cap d'aquests) |
 | 0.2 | A, B, C, D | Enviar `/help` | Llista de comandes disponibles, en el mateix idioma |
-| 0.3 | A, B, C, D | Enviar `/language xx`, on `xx` és un idioma diferent del que cada agent ja tenia detectat al pas 0.1 — triant, entre els 4 agents, una combinació que cobreixi els 4 idiomes suportats (`en`/`ca`/`es`/`fr`) sempre que sigui possible | Confirmació en el **nou** idioma; els missatges ja enviats no canvien |
+| 0.3 | A, B, C, D | Enviar `/language xx`, on `xx` és un idioma diferent del que cada agent ja tenia detectat al pas 0.1 — triant, entre els 4 agents, una combinació de 4 idiomes diferents entre si d'entre els 6 suportats (`en`/`ca`/`es`/`fr`/`gl`/`eu`) sempre que sigui possible | Confirmació en el **nou** idioma; els missatges ja enviats no canvien |
 | 0.4 | A; després A, B, C, D | Repetir `/language` amb un codi no suportat (p. ex. `/language de`); tot seguit, cadascú estableix amb `/language <codi>` l'idioma amb què vol continuar la resta de les proves | Codi no suportat: missatge d'error / ús, sense canviar l'idioma actual. Idioma final: cadascú pot quedar-se amb el del pas 0.3, tornar al seu original (pas 0.1), o triar-ne un altre — incloent-hi no fer res, per mantenir el del pas 0.3 |
 | 0.5 | A, B, C, D | Enviar `/current` sense estar en cap esdeveniment | Missatge indicant que no es pertany a cap esdeveniment |
 | 0.6 | A, B, C, D | Enviar `/events` sense haver participat mai en cap esdeveniment | Llista buida amb el missatge corresponent — l'única finestra de tot aquest pla en què **cap** dels quatre agents hi ha participat encara; a partir de la Fase 1 tots quatre en van acumulant (vegeu Fase 12), així que aquest és l'únic moment on es pot comprovar el cas buit |
 
-Per triar la combinació del pas 0.3 (a mà, sense el dashboard): cada `xx` ha de ser diferent del que l'agent ja tenia; si els 4 agents no tenen tots exactament el mateix idioma de partida, es pot repartir els 4 idiomes suportats un per agent (p. ex. amb una rotació cíclica: qui tenia `ca` passa a `es`, qui tenia `es` passa a `fr`, etc.); si els 4 ja coincidien exactament en el mateix idioma, no hi ha cap combinació que cobreixi els 4 — n'hi ha prou que cadascú trïi qualsevol altre. El dashboard (vegeu més avall) ho calcula i ho mostra automàticament.
+Per triar la combinació del pas 0.3 (a mà, sense el dashboard): cada `xx` ha de ser diferent del que l'agent ja tenia; si els 4 agents no tenen tots exactament el mateix idioma de partida, es pot repartir 4 dels 6 idiomes suportats, un per agent (p. ex. amb una rotació cíclica: qui tenia `ca` passa a `es`, qui tenia `es` passa a `fr`, etc.); si els 4 ja coincidien exactament en el mateix idioma, no hi ha cap combinació que cobreixi 4 idiomes diferents — n'hi ha prou que cadascú trïi qualsevol altre. El dashboard (vegeu més avall) ho calcula i ho mostra automàticament.
 
 ---
 

@@ -90,7 +90,7 @@ const en: LandingContent = {
       heading: "Getting started",
       rows: [
         { command: "/start, /help", description: "Introduction and command list." },
-        { command: "/language <code>", description: "Set your language (en, ca, es, fr)." },
+        { command: "/language <code>", description: "Set your language (en, ca, es, fr, gl, eu)." },
       ],
     },
     {
@@ -132,7 +132,7 @@ const en: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Available in English, Català, Castellano and Français.",
+  footerLanguages: "Available in English, Català, Castellano, Français, Galego and Euskara.",
   footerSource: "Source on GitHub",
 };
 
@@ -174,7 +174,7 @@ const ca: LandingContent = {
       heading: "Per començar",
       rows: [
         { command: "/start, /help", description: "Introducció i llista de comandes." },
-        { command: "/language <codi>", description: "Estableix el teu idioma (en, ca, es, fr)." },
+        { command: "/language <codi>", description: "Estableix el teu idioma (en, ca, es, fr, gl, eu)." },
       ],
     },
     {
@@ -216,7 +216,7 @@ const ca: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en català, anglès, castellà i francès.",
+  footerLanguages: "Disponible en català, anglès, castellà, francès, gallec i basc.",
   footerSource: "Codi font a GitHub",
 };
 
@@ -258,7 +258,7 @@ const es: LandingContent = {
       heading: "Para empezar",
       rows: [
         { command: "/start, /help", description: "Introducción y lista de comandos." },
-        { command: "/language <código>", description: "Establece tu idioma (en, ca, es, fr)." },
+        { command: "/language <código>", description: "Establece tu idioma (en, ca, es, fr, gl, eu)." },
       ],
     },
     {
@@ -300,7 +300,7 @@ const es: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en español, inglés, catalán y francés.",
+  footerLanguages: "Disponible en español, inglés, catalán, francés, gallego y euskera.",
   footerSource: "Código fuente en GitHub",
 };
 
@@ -342,7 +342,7 @@ const fr: LandingContent = {
       heading: "Pour commencer",
       rows: [
         { command: "/start, /help", description: "Introduction et liste des commandes." },
-        { command: "/language <code>", description: "Définit votre langue (en, ca, es, fr)." },
+        { command: "/language <code>", description: "Définit votre langue (en, ca, es, fr, gl, eu)." },
       ],
     },
     {
@@ -384,11 +384,179 @@ const fr: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en français, anglais, catalan et espagnol.",
+  footerLanguages: "Disponible en français, anglais, catalan, espagnol, galicien et basque.",
   footerSource: "Code source sur GitHub",
 };
 
-const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr };
+const gl: LandingContent = {
+  htmlLang: "gl",
+  metaDescription:
+    "Un bot de Telegram que permite aos asistentes a un Ingress First Saturday construír o passcode do evento en tempo real.",
+  eyebrow: "Para o Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Constrúe o passcode do teu evento entre todos, en tempo real — sen capturas de pantalla nun grupo de chat.",
+  ctaLabel: "Abre @ifs_relay_bot en Telegram",
+  navAbout: "Que é isto",
+  navHowItWorks: "Como funciona",
+  navCommands: "Comandos",
+  aboutHeading: "Que é isto?",
+  aboutBody: [
+    "Ingress First Saturday é un evento presencial recorrente do xogo móbil Ingress. Durante o evento, amósanselles aos xogadores as imaxes dunha serie de portais; visitalos sobre o terreo e inspeccionar o seu contido multimedia revela un carácter. Concatenando os caracteres na orde correcta obtense un passcode canxeable na tenda do xogo por un paquete de obxectos do IFS.",
+    "Este bot permite a todos os asistentes a un IFS concreto reportar que carácter atoparon e en que posición corresponde, e mantén unha vista compartida e en directo do passcode a medida que se completa. Pode haber varios IFS en marcha á vez — cada un co seu propio código de acceso e o seu propio grupo de participantes.",
+  ],
+  howHeading: "Como funciona",
+  steps: [
+    { text: "Quen organiza o relevo de passcode crea un evento con /newevent — quen o crea únese automaticamente como o seu administrador, e recibe un texto de convite listo para reenviar aos asistentes." },
+    { text: "O resto de asistentes envía /join <código> ao bot, que tamén os convida a executar /sharetext para axudar a difundilo." },
+    {
+      text: "Atopaches algo? Repórtao enviando a posición e o valor, sen ningún comando:",
+      subitems: [
+        '"6 GLYPH" rexistra que a posición 6 é GLYPH.',
+        "Equivocácheste e queres corrixir o teu propio reporte? Volve enviar a mesma posición co valor correcto — non fai falta confirmación, e o bot lémbrache cal era o valor anterior por se o queres desfacer.",
+        'Reportaches na posición equivocada, ou aínda non a coñeces de verdade? Envía só a posición sen nada despois, p. ex. "6", para eliminar o teu reporte alí.',
+      ],
+    },
+    { text: "Se dúas persoas distintas reportan valores distintos para a mesma posición, ambos consérvanse e móstranse como posibilidades separadas — ata que quen administra o evento o resolve con /resolve." },
+    { text: "O acordo total non é o mesmo que verificado: o evento só se pode pechar cando quen o administra probou de verdade un passcode no xogo e o confirmou con /verify, que entón envía o passcode final a todos os participantes." },
+  ],
+  commandsHeading: "Comandos",
+  commandsIntro: "Cada xogador vainos ver no seu propio idioma, establecido unha vez con /language.",
+  commandGroups: [
+    {
+      heading: "Para empezar",
+      rows: [
+        { command: "/start, /help", description: "Introdución e lista de comandos." },
+        { command: "/language <código>", description: "Establece o teu idioma (en, ca, es, fr, gl, eu)." },
+      ],
+    },
+    {
+      heading: "Eventos",
+      rows: [
+        {
+          command: "/newevent <nome> [| <patrón>]",
+          description: `Crea un novo evento IFS e obtén o seu código de acceso; únete automaticamente e márcate como de confianza. Pide confirmación primeiro se o teu evento actual aínda non está resolto (dicir que non non crea nada); ese trasládase antes. O patrón é opcional (por defecto ${DEFAULT_PATTERN}); para poñer un propio, escribe o nome, despois un "|", e despois o patrón usando X para unha letra, 9 para un díxito e * para unha palabra enteira, p. ex. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
+        { command: "/join <código>", description: "Únete a un evento — pide confirmación só se o teu evento actual aínda non está resolto; un pechado sen administrador reábrese baixo o teu cargo en vez de rexeitarse." },
+        { command: "/leave", description: "Sae do evento actual. Se es quen o administra, outro participante asume o rol automaticamente (primeiro os de confianza, se non quen máis achegase), ou péchase como inacabado se non hai ninguén apto — crear ou unirte a outro evento traslada o rol igualmente." },
+        { command: "/current", description: "Mostra o evento actual, quen o administra e o número de participantes." },
+        { command: "/sharetext [código] [idioma]", description: "(Re)obtén o texto de convite, por defecto do teu evento actual e o teu idioma." },
+        { command: "/events", description: "Lista todos os eventos nos que participaches, actuais ou pasados." },
+      ],
+    },
+    {
+      heading: "Reportar o passcode",
+      rows: [
+        { command: '"<posición> <valor>"', description: "Reporta o valor atopado nunha posición." },
+        { command: '"<posición>" (sen valor)', description: "Elimina o teu propio reporte nesa posición, se existe." },
+        {
+          command: "/status",
+          description: "Mostra o estado actual do passcode cando queiras, e traslada aquí as próximas actualizacións en directo.",
+        },
+      ],
+    },
+    {
+      heading: "Para quen administra o evento",
+      rows: [
+        { command: "/resolve <posición> [<valor>]", description: "Escolle o valor correcto cando hai discrepancia; sen valor, lista os valores reportados (co desglose de apoios de confianza) como botóns para resolver." },
+        { command: "/resolve", description: "Repasa todas as posicións aínda en discrepancia, unha por unha; cando xa non queda ningunha, remite a /verify — o consenso por si só nunca pecha o evento." },
+        { command: "/unresolve <posición>", description: "Reabre unha posición resolta." },
+        { command: "/trust, /troll, /untrust <usuario>", description: "Modera as achegas dun participante; o apoio de confianza destácase nas listas de candidatos de /resolve." },
+        { command: "/kick <usuario>", description: "Expulsa un participante do evento." },
+        { command: "/promote <usuario>", description: "Cede o rol de administrador a outro participante xa unido ao evento; tamén o marca de confianza, igual que /newevent fai con quen crea o evento." },
+        { command: "/claim", description: "Intenta asumir o cargo de administrador se o actual leva 30+ minutos inactivo; ten 5 minutos para aceptalo, rexeitalo ou non responder antes de que se faga efectivo." },
+        { command: "/verify <passcode>", description: "A única forma de pechar un evento: pega un passcode confirmado correcto na pantalla de canxeo do xogo; resolve todas as posicións a partir del á vez, conxela o evento e anuncia o passcode final a todos." },
+      ],
+    },
+  ],
+  footerLanguages: "Dispoñible en galego, inglés, catalán, castelán, francés e éuscaro.",
+  footerSource: "Código fonte en GitHub",
+};
+
+const eu: LandingContent = {
+  htmlLang: "eu",
+  metaDescription:
+    "Ingress First Saturday bateko partaideei ekitaldiaren pasakodea denbora errealean elkarlanean osatzen laguntzen dien Telegram bot bat.",
+  eyebrow: "Ingress First Saturday-rako",
+  title: "IFS Passcode Relay",
+  tagline: "Osatu zure ekitaldiaren pasakodea guztien artean, denbora errealean — talde-txat batean pantaila-argazkirik gehiago gabe.",
+  ctaLabel: "Ireki @ifs_relay_bot Telegramen",
+  navAbout: "Zer da hau",
+  navHowItWorks: "Nola funtzionatzen du",
+  navCommands: "Komandoak",
+  aboutHeading: "Zer da hau?",
+  aboutBody: [
+    "Ingress First Saturday Ingress mugikorreko jokoaren aldizkako aurrez aurreko ekitaldi bat da. Ekitaldian zehar, jokalariei portal sorta baten irudiak erakusten zaizkie; horiek lekuan bertan bisitatu eta euren multimedia-edukia aztertzeak karaktere bat agerian jartzen du. Karaktereak ordena zuzenean kateatuz, jokoaren dendan IFS gai-sorta baten truke kanjeatu daitekeen pasakode bat lortzen da.",
+    "Bot honek IFS zehatz batera doazen guztiei aurkitutako karakterea eta dagokion posizioa jakinarazteko aukera ematen die, eta pasakodearen ikuspegi partekatu eta zuzeneko bat mantentzen du bete ahala. Aldi berean hainbat IFS ekitaldi egon daitezke martxan — bakoitzak bere batzeko kodea eta bere partaide-taldea dituela.",
+  ],
+  howHeading: "Nola funtzionatzen du",
+  steps: [
+    { text: "Pasakode-errelebua antolatzen duenak /newevent bidez sortzen du ekitaldia — sortzailea automatikoki batzen zaio, haren administratzaile gisa, eta partaideei birbidaltzeko gonbidapen-testu bat jasotzen du." },
+    { text: "Gainerako partaideek /join <kodea> bidaltzen diote botari, honek /sharetext exekutatzera ere gonbidatzen dituelarik hura zabaltzen laguntzeko." },
+    {
+      text: "Zerbait aurkitu duzu? Jakinarazi posizioa eta balioa bidaliz, komandorik gabe:",
+      subitems: [
+        '"6 GLYPH" bidaliz, 6 posizioa GLYPH dela erregistratzen da.',
+        "Oker egin duzu eta zure jakinarazpena zuzendu nahi duzu? Bidali posizio bera balio zuzenarekin berriro — ez da berrespenik behar, eta botak aurreko balioa zein zen gogorarazten dizu, atzera bota nahi baduzu.",
+        'Posizio okerrean jakinarazi duzu, edo oraindik ez dakizu ziur? Bidali posizioa bakarrik, ondoren ezer gabe, adib. "6", zure jakinarazpena handik kentzeko.',
+      ],
+    },
+    { text: "Bi pertsona ezberdinek posizio berarentzat balio ezberdinak jakinarazten badituzte, biak mantentzen dira eta aukera bereizi gisa erakusten dira — ekitaldiaren administratzaileak /resolve bidez erabaki arte." },
+    { text: "Adostasun osoa ez da egiaztatzearen gauza bera: ekitaldia bakarrik itxi daiteke administratzaileak jokoan pasakode bat benetan probatu eta /verify bidez berretsi duenean, orduan azken pasakodea partaide guztiei bidaltzen zaielarik." },
+  ],
+  commandsHeading: "Komandoak",
+  commandsIntro: "Jokalari bakoitzak bere hizkuntzan ikusiko ditu, /language bidez behin ezarrita.",
+  commandGroups: [
+    {
+      heading: "Hasteko",
+      rows: [
+        { command: "/start, /help", description: "Sarrera eta komandoen zerrenda." },
+        { command: "/language <kodea>", description: "Zure hizkuntza ezartzen du (en, ca, es, fr, gl, eu)." },
+      ],
+    },
+    {
+      heading: "Ekitaldiak",
+      rows: [
+        {
+          command: "/newevent <izena> [| <eredua>]",
+          description: `IFS ekitaldi berri bat sortzen du eta batzeko kodea ematen dizu; automatikoki batzen zaitu eta fidagarritzat markatzen zaitu. Zure uneko ekitaldia oraindik ebatzi gabe badago, lehenik berrespena eskatzen du (ezetz esateak ez du ezer sortzen); hura lehenik lagatzen da. Eredua aukerakoa da (lehenetsia ${DEFAULT_PATTERN}); zeurea ezartzeko, idatzi izena, gero "|" bat, eta gero eredua, X letra baterako, 9 zenbaki baterako eta * hitz oso baterako erabiliz, adib. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
+        { command: "/join <kodea>", description: "Ekitaldi batera batzen zaitu — zure uneko ekitaldia oraindik ebatzi gabe badago bakarrik eskatzen du berrespena; administratzailerik gabe itxitako bat zure kargura berrirekitzen da, ukatu ordez." },
+        { command: "/leave", description: "Uneko ekitaldia uzten du. Administratzailea bazara, beste partaide batek automatikoki hartzen du rola (lehenik fidagarriak, bestela gehien ekarri duena), edo ekitaldia amaitu gabe ixten da inor egokirik ez badago — beste ekitaldi bat sortu edo horretara batzeak rola berdin lagatzen du." },
+        { command: "/current", description: "Uneko ekitaldia, nork administratzen duen eta partaide kopurua erakusten ditu." },
+        { command: "/sharetext [kodea] [hizkuntza]", description: "Gonbidapen-testua (berr)eskuratzen du, lehenetsita zure uneko ekitaldia eta zure hizkuntza." },
+        { command: "/events", description: "Parte hartu duzun ekitaldi guztiak zerrendatzen ditu, unekoak zein iraganekoak." },
+      ],
+    },
+    {
+      heading: "Pasakodea jakinaraztea",
+      rows: [
+        { command: '"<posizioa> <balioa>"', description: "Posizio batean aurkitutako balioa jakinarazten du." },
+        { command: '"<posizioa>" (balio gabe)', description: "Posizio horretan zure jakinarazpena kentzen du, badago." },
+        {
+          command: "/status",
+          description: "Pasakodearen uneko egoera nahi duzunean erakusten du, eta hurrengo zuzeneko eguneraketak hona lekualdatzen ditu.",
+        },
+      ],
+    },
+    {
+      heading: "Ekitaldia administratzen duenarentzat",
+      rows: [
+        { command: "/resolve <posizioa> [<balioa>]", description: "Desadostasuna dagoenean balio zuzena aukeratzen du; balio gabe, jakinarazitako balioak (fidagarrien babes-banaketarekin) botoi gisa zerrendatzen ditu, ebazteko." },
+        { command: "/resolve", description: "Desadostasunean dauden posizio guztiak banan-banan errepasatzen ditu; bat ere geratzen ez denean, /verify aholkatzen du — adostasunak berak ez du inoiz ekitaldia ixten." },
+        { command: "/unresolve <posizioa>", description: "Ebatzitako posizio bat berrirekitzen du." },
+        { command: "/trust, /troll, /untrust <erabiltzailea>", description: "Partaide baten ekarpenak moderatzen ditu; babes fidagarria /resolve-ren hautagai-zerrendetan azpimarratzen da." },
+        { command: "/kick <erabiltzailea>", description: "Partaide bat ekitaldiatik kanporatzen du." },
+        { command: "/promote <erabiltzailea>", description: "Administratzaile rola ekitaldian dagoen beste partaide bati ematen dio; fidagarritzat ere markatzen du, /newevent-ek bere administratzailearekin egiten duen bezala." },
+        { command: "/claim", description: "Unekoa 30+ minutu inaktibo egon bada, administratzaile kargua hartzen saiatzen da; 5 minutu ditu onartzeko, ukatzeko edo ez erantzuteko, hori gauzatu aurretik." },
+        { command: "/verify <passcode>", description: "Ekitaldi bat ixteko modu bakarra: jokoaren trukatze-pantailan zuzentzat berretsi den pasakode bat itsasten du; hortik posizio guztiak batera ebazten ditu, ekitaldia izoztu eta azken pasakodea guztiei iragartzen die." },
+      ],
+    },
+  ],
+  footerLanguages: "Euskaraz, ingelesez, katalanez, gaztelaniaz, frantsesez eta galizieraz eskuragarri.",
+  footerSource: "Iturburu-kodea GitHub-en",
+};
+
+const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr, gl, eu };
 
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

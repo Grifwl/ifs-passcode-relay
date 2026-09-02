@@ -10,7 +10,7 @@ import { readFileSync } from "node:fs";
 const COMMANDS = [
   { command: "start", description: "Introduction and command list" },
   { command: "help", description: "Show this command list" },
-  { command: "language", description: "Set your language (en, ca, es, fr)" },
+  { command: "language", description: "Set your language (en, ca, es, fr, gl, eu)" },
   { command: "newevent", description: "Create a new IFS event" },
   { command: "sharetext", description: "Get an invite message to share" },
   { command: "join", description: "Join an event by its code" },

@@ -6,7 +6,7 @@ import { BOT_USERNAME } from "./botInfo.js";
 
 /** Prefix for the language-switch buttons attached to `renderShareTextNote`'s message. */
 const SHARETEXT_CALLBACK_PREFIX = "sharetext:";
-const SHARETEXT_CALLBACK_PATTERN = /^sharetext:(\d+):(en|ca|es|fr)$/;
+const SHARETEXT_CALLBACK_PATTERN = /^sharetext:(\d+):(en|ca|es|fr|gl|eu)$/;
 
 /**
  * Renders the shareable block of the `/sharetext` invite message: an
@@ -59,9 +59,9 @@ export function renderShareTextNote(lang: SupportedLanguage): string {
  * message: one button per supported language other than the one the
  * note is currently written in, all on a single row so the keyboard
  * stays compact on a phone screen — labelled with the bare two-letter
- * ISO code (`EN`, `CA`, `ES`, `FR`) rather than the full language name,
- * since only 3 buttons plus their row padding already leaves little
- * width to work with on mobile. Tapping one re-sends the whole invite
+ * ISO code (`EN`, `CA`, `ES`, `FR`, `GL`, `EU`) rather than the full
+ * language name, since even a handful of buttons plus their row padding
+ * already leaves little width to work with on mobile. Tapping one re-sends the whole invite
  * (shareable block + a fresh note with its own keyboard, this time
  * excluding the newly picked language) in that language — see
  * `handleShareTextCallback`.

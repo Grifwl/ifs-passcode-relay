@@ -29,7 +29,7 @@ codebase, and any conversation about the project must keep them distinct:
   This is the one thing that's actually called "code" (`codi`/`código`)
   in bot text, and only this.
 - **language code** — the two-letter argument to `/language <code>`
-  (`en`/`ca`/`es`/`fr`), unrelated to either of the above.
+  (`en`/`ca`/`es`/`fr`/`gl`/`eu`), unrelated to either of the above.
 
 If a conversation about this project — including with the human
 maintainer — uses "code"/"codi" ambiguously or where "passcode" is
@@ -132,7 +132,7 @@ is ever supplied.
 
 - **`users`** — one row per Telegram user who has ever interacted with the
   bot, independent of event membership.
-  `user_id` (PK, Telegram id), `language` (`en`|`ca`|`es`|`fr`),
+  `user_id` (PK, Telegram id), `language` (`en`|`ca`|`es`|`fr`|`gl`|`eu`),
   `created_at`.
 - **`events`** — an IFS event.
   `id` (PK), `code` (unique short join code, e.g. `7KPQ2M`), `name`,
@@ -723,7 +723,8 @@ future updates land.
 
 Every user has an independent, persistent language preference
 (`users.language`), defaulting to their Telegram `language_code` when it
-is one of the supported languages (`en`, `ca`, `es`, `fr`), else `en`.
+is one of the supported languages (`en`, `ca`, `es`, `fr`, `gl`, `eu`),
+else `en`.
 `/language <code>` changes it. The change is **not retroactive**: already
 sent messages are left as they were; only messages sent after the change
 use the new language.
@@ -766,8 +767,8 @@ invite with.
 The note message carries an inline keyboard with one button per
 supported language other than the one it's currently written in, all
 on a single row and each labelled with the bare two-letter ISO code
-(`EN`, `CA`, `ES`, `FR`) rather than the full language name, so the
-keyboard stays compact on a phone screen. This exists because typing
+(`EN`, `CA`, `ES`, `FR`, `GL`, `EU`) rather than the full language name,
+so the keyboard stays compact on a phone screen. This exists because typing
 out `/sharetext <lang>` is easy on desktop, where Tab-completing a
 suggested command just fills the input box, but
 awkward on mobile, where tapping a suggested command sends it
@@ -856,7 +857,8 @@ accepted in any case and normalized on the way in.
   changed command signature, a changed flow, a changed rule around
   confirmations/trust/resolution/etc. — must be reflected in the same
   change: every README (`README.md`, `README.ca.md`, `README.es.md`,
-  `README.fr.md`) **and** the landing page (`src/landing.ts`). None of
+  `README.fr.md`, `README.gl.md`, `README.eu.md`) **and** the landing
+  page (`src/landing.ts`). None of
   these are optional follow-ups; a behavior change isn't done until all
   of them agree with the code.
 

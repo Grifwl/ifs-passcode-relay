@@ -1,4 +1,4 @@
-<!-- Languages: English | [Català](README.ca.md) | [Castellano](README.es.md) | [Français](README.fr.md) -->
+<!-- Languages: English | [Català](README.ca.md) | [Castellano](README.es.md) | [Français](README.fr.md) | [Galego](README.gl.md) | [Euskara](README.eu.md) -->
 
 # IFS Passcode Relay
 
@@ -6,7 +6,7 @@ A Telegram bot that lets attendees of an **Ingress First Saturday (IFS)**
 event collaboratively assemble the event's redeemable passcode in real
 time.
 
-**Languages:** English · [Català](README.ca.md) · [Castellano](README.es.md) · [Français](README.fr.md)
+**Languages:** English · [Català](README.ca.md) · [Castellano](README.es.md) · [Français](README.fr.md) · [Galego](README.gl.md) · [Euskara](README.eu.md)
 
 ## What is this?
 
@@ -126,7 +126,7 @@ group chat.
 | Command | Who can use it | What it does |
 |---|---|---|
 | `/start`, `/help` | anyone | Introduction and command list. |
-| `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`). |
+| `/language <code>` | anyone | Set your own language (`en`, `ca`, `es`, `fr`, `gl`, `eu`). |
 | `/newevent <name> [\| <pattern>]` | anyone | Create a new IFS event and get its join code; joins you automatically and flags you trusted for it. The `\|` here separates the name from the pattern, it doesn't mean "choose one or the other" — e.g. `/newevent Barcelona 2026-08 \| XXX99*999XX`. Confirms first if your current event is still unresolved (declining creates nothing); that one is handed off first, same as `/leave`. |
 | `/sharetext [code] [lang]` | anyone | Get ready-to-paste text inviting people to join. `code` defaults to your current event, `lang` to your own — sent automatically once by `/newevent` already. |
 | `/join <code>` | anyone | Join an event — confirms first only if your current event is still unresolved, handing that one off if you administered it; skipped if you have none or it's already closed. A code closed with no administrator left reopens under you instead of being rejected. |
@@ -202,14 +202,16 @@ Worker, so they come last once implementation starts.
 Set the English version first with `/setdescription` and `/setabouttext`
 — it's what BotFather falls back to for any Telegram client language the
 bot doesn't have a translation for. Then, from the same menus, add the
-`ca`/`es`/`fr` versions below as per-language descriptions.
+`ca`/`es`/`fr`/`gl`/`eu` versions below as per-language descriptions.
 
 | Language | `/setdescription` (long) | `/setabouttext` (short) |
 |---|---|---|
-| `en` | Collaboratively build your Ingress First Saturday event's redeemable passcode in real time. Report the character you found and its position — the bot keeps everyone's passcode in sync, flags disagreements, and announces the final result. Available in English, Català, Castellano and Français. Send /help to start, or /newevent to create one for your IFS. | Real-time collaborative passcode relay for Ingress First Saturday events. |
-| `ca` | Construeix en temps real, de manera col·laborativa, el passcode bescanviable del teu esdeveniment Ingress First Saturday. Reporta el caràcter que has trobat i la seva posició — el bot manté el passcode sincronitzat per a tothom, marca les discrepàncies i anuncia el resultat final. Disponible en català, anglès, castellà i francès. Envia /help per començar, o /newevent per crear-ne un pel teu IFS. | Relleu col·laboratiu en temps real del passcode d'un Ingress First Saturday. |
-| `es` | Construye en tiempo real, de forma colaborativa, el passcode canjeable de tu evento Ingress First Saturday. Reporta el carácter que has encontrado y su posición — el bot mantiene el passcode sincronizado para todos, marca las discrepancias y anuncia el resultado final. Disponible en español, inglés, catalán y francés. Envía /help para empezar, o /newevent para crear uno para tu IFS. | Relevo colaborativo en tiempo real del passcode de un Ingress First Saturday. |
-| `fr` | Construisez en temps réel, de façon collaborative, le passcode échangeable de votre événement Ingress First Saturday. Signalez le caractère trouvé et sa position — le bot garde le passcode synchronisé pour tout le monde, signale les désaccords et annonce le résultat final. Disponible en français, anglais, catalan et espagnol. Envoyez /help pour commencer, ou /newevent pour en créer un pour votre IFS. | Relais collaboratif en temps réel du passcode d'un Ingress First Saturday. |
+| `en` | Collaboratively build your Ingress First Saturday event's redeemable passcode in real time. Report the character you found and its position — the bot keeps everyone's passcode in sync, flags disagreements, and announces the final result. Available in English, Català, Castellano, Français, Galego and Euskara. Send /help to start, or /newevent to create one for your IFS. | Real-time collaborative passcode relay for Ingress First Saturday events. |
+| `ca` | Construeix en temps real, de manera col·laborativa, el passcode bescanviable del teu esdeveniment Ingress First Saturday. Reporta el caràcter que has trobat i la seva posició — el bot manté el passcode sincronitzat per a tothom, marca les discrepàncies i anuncia el resultat final. Disponible en català, anglès, castellà, francès, gallec i basc. Envia /help per començar, o /newevent per crear-ne un pel teu IFS. | Relleu col·laboratiu en temps real del passcode d'un Ingress First Saturday. |
+| `es` | Construye en tiempo real, de forma colaborativa, el passcode canjeable de tu evento Ingress First Saturday. Reporta el carácter que has encontrado y su posición — el bot mantiene el passcode sincronizado para todos, marca las discrepancias y anuncia el resultado final. Disponible en español, inglés, catalán, francés, gallego y euskera. Envía /help para empezar, o /newevent para crear uno para tu IFS. | Relevo colaborativo en tiempo real del passcode de un Ingress First Saturday. |
+| `fr` | Construisez en temps réel, de façon collaborative, le passcode échangeable de votre événement Ingress First Saturday. Signalez le caractère trouvé et sa position — le bot garde le passcode synchronisé pour tout le monde, signale les désaccords et annonce le résultat final. Disponible en français, anglais, catalan, espagnol, galicien et basque. Envoyez /help pour commencer, ou /newevent pour en créer un pour votre IFS. | Relais collaboratif en temps réel du passcode d'un Ingress First Saturday. |
+| `gl` | Constrúe en tempo real, de forma colaborativa, o passcode canxeable do teu evento Ingress First Saturday. Reporta o carácter que atopaches e a súa posición — o bot mantén o passcode sincronizado para todos, marca as discrepancias e anuncia o resultado final. Dispoñible en galego, inglés, catalán, castelán, francés e éuscaro. Envía /help para empezar, ou /newevent para crear un para o teu IFS. | Relevo colaborativo en tempo real do passcode dun Ingress First Saturday. |
+| `eu` | Osatu denbora errealean, elkarlanean, zure Ingress First Saturday ekitaldiaren pasakode kanjeagarria. Jakinarazi aurkitu duzun karakterea eta bere posizioa — botak guztien pasakodea sinkronizatuta mantentzen du, desadostasunak markatzen ditu eta azken emaitza iragartzen du. Euskaraz, ingelesez, katalanez, gaztelaniaz, frantsesez eta galizieraz eskuragarri. Bidali /help hasteko, edo /newevent zure IFS-rako bat sortzeko. | Ingress First Saturday ekitaldien pasakode-errelebo kolaboratiboa, denbora errealean. |
 
 ### 2. Create the Cloudflare Worker and D1 database
 

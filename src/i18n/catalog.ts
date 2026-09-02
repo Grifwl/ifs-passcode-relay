@@ -11,7 +11,7 @@ const en = {
     "Use /join <code> to join an event someone already created, or /newevent to start one yourself. Send /help to see every command.",
   "help.text": () =>
     "Commands:\n" +
-    "/language <code> - set your language (en, ca, es, fr)\n" +
+    "/language <code> - set your language (en, ca, es, fr, gl, eu)\n" +
     "/newevent <name> [| <pattern>] - create an event\n" +
     "/sharetext [code] [lang] - get an invite message to share (defaults to your current event)\n" +
     "/join <code> - join an event\n" +
@@ -30,8 +30,8 @@ const en = {
     "/verify <passcode> - confirm a store-validated passcode, resolve every position from it and close the event (administrator)\n" +
     "/events - list every event you've been part of, current or past",
 
-  "language.usage": () => "Usage: /language <code>. Supported: en, ca, es, fr.",
-  "language.invalid": (p) => `"${p.code}" isn't a supported language. Supported: en, ca, es, fr.`,
+  "language.usage": () => "Usage: /language <code>. Supported: en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" isn't a supported language. Supported: en, ca, es, fr, gl, eu.`,
   "language.set": () => "Your language is now set to English.",
 
   "newevent.usage": (p) =>
@@ -215,7 +215,7 @@ const ca: Catalog = {
     "Fes servir /join <codi> per unir-te a un esdeveniment que algú ja ha creat, o /newevent per crear-ne un tu mateix. Envia /help per veure totes les comandes.",
   "help.text": () =>
     "Comandes:\n" +
-    "/language <codi> - estableix el teu idioma (en, ca, es, fr)\n" +
+    "/language <codi> - estableix el teu idioma (en, ca, es, fr, gl, eu)\n" +
     "/newevent <nom> [| <patró>] - crea un esdeveniment\n" +
     "/sharetext [codi] [idioma] - obté un text d'invitació per compartir (per defecte, el teu esdeveniment actual)\n" +
     "/join <codi> - uneix-te a un esdeveniment\n" +
@@ -234,8 +234,8 @@ const ca: Catalog = {
     "/verify <passcode> - confirma un passcode validat a la botiga, resol totes les posicions a partir d'ell i tanca l'esdeveniment (administrador)\n" +
     "/events - llista tots els esdeveniments en què has participat, actuals o passats",
 
-  "language.usage": () => "Ús: /language <codi>. Suportats: en, ca, es, fr.",
-  "language.invalid": (p) => `"${p.code}" no és un idioma suportat. Suportats: en, ca, es, fr.`,
+  "language.usage": () => "Ús: /language <codi>. Suportats: en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" no és un idioma suportat. Suportats: en, ca, es, fr, gl, eu.`,
   "language.set": () => "El teu idioma ara és el català.",
 
   "newevent.usage": (p) =>
@@ -417,7 +417,7 @@ const es: Catalog = {
     "Usa /join <código> para unirte a un evento que alguien ya haya creado, o /newevent para crear uno tú mismo. Envía /help para ver todos los comandos.",
   "help.text": () =>
     "Comandos:\n" +
-    "/language <código> - establece tu idioma (en, ca, es, fr)\n" +
+    "/language <código> - establece tu idioma (en, ca, es, fr, gl, eu)\n" +
     "/newevent <nombre> [| <patrón>] - crea un evento\n" +
     "/sharetext [código] [idioma] - obtén un texto de invitación para compartir (por defecto, tu evento actual)\n" +
     "/join <código> - únete a un evento\n" +
@@ -436,8 +436,8 @@ const es: Catalog = {
     "/verify <passcode> - confirma un passcode validado en la tienda, resuelve todas las posiciones a partir de él y cierra el evento (administrador)\n" +
     "/events - lista todos los eventos en los que has participado, actuales o pasados",
 
-  "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr.",
-  "language.invalid": (p) => `"${p.code}" no es un idioma soportado. Soportados: en, ca, es, fr.`,
+  "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" no es un idioma soportado. Soportados: en, ca, es, fr, gl, eu.`,
   "language.set": () => "Tu idioma ahora es el español.",
 
   "newevent.usage": (p) =>
@@ -619,7 +619,7 @@ const fr: Catalog = {
     "Utilisez /join <code> pour rejoindre un événement déjà créé, ou /newevent pour en créer un vous-même. Envoyez /help pour voir toutes les commandes.",
   "help.text": () =>
     "Commandes :\n" +
-    "/language <code> - définit votre langue (en, ca, es, fr)\n" +
+    "/language <code> - définit votre langue (en, ca, es, fr, gl, eu)\n" +
     "/newevent <nom> [| <modèle>] - crée un événement\n" +
     "/sharetext [code] [langue] - obtient un texte d'invitation à partager (par défaut, votre événement actuel)\n" +
     "/join <code> - rejoindre un événement\n" +
@@ -638,8 +638,8 @@ const fr: Catalog = {
     "/verify <passcode> - confirme un passcode validé en boutique, résout toutes les positions à partir de lui et clôture l'événement (administrateur)\n" +
     "/events - liste tous les événements auxquels vous avez participé, actuels ou passés",
 
-  "language.usage": () => "Utilisation : /language <code>. Langues gérées : en, ca, es, fr.",
-  "language.invalid": (p) => `"${p.code}" n'est pas une langue gérée. Langues gérées : en, ca, es, fr.`,
+  "language.usage": () => "Utilisation : /language <code>. Langues gérées : en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" n'est pas une langue gérée. Langues gérées : en, ca, es, fr, gl, eu.`,
   "language.set": () => "Votre langue est maintenant le français.",
 
   "newevent.usage": (p) =>
@@ -815,4 +815,408 @@ const fr: Catalog = {
   },
 };
 
-export const catalogs = { en, ca, es, fr } satisfies Record<string, Catalog>;
+const gl: Catalog = {
+  "common.genericError": () => "Produciuse un erro. Téntao de novo.",
+  "common.eventNotFound": () => "Non se atopou ningún evento activo con ese código.",
+  "common.eventClosed": () => "Ese evento está pechado.",
+
+  "start.welcome": () =>
+    "Benvido! Este bot axuda a un grupo de asistentes a un Ingress First Saturday a construír o passcode do evento en tempo real.\n\n" +
+    "Usa /join <código> para unirte a un evento que alguén xa creou, ou /newevent para crear un ti mesmo. Envía /help para ver todos os comandos.",
+  "help.text": () =>
+    "Comandos:\n" +
+    "/language <código> - establece o teu idioma (en, ca, es, fr, gl, eu)\n" +
+    "/newevent <nome> [| <patrón>] - crea un evento\n" +
+    "/sharetext [código] [idioma] - obtén un texto de convite para compartir (por defecto, o teu evento actual)\n" +
+    "/join <código> - únete a un evento\n" +
+    "/leave - abandona o evento actual\n" +
+    "/current - mostra o evento actual, quen o administra e o número de participantes\n" +
+    '"<posición> <valor>" ou /submit - reporta un valor\n' +
+    '"<posición>" soa (sen valor) - elimina o teu reporte nesa posición\n' +
+    "/status - mostra o passcode actual\n" +
+    "/resolve <posición> [<valor|@usuario>] - resolve unha discrepancia, ou lista os valores reportados como botóns (administrador)\n" +
+    "/resolve - repasa todas as posicións aínda en discrepancia, unha por unha (administrador)\n" +
+    "/unresolve <posición> - reabre unha posición resolta (administrador)\n" +
+    "/trust, /troll, /untrust <@usuario> - modera un participante (administrador)\n" +
+    "/kick <@usuario> - expulsa un participante (administrador)\n" +
+    "/promote <@usuario> - cede o rol de administrador a outro participante (administrador)\n" +
+    "/claim - asume o cargo de administrador se o actual leva tempo inactivo\n" +
+    "/verify <passcode> - confirma un passcode validado na tenda, resolve todas as posicións a partir del e pecha o evento (administrador)\n" +
+    "/events - lista todos os eventos nos que participaches, actuais ou pasados",
+
+  "language.usage": () => "Uso: /language <código>. Soportados: en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" non é un idioma soportado. Soportados: en, ca, es, fr, gl, eu.`,
+  "language.set": () => "O teu idioma agora é o galego.",
+
+  "newevent.usage": (p) =>
+    `Uso: /newevent <nome> ou /newevent <nome> | <patrón>. Patrón por defecto: ${p.defaultPattern}. ` +
+    `O "|" separa o nome do patrón, p. ex.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
+  "newevent.invalidPattern": () => "Ese patrón non é válido: só pode conter X (letra), 9 (díxito) e * (palabra).",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `Agora mesmo estás en "${p.currentEventName}", que aínda non se verificou. Crear un evento novo deixarao atrás. Queres continuar?`,
+  "newevent.confirmYesButton": () => "Si, créao",
+  "newevent.confirmNoButton": () => "Cancelar",
+  "newevent.cancelled": () => "Cancelado — non se creou ningún evento.",
+  "newevent.expired": () => "Esa solicitude xa non está dispoñible — envía /newevent de novo se aínda o queres crear.",
+  "newevent.confirmed": () => "Entendido — creando o teu evento novo e deixando o anterior.",
+  "newevent.created": (p) =>
+    `Evento "${p.name}" creado. Código de acceso: ${p.code}\nPatrón: ${p.pattern}\n` +
+    `Uníchete automaticamente e marcáronte como de confianza. Reporta o que atopes como "<posición> <valor>", p.ex. "6 GLYPH".\n\n` +
+    `Comparte (ou reenvía) a seguinte mensaxe co grupo do evento, ou con quen queiras que axude a resolver o passcode:`,
+
+  "sharetext.text": (p) => `Únete ao relevo de passcode de "${p.name}": abre o bot ${p.bot} e envía:`,
+  "sharetext.tapToCopy": () =>
+    "Toca o comando de arriba para copialo e despois toca o nome do bot para abrir unha conversa con el. Se é a primeira vez que entras aí, toca primeiro Start; despois pega o comando e envíao.",
+  "sharetext.otherLanguages": () => "Quéreo noutro idioma?\nToca aquí abaixo.",
+  "sharetext.noCurrentEvent": () => "Non estás en ningún evento. Especifica un código: /sharetext <código> [idioma].",
+
+  "join.usage": () => "Uso: /join <código>.",
+  "join.confirmSwitch": (p) => `Xa estás en "${p.currentEventName}". Queres cambiar a "${p.newEventName}"?`,
+  "join.confirmSwitchRevive": (p) =>
+    `Xa estás en "${p.currentEventName}". "${p.newEventName}" está pechado sen administrador — se cambias, reabriralo e serás o seu administrador/a. Queres continuar?`,
+  "join.confirmYesButton": () => "Si, cambiar",
+  "join.confirmNoButton": () => "Cancelar",
+  "join.switched": (p) => `Cambiaches a "${p.name}".`,
+  "join.joined": (p) => `Uníchete a "${p.name}". Reporta o que atopes como "<posición> <valor>", p.ex. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" estaba pechado sen administrador — reabríchelo e agora es o seu administrador/a. Reporta o que atopes como "<posición> <valor>", p.ex. "6 GLYPH".`,
+  "join.shareHint": () => "Queres axudar a difundir o evento? Executa /sharetext para obter un texto de convite.",
+  "join.alreadyInThisEvent": (p) => `Xa estás en "${p.name}".`,
+  "join.cancelled": (p) => `Cancelado — segues en "${p.name}".`,
+
+  "leave.notInEvent": () => "Agora mesmo non estás en ningún evento.",
+  "leave.left": (p) => `Saíches de "${p.name}".`,
+  "leave.leftPromoted": (p) => `Saíches de "${p.name}". ${p.successor} é agora a persoa administradora.`,
+  "leave.autoPromoted": (p) =>
+    `Agora es a persoa administradora de "${p.name}" — quen o era antes marchou. Envía /help para ver os comandos que xa podes usar.`,
+  "leave.closedAbandoned": (p) =>
+    `Saíches de "${p.name}". Non quedaba ninguén apto para asumir o rol de administrador, así que se pechou como inacabado.`,
+  "leave.anotherParticipant": () => "Outro participante",
+
+  "current.notInEvent": () => "Agora mesmo non estás en ningún evento. Usa /join <código> ou /newevent para crear un.",
+  "current.info": (p) =>
+    `Evento actual:\n` +
+    `• Nome: ${p.name}\n` +
+    `• Código para unirse: ${p.code}\n` +
+    `• Patrón do passcode: ${p.pattern}\n` +
+    `• Número de participantes: ${p.participantCount}\n` +
+    `• Administrador/a actual: ${p.admin}`,
+  "current.adminNoUsername": () => "(sen @usuario público)",
+  "current.you": () => " (ti)",
+
+  "status.header": (p) => `${p.name} — ${p.known}/${p.total} coñecidas`,
+  "status.supportCount": (p) => `Respaldado por ${p.count}`,
+  "status.supportedBy": (p) => `Respaldado por ${p.count} — ${p.names}`,
+  "status.tooManyVariants": (p) =>
+    `Hai demasiadas posibilidades abertas agora mesmo (${p.count}). Pídelle a quen administra o evento que faga /resolve dalgunhas posicións.`,
+  "status.moreVariants": (p) =>
+    `+${p.count} posibilidades máis — pídelle a quen administra o evento que faga /resolve dalgunhas posicións.`,
+
+  "slotType.letter": () => "unha letra",
+  "slotType.digit": () => "un díxito",
+  "slotType.word": () => "unha palabra",
+
+  "common.notInEvent": () => "Non estás en ningún evento. Usa /join <código> primeiro.",
+  "common.notAdmin": () => "Só quen administra o evento pode facer iso.",
+  "common.userNotFound": () => "Non se atopou ese participante. Usa o seu @usuario ou o nome que aparece en /status.",
+  "common.invalidPosition": (p) => `A posición debe ser un número entre 1 e ${p.max}.`,
+
+  "submit.usage": () =>
+    'Envíao como "<posición> <valor>" (ou /submit <posición> <valor>) para reportar un valor, ' +
+    'ou só "<posición>" sen valor para eliminar o teu reporte nesa posición.',
+  "submit.recorded": (p) => `Rexistrado: posición ${p.position} = "${p.value}".`,
+  "submit.selfCorrected": (p) =>
+    `Actualizado: a posición ${p.position} agora é "${p.value}" (antes era "${p.previous}").`,
+  "submit.selfRemoved": (p) => `Eliminado: o teu valor "${p.value}" para a posición ${p.position} xa non consta.`,
+  "submit.nothingToRemove": (p) => `Non tiñas reportado nada na posición ${p.position}.`,
+  "submit.alreadyRecorded": (p) => `Xa estaba rexistrado: posición ${p.position} = "${p.value}".`,
+  "submit.positionResolvedNotice": (p) =>
+    `A posición ${p.position} xa está confirmada como "${p.value}" por quen administra o evento. Igualmente queda anotado.`,
+  "submit.confirmOtherConflict": (p) =>
+    `A posición ${p.position} xa ten "${p.existing}" reportado por outra persoa. Tamén queres rexistrar "${p.value}"?`,
+  "submit.confirmTypeMismatch": (p) =>
+    `A posición ${p.position} espera ${p.expected}, pero "${p.value}" non o parece. Queres rexistralo igualmente?`,
+  "submit.confirmYesButton": () => "Si, rexístrao",
+  "submit.confirmNoButton": () => "Descartar",
+  "submit.cancelled": () => "Descartado — non se rexistrou nada.",
+
+  "resolve.usage": () =>
+    "Uso: /resolve <posición> <valor>, /resolve <posición> @usuario, /resolve <posición> para listar os valores reportados, ou /resolve só para repasar todas as posicións en discrepancia.",
+  "resolve.userNoReport": (p) => `Ese usuario non reportou nada na posición ${p.position}.`,
+  "resolve.done": (p) => `Posición ${p.position} resolta como "${p.value}".`,
+  "resolve.noCandidates": (p) => `Ninguén reportou nada na posición ${p.position} aínda.`,
+  "resolve.candidatesHeader": (p) => `Posición ${p.position} — valores reportados:`,
+  "resolve.candidateLine": (p) => `"${p.value}" — ${p.count}${p.trustedCount ? ` (${p.trustedCount})` : ""}`,
+  "resolve.trustedLegend": () => "(O número entre parénteses é cantos deses apoios son de confianza.)",
+  "resolve.candidatesPrompt": () => "Toca un botón debaixo para resolver con ese valor.",
+  "resolve.allHeader": (p) => `${p.count} posicións aínda en discrepancia. Seguinte: posición ${p.position} — valores reportados:`,
+  "resolve.allDone": () =>
+    "Agora mesmo non hai ningunha posición en discrepancia. Iso non significa que estea verificado: cando teñas probado un passcode na pantalla de canxeo do xogo, confírmao con /verify <passcode> para finalizar e pechar o evento.",
+
+  "unresolve.usage": () => "Uso: /unresolve <posición>.",
+  "unresolve.notResolved": (p) => `A posición ${p.position} non está resolta.`,
+  "unresolve.done": (p) => `Posición ${p.position} reaberta.`,
+
+  "trust.usage": () => "Uso: /trust <@usuario>.",
+  "trust.done": (p) => `${p.name} agora está marcado como de confianza.`,
+  "troll.usage": () => "Uso: /troll <@usuario>.",
+  "troll.done": (p) => `As achegas de ${p.name} agora quedan excluídas deste evento.`,
+  "untrust.usage": () => "Uso: /untrust <@usuario>.",
+  "untrust.done": (p) => `Retirouse a marca de confianza de ${p.name}.`,
+
+  "kick.usage": () => "Uso: /kick <@usuario>.",
+  "kick.done": (p) => `${p.name} foi expulsado do evento.`,
+  "kick.notInEvent": (p) => `${p.name} non é participante deste evento agora mesmo.`,
+
+  "promote.usage": () => "Uso: /promote <@usuario>.",
+  "promote.cannotSelf": () => "Xa es quen administra este evento.",
+  "promote.notParticipant": (p) => `${p.name} non é participante deste evento agora mesmo.`,
+  "promote.done": (p) => `${p.name} agora é quen administra este evento. Ti segues sendo participante.`,
+  "promote.youAreNow": (p) => `Agora es quen administra "${p.name}". Envía /help para ver os comandos que xa podes usar.`,
+
+  "claim.cannotSelf": () => "Xa es quen administra este evento.",
+  "claim.notEligible": () => "Non podes reclamar o rol de administrador deste evento.",
+  "claim.joinedQueue": () => "Engadícheste á cola para asumir o cargo de administrador se quen o ocupa agora non responde.",
+  "claim.alreadyQueued": () => "Xa estás esperando a resposta do administrador.",
+  "claim.adminRecentlyActive": (p) =>
+    `Quen administra o evento estivo activo nos últimos ${p.minutes} minutos, así que aínda non podes reclamar o cargo. Téntao de novo máis tarde.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant} quere ocupar o cargo de administrador de "${p.name}", xa que hai tempo que non estás activo. Queres manter o cargo ou cedelo?`,
+  "claim.keepButton": () => "Manter o cargo",
+  "claim.acceptButton": () => "Ceder o cargo",
+  "claim.opened": (p) =>
+    `Avisouse o administrador e ten ${p.minutes} minutos para responder. Se non o fai, volve executar /claim pasado ese tempo para forzar o relevo.`,
+  "claim.kept": (p) => `Mantiveches o cargo de administrador de "${p.name}".`,
+  "claim.handedOver": (p) => `Cedeches o cargo de administrador de "${p.name}".`,
+  "claim.handedOverTimeout": (p) =>
+    `Como non respondiches a tempo, o cargo de administrador de "${p.name}" cedeuse automaticamente.`,
+  "claim.becameAdmin": (p) =>
+    `Agora es a persoa administradora de "${p.name}" tras reclamar o cargo por inactividade. Envía /help para ver os comandos que xa podes usar.`,
+  "claim.alreadyResolved": () => "Esta petición xa se resolveu.",
+
+  "verify.usage": () => "Uso: /verify <passcode>. Pega o passcode exacto que o xogo confirmou como correcto ao canxealo.",
+  "verify.matched": () => "Passcode confirmado — todas as posicións resolvéronse en consecuencia. Pechando o evento…",
+  "verify.stillUnresolved": (p) => `Resolve antes estas posicións: ${p.positions}.`,
+  "verify.finalMessage": (p) => `Passcode final de "${p.name}":`,
+  "verify.closed": () => "Evento pechado. O passcode final enviouse a todos os participantes.",
+  "verify.noMatch": () =>
+    "Ese passcode non coincide con ningunha combinación dos valores reportados actualmente. Comproba o que pegaches — tamén pode ser que falte algún candidato por reportar.",
+  "verify.ambiguous": () =>
+    "Ese passcode coincide con máis dunha combinación posible dos valores reportados actualmente, así que non se pode saber cal é a correcta automaticamente. Resolve antes algunhas posicións manualmente.",
+  "verify.overwhelmed": () =>
+    "Hai demasiadas posibilidades abertas para comprobalo agora mesmo. Resolve antes algunhas posicións manualmente e volve tentar /verify.",
+
+  "events.none": () => "Aínda non participaches en ningún evento.",
+  "events.list": (p) => `Os teus eventos:\n${p.items}`,
+  "events.itemLine": (p) => {
+    let status =
+      p.status === "active" ? "activo" : p.reason === "completed" ? "pechado, completado" : p.reason === "abandoned" ? "pechado, abandonado" : "pechado";
+    if (p.isCurrent) status += ", actual";
+    const suffix = p.isAdmin ? " — es o/a administrador/a" : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
+};
+
+const eu: Catalog = {
+  "common.genericError": () => "Zerbait gaizki joan da. Saiatu berriro.",
+  "common.eventNotFound": () => "Ez da kode horrekin ekitaldi aktiborik aurkitu.",
+  "common.eventClosed": () => "Ekitaldi hori itxita dago.",
+
+  "start.welcome": () =>
+    "Ongi etorri! Bot honek Ingress First Saturday bateko partaideei laguntzen die ekitaldiaren pasakodea denbora errealean elkarlanean osatzen.\n\n" +
+    "Erabili /join <kodea> norbaitek sortutako ekitaldi batera batzeko, edo /newevent bat zeuk sortzeko. Bidali /help komando guztiak ikusteko.",
+  "help.text": () =>
+    "Komandoak:\n" +
+    "/language <kodea> - zure hizkuntza ezartzen du (en, ca, es, fr, gl, eu)\n" +
+    "/newevent <izena> [| <eredua>] - ekitaldi bat sortzen du\n" +
+    "/sharetext [kodea] [hizkuntza] - partekatzeko gonbidapen-testu bat lortzen du (lehenetsita, zure uneko ekitaldia)\n" +
+    "/join <kodea> - ekitaldi batera batzen zaitu\n" +
+    "/leave - uneko ekitaldia uzten du\n" +
+    "/current - uneko ekitaldia, nork administratzen duen eta partaide kopurua erakusten ditu\n" +
+    '"<posizioa> <balioa>" edo /submit - balio bat jakinarazten du\n' +
+    '"<posizioa>" bakarrik (balio gabe) - posizio horretan zure jakinarazpena kentzen du\n' +
+    "/status - uneko pasakodea erakusten du\n" +
+    "/resolve <posizioa> [<balioa|@erabiltzailea>] - desadostasun bat ebazten du, edo jakinarazitako balioak botoi gisa zerrendatzen ditu (administratzailea)\n" +
+    "/resolve - desadostasunean dauden posizio guztiak banan-banan errepasatzen ditu (administratzailea)\n" +
+    "/unresolve <posizioa> - ebatzitako posizio bat berrirekitzen du (administratzailea)\n" +
+    "/trust, /troll, /untrust <@erabiltzailea> - partaide bat moderatzen du (administratzailea)\n" +
+    "/kick <@erabiltzailea> - partaide bat kanporatzen du (administratzailea)\n" +
+    "/promote <@erabiltzailea> - administratzaile rola beste partaide bati ematen dio (administratzailea)\n" +
+    "/claim - administratzaile kargua hartzen du, unekoa denbora batez inaktibo egon bada\n" +
+    "/verify <passcode> - dendan balioztatutako pasakode bat berresten du, hortik posizio guztiak ebatzi eta ekitaldia ixten du (administratzailea)\n" +
+    "/events - parte hartu duzun ekitaldi guztiak zerrendatzen ditu, unekoak zein iraganekoak",
+
+  "language.usage": () => "Erabilera: /language <kodea>. Onartuak: en, ca, es, fr, gl, eu.",
+  "language.invalid": (p) => `"${p.code}" ez da onartutako hizkuntza bat. Onartuak: en, ca, es, fr, gl, eu.`,
+  "language.set": () => "Zure hizkuntza orain euskara da.",
+
+  "newevent.usage": (p) =>
+    `Erabilera: /newevent <izena> edo /newevent <izena> | <eredua>. Eredu lehenetsia: ${p.defaultPattern}. ` +
+    `"|" ikurrak izena eta eredua bereizten ditu, adib.: /newevent Barcelona 2026-08 | ${p.defaultPattern}`,
+  "newevent.invalidPattern": () => "Eredu hori ez da baliozkoa: X (letra), 9 (zenbakia) eta * (hitza) baino ezin ditu izan.",
+  "newevent.confirmLeaveUnresolved": (p) =>
+    `Orain "${p.currentEventName}" ekitaldian zaude, eta oraindik ez da egiaztatu. Ekitaldi berri bat sortzeak hura atzean utziko du. Jarraitu nahi duzu?`,
+  "newevent.confirmYesButton": () => "Bai, sortu",
+  "newevent.confirmNoButton": () => "Utzi",
+  "newevent.cancelled": () => "Utzita — ez da ekitaldirik sortu.",
+  "newevent.expired": () => "Eskaera hori jada ez dago erabilgarri — bidali /newevent berriro oraindik sortu nahi baduzu.",
+  "newevent.confirmed": () => "Ados — zure ekitaldi berria sortzen eta aurrekoa uzten.",
+  "newevent.created": (p) =>
+    `"${p.name}" ekitaldia sortu da. Batzeko kodea: ${p.code}\nEredua: ${p.pattern}\n` +
+    `Automatikoki batu zara eta fidagarritzat markatu zaitu. Aurkitzen duzuna "<posizioa> <balioa>" gisa jakinarazi, adib. "6 GLYPH".\n\n` +
+    `Partekatu (edo birbidali) beheko mezua ekitaldiaren taldearekin, edo pasakodea ebazten lagundu nahi duen edonorekin:`,
+
+  "sharetext.text": (p) => `Batu "${p.name}" ekitaldiaren pasakode-errelebora: ireki ${p.bot} bota eta bidali:`,
+  "sharetext.tapToCopy": () =>
+    "Sakatu goiko komandoa kopiatzeko, eta gero sakatu botaren izena harekin elkarrizketa bat irekitzeko. Lehen aldia bada, sakatu lehenik Start; ondoren itsatsi komandoa eta bidali.",
+  "sharetext.otherLanguages": () => "Beste hizkuntza batean nahi duzu?\nSakatu behean.",
+  "sharetext.noCurrentEvent": () => "Ez zaude ekitaldi batean. Zehaztu kode bat: /sharetext <kodea> [hizkuntza].",
+
+  "join.usage": () => "Erabilera: /join <kodea>.",
+  "join.confirmSwitch": (p) => `Jada "${p.currentEventName}" ekitaldian zaude. "${p.newEventName}" ekitaldira aldatu nahi duzu?`,
+  "join.confirmSwitchRevive": (p) =>
+    `Jada "${p.currentEventName}" ekitaldian zaude. "${p.newEventName}" itxita dago administratzailerik gabe — aldatzen baduzu, berrirekiko duzu eta haren administratzaile bihurtuko zara. Jarraitu nahi duzu?`,
+  "join.confirmYesButton": () => "Bai, aldatu",
+  "join.confirmNoButton": () => "Utzi",
+  "join.switched": (p) => `"${p.name}" ekitaldira aldatu zara.`,
+  "join.joined": (p) => `"${p.name}" ekitaldira batu zara. Aurkitzen duzuna "<posizioa> <balioa>" gisa jakinarazi, adib. "6 GLYPH".`,
+  "join.revived": (p) =>
+    `"${p.name}" itxita zegoen administratzailerik gabe — berrireki duzu eta orain haren administratzaile zara. Aurkitzen duzuna "<posizioa> <balioa>" gisa jakinarazi, adib. "6 GLYPH".`,
+  "join.shareHint": () => "Ekitaldia zabaltzen lagundu nahi duzu? Exekutatu /sharetext gonbidapen-testu bat lortzeko.",
+  "join.alreadyInThisEvent": (p) => `Jada "${p.name}" ekitaldian zaude.`,
+  "join.cancelled": (p) => `Utzita — "${p.name}" ekitaldian jarraitzen duzu.`,
+
+  "leave.notInEvent": () => "Orain ez zaude inongo ekitaldian.",
+  "leave.left": (p) => `"${p.name}" utzi duzu.`,
+  "leave.leftPromoted": (p) => `"${p.name}" utzi duzu. ${p.successor} da orain haren administratzailea.`,
+  "leave.autoPromoted": (p) =>
+    `Orain "${p.name}" ekitaldiaren administratzailea zara — aurreko administratzailea joan egin da. Bidali /help orain erabil ditzakezun komandoak ikusteko.`,
+  "leave.closedAbandoned": (p) =>
+    `"${p.name}" utzi duzu. Ekitaldian ez zen inor geratzen administratzaile kargua hartzeko gai zenik, beraz amaitu gabe itxi da.`,
+  "leave.anotherParticipant": () => "Beste partaide bat",
+
+  "current.notInEvent": () => "Orain ez zaude inongo ekitaldian. Erabili /join <kodea> edo /newevent bat sortzeko.",
+  "current.info": (p) =>
+    `Uneko ekitaldia:\n` +
+    `• Izena: ${p.name}\n` +
+    `• Batzeko kodea: ${p.code}\n` +
+    `• Pasakodearen eredua: ${p.pattern}\n` +
+    `• Partaide kopurua: ${p.participantCount}\n` +
+    `• Uneko administratzailea: ${p.admin}`,
+  "current.adminNoUsername": () => "(@erabiltzaile publikorik ez)",
+  "current.you": () => " (zu)",
+
+  "status.header": (p) => `${p.name} — ${p.known}/${p.total} ezagunak`,
+  "status.supportCount": (p) => `${p.count} lagunek babestua`,
+  "status.supportedBy": (p) => `${p.count} lagunek babestua — ${p.names}`,
+  "status.tooManyVariants": (p) =>
+    `Orain gehiegi dira aukera irekiak (${p.count}). Eskatu ekitaldiaren administratzaileari posizio batzuk /resolve egiteko.`,
+  "status.moreVariants": (p) =>
+    `+${p.count} aukera gehiago — eskatu ekitaldiaren administratzaileari posizio batzuk /resolve egiteko.`,
+
+  "slotType.letter": () => "letra bat",
+  "slotType.digit": () => "zenbaki bat",
+  "slotType.word": () => "hitz bat",
+
+  "common.notInEvent": () => "Ez zaude ekitaldi batean. Erabili lehenengo /join <kodea>.",
+  "common.notAdmin": () => "Ekitaldiaren administratzaileak bakarrik egin dezake hori.",
+  "common.userNotFound": () => "Ez da partaide hori aurkitu. Erabili haren @erabiltzailea edo /status-en agertzen den izena.",
+  "common.invalidPosition": (p) => `Posizioak 1 eta ${p.max} arteko zenbaki bat izan behar du.`,
+
+  "submit.usage": () =>
+    'Bidali "<posizioa> <balioa>" gisa (edo /submit <posizioa> <balioa>) balio bat jakinarazteko, ' +
+    'edo "<posizioa>" bakarrik, balio gabe, posizio horretan zure jakinarazpena kentzeko.',
+  "submit.recorded": (p) => `Erregistratuta: ${p.position} posizioa = "${p.value}".`,
+  "submit.selfCorrected": (p) =>
+    `Eguneratuta: ${p.position} posizioa orain "${p.value}" da (lehen "${p.previous}" zen).`,
+  "submit.selfRemoved": (p) => `Kenduta: ${p.position} posizioan zenuen "${p.value}" balioa ez da jada jakinarazita.`,
+  "submit.nothingToRemove": (p) => `Ez zenuen ezer jakinarazi ${p.position} posizioan.`,
+  "submit.alreadyRecorded": (p) => `Jada erregistratuta zegoen: ${p.position} posizioa = "${p.value}".`,
+  "submit.positionResolvedNotice": (p) =>
+    `${p.position} posizioa jada "${p.value}" gisa berretsi du ekitaldiaren administratzaileak. Hala ere, oharra hartu da.`,
+  "submit.confirmOtherConflict": (p) =>
+    `${p.position} posizioan jada "${p.existing}" jakinarazi du beste norbaitek. "${p.value}" ere erregistratu nahi duzu?`,
+  "submit.confirmTypeMismatch": (p) =>
+    `${p.position} posizioak ${p.expected} espero du, baina "${p.value}" ez dirudi hori. Hala ere erregistratu nahi duzu?`,
+  "submit.confirmYesButton": () => "Bai, erregistratu",
+  "submit.confirmNoButton": () => "Baztertu",
+  "submit.cancelled": () => "Baztertuta — ez da ezer erregistratu.",
+
+  "resolve.usage": () =>
+    "Erabilera: /resolve <posizioa> <balioa>, /resolve <posizioa> @erabiltzailea, /resolve <posizioa> jakinarazitako balioak zerrendatzeko, edo /resolve bakarrik desadostasunean dauden posizio guztiak errepasatzeko.",
+  "resolve.userNoReport": (p) => `Erabiltzaile horrek ez du ezer jakinarazi ${p.position} posizioan.`,
+  "resolve.done": (p) => `${p.position} posizioa "${p.value}" gisa ebatzi da.`,
+  "resolve.noCandidates": (p) => `Inork ez du oraindik ezer jakinarazi ${p.position} posizioan.`,
+  "resolve.candidatesHeader": (p) => `${p.position} posizioa — jakinarazitako balioak:`,
+  "resolve.candidateLine": (p) => `"${p.value}" — ${p.count}${p.trustedCount ? ` (${p.trustedCount})` : ""}`,
+  "resolve.trustedLegend": () => "(Parentesi arteko zenbakiak babes horietatik zenbat diren fidagarriak adierazten du.)",
+  "resolve.candidatesPrompt": () => "Sakatu beheko botoi bat balio horrekin ebazteko.",
+  "resolve.allHeader": (p) => `${p.count} posizio daude oraindik desadostasunean. Hurrengoa: ${p.position} posizioa — jakinarazitako balioak:`,
+  "resolve.allDone": () =>
+    "Orain ez dago desadostasunean dagoen posiziorik. Horrek ez du esan nahi egiaztatuta dagoenik: jokoaren trukatze-pantailan pasakode bat probatu ondoren, berretsi /verify <passcode> bidez ekitaldia amaitu eta ixteko.",
+
+  "unresolve.usage": () => "Erabilera: /unresolve <posizioa>.",
+  "unresolve.notResolved": (p) => `${p.position} posizioa ez dago ebatzita.`,
+  "unresolve.done": (p) => `${p.position} posizioa berrireki da.`,
+
+  "trust.usage": () => "Erabilera: /trust <@erabiltzailea>.",
+  "trust.done": (p) => `${p.name} orain fidagarritzat markatuta dago.`,
+  "troll.usage": () => "Erabilera: /troll <@erabiltzailea>.",
+  "troll.done": (p) => `${p.name}-ren ekarpenak orain ekitaldi honetatik kanpo geratzen dira.`,
+  "untrust.usage": () => "Erabilera: /untrust <@erabiltzailea>.",
+  "untrust.done": (p) => `${p.name}-ren fidagarritasun-marka kendu da.`,
+
+  "kick.usage": () => "Erabilera: /kick <@erabiltzailea>.",
+  "kick.done": (p) => `${p.name} ekitaldi honetatik kanporatu da.`,
+  "kick.notInEvent": (p) => `${p.name} ez da orain ekitaldi honetako partaide.`,
+
+  "promote.usage": () => "Erabilera: /promote <@erabiltzailea>.",
+  "promote.cannotSelf": () => "Jada zu zara ekitaldi honen administratzailea.",
+  "promote.notParticipant": (p) => `${p.name} ez da orain ekitaldi honetako partaide.`,
+  "promote.done": (p) => `${p.name} da orain ekitaldi honen administratzailea. Zu partaide izaten jarraitzen duzu.`,
+  "promote.youAreNow": (p) => `Orain zu zara "${p.name}" ekitaldiaren administratzailea. Bidali /help orain erabil ditzakezun komandoak ikusteko.`,
+
+  "claim.cannotSelf": () => "Jada zu zara ekitaldi honen administratzailea.",
+  "claim.notEligible": () => "Ez zara ekitaldi honen administratzaile rola eskatzeko gai.",
+  "claim.joinedQueue": () => "Uneko administratzaileak erantzuten ez badu administratzaile kargua hartzeko ilarara batu zara.",
+  "claim.alreadyQueued": () => "Jada administratzailearen erantzunaren zain zaude.",
+  "claim.adminRecentlyActive": (p) =>
+    `Administratzailea azken ${p.minutes} minutuetan aktibo egon da, beraz oraindik ezin duzu kargua eskatu. Saiatu berriro geroago.`,
+  "claim.notifyAdmin": (p) =>
+    `${p.claimant}-ek "${p.name}" ekitaldiaren administratzaile kargua hartu nahi du, aspaldi aktibo egon ez zarelako. Kargua mantendu nahi duzu, ala eman nahi duzu?`,
+  "claim.keepButton": () => "Mantendu kargua",
+  "claim.acceptButton": () => "Eman kargua",
+  "claim.opened": (p) =>
+    `Administratzaileari jakinarazi zaio eta ${p.minutes} minutu ditu erantzuteko. Erantzuten ez badu, exekutatu /claim berriro epe hori igarota, aldaketa behartzeko.`,
+  "claim.kept": (p) => `"${p.name}" ekitaldiaren administratzaile kargua mantendu duzu.`,
+  "claim.handedOver": (p) => `"${p.name}" ekitaldiaren administratzaile kargua eman duzu.`,
+  "claim.handedOverTimeout": (p) =>
+    `Garaiz erantzun ez duzunez, "${p.name}" ekitaldiaren administratzaile kargua automatikoki eman da.`,
+  "claim.becameAdmin": (p) =>
+    `Orain zu zara "${p.name}" ekitaldiaren administratzailea, inaktibitateagatik kargua eskatu ondoren. Bidali /help orain erabil ditzakezun komandoak ikusteko.`,
+  "claim.alreadyResolved": () => "Eskaera hau jada ebatzi da.",
+
+  "verify.usage": () => "Erabilera: /verify <passcode>. Itsatsi jokoak trukatzean zuzentzat berretsi duen pasakode zehatza.",
+  "verify.matched": () => "Pasakodea berretsi da — posizio guztiak horren arabera ebatzi dira. Ekitaldia ixten…",
+  "verify.stillUnresolved": (p) => `Ebatzi lehenengo posizio hauek: ${p.positions}.`,
+  "verify.finalMessage": (p) => `"${p.name}" ekitaldiaren azken pasakodea:`,
+  "verify.closed": () => "Ekitaldia itxi da. Azken pasakodea partaide guztiei bidali zaie.",
+  "verify.noMatch": () =>
+    "Pasakode hori ez dator bat orain jakinarazitako balioen inolako konbinaziorekin. Egiaztatu itsatsi duzuna — baliteke jakinarazi gabeko hautagairen bat falta izatea ere.",
+  "verify.ambiguous": () =>
+    "Pasakode hori orain jakinarazitako balioen konbinazio bat baino gehiagorekin dator bat, beraz ezin da automatikoki jakin zein den zuzena. Ebatzi lehenengo posizio batzuk eskuz.",
+  "verify.overwhelmed": () =>
+    "Orain gehiegi dira aukera irekiak hori egiaztatzeko. Ebatzi lehenengo posizio batzuk eskuz, eta saiatu berriro /verify-rekin.",
+
+  "events.none": () => "Oraindik ez duzu ekitaldi batean ere parte hartu.",
+  "events.list": (p) => `Zure ekitaldiak:\n${p.items}`,
+  "events.itemLine": (p) => {
+    let status =
+      p.status === "active" ? "aktibo" : p.reason === "completed" ? "itxita, amaituta" : p.reason === "abandoned" ? "itxita, abandonatuta" : "itxita";
+    if (p.isCurrent) status += ", unekoa";
+    const suffix = p.isAdmin ? " — zu zara administratzailea" : "";
+    return `• ${p.name} — ${p.code} (${status})${suffix}`;
+  },
+};
+
+export const catalogs = { en, ca, es, fr, gl, eu } satisfies Record<string, Catalog>;
