@@ -857,7 +857,7 @@ function renderFooterLanguages(lang: SupportedLanguage): string {
   const order: SupportedLanguage[] = [lang, ...SUPPORTED_LANGUAGES.filter((code) => code !== lang)];
   const links = order.map((code) => {
     const name = escapeHtml(names[code]);
-    return code === lang ? name : `<a href="?lang=${code}" hreflang="${code}">${name}</a>`;
+    return code === lang ? name : `<a class="lang-link" href="?lang=${code}" hreflang="${code}">${name}</a>`;
   });
   const head = links.slice(0, -1).join(", ");
   const last = links[links.length - 1];
@@ -1074,6 +1074,8 @@ export function renderLandingPage(lang: SupportedLanguage): string {
     font-size: 0.9rem;
   }
   footer a { color: var(--text-muted); }
+  .lang-link { text-decoration: none; }
+  .lang-link:hover { text-decoration: underline; }
   .gh-link {
     display: inline-flex;
     align-items: center;
