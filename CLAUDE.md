@@ -59,7 +59,14 @@ different dates), each with its own passcode. A Telegram user (an
 - **HTTP routing**: [Hono](https://hono.dev). `POST /telegram/webhook` is
   the bot; `GET /` serves the public landing page (`src/landing.ts`),
   language-negotiated from the `Accept-Language` header via the same
-  `resolveLanguage()` used for Telegram users; `GET /favicon.ico`
+  `resolveLanguage()` used for Telegram users — except a `?lang=<code>`
+  query param, when present and one of the supported codes, always wins
+  over that header instead. This is what lets the landing page's footer
+  render every language's name as a `?lang=` link (skipping the one
+  currently displayed, the same convention the bot's own language-switch
+  keyboard follows — see Internationalization): a visitor whose browser
+  only reports a generic Accept-Language can still reach their real
+  language in one click, with no JavaScript involved. `GET /favicon.ico`
   redirects to `/logo.png`.
 - **Static assets**: `public/` (currently just `logo.png`, used as the
   landing page's header image and favicon) is served directly by

@@ -3,7 +3,7 @@ import { webhookCallback } from "grammy";
 import type { Env } from "./env.js";
 import { createBot } from "./bot.js";
 import { renderLandingPage } from "./landing.js";
-import { resolveLanguage } from "./domain/language.js";
+import { resolveLanguage, isSupportedLanguage } from "./domain/language.js";
 import { adminApp } from "./admin/routes.js";
 
 const app = new Hono<{ Bindings: Env }>();
@@ -11,6 +11,14 @@ const app = new Hono<{ Bindings: Env }>();
 app.route("/admin", adminApp);
 
 app.get("/", (c) => {
+  // A `?lang=` query param (set by clicking one of the footer's language
+  // links, see landing.ts's renderFooterLanguages) always wins over the
+  // browser's Accept-Language header, which is only ever a fallback guess
+  // and can't be corrected by the visitor otherwise.
+  const requestedLang = c.req.query("lang");
+  if (requestedLang && isSupportedLanguage(requestedLang)) {
+    return c.html(renderLandingPage(requestedLang));
+  }
   const preferred = c.req.header("Accept-Language")?.split(",")[0]?.trim();
   return c.html(renderLandingPage(resolveLanguage(preferred)));
 });

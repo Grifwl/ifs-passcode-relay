@@ -1,4 +1,4 @@
-import type { SupportedLanguage } from "./domain/language.js";
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from "./domain/language.js";
 import { BOT_URL } from "./domain/botInfo.js";
 import { DEFAULT_PATTERN } from "./domain/pattern.js";
 
@@ -48,7 +48,6 @@ interface LandingContent {
   commandsHeading: string;
   commandsIntro: string;
   commandGroups: CommandGroup[];
-  footerLanguages: string;
   footerSource: string;
 }
 
@@ -132,7 +131,6 @@ const en: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Available in English, Català, Castellano, Français, Galego, Euskara, Português, Italiano and Deutsch.",
   footerSource: "Source on GitHub",
 };
 
@@ -216,7 +214,6 @@ const ca: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en català, anglès, castellà, francès, gallec, basc, portuguès, italià i alemany.",
   footerSource: "Codi font a GitHub",
 };
 
@@ -300,7 +297,6 @@ const es: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en español, inglés, catalán, francés, gallego, euskera, portugués, italiano y alemán.",
   footerSource: "Código fuente en GitHub",
 };
 
@@ -384,7 +380,6 @@ const fr: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en français, anglais, catalan, espagnol, galicien, basque, portugais, italien et allemand.",
   footerSource: "Code source sur GitHub",
 };
 
@@ -468,7 +463,6 @@ const gl: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Dispoñible en galego, inglés, catalán, castelán, francés, éuscaro, portugués, italiano e alemán.",
   footerSource: "Código fonte en GitHub",
 };
 
@@ -552,7 +546,6 @@ const eu: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Euskaraz, ingelesez, katalanez, gaztelaniaz, frantsesez, galizieraz, portugesez, italieraz eta alemanez eskuragarri.",
   footerSource: "Iturburu-kodea GitHub-en",
 };
 
@@ -636,7 +629,6 @@ const pt: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponível em português, inglês, catalão, castelhano, francês, galego, basco, italiano e alemão.",
   footerSource: "Código-fonte no GitHub",
 };
 
@@ -720,7 +712,6 @@ const it: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponibile in italiano, inglese, catalano, spagnolo, francese, galiziano, basco, portoghese e tedesco.",
   footerSource: "Codice sorgente su GitHub",
 };
 
@@ -804,14 +795,73 @@ const de: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Verfügbar auf Deutsch, Englisch, Katalanisch, Spanisch, Französisch, Galicisch, Baskisch, Portugiesisch und Italienisch.",
   footerSource: "Quellcode auf GitHub",
 };
 
 const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr, gl, eu, pt, it, de };
 
+/**
+ * For each display language, the name of every supported language as it
+ * reads inside that language's own footer sentence (see
+ * `FOOTER_LANGUAGES_TEXT` below) — case and, for `eu`, grammatical suffix
+ * included, since these strings are reused verbatim as link text.
+ */
+const LANGUAGE_NAMES: Record<SupportedLanguage, Record<SupportedLanguage, string>> = {
+  en: { en: "English", ca: "Català", es: "Castellano", fr: "Français", gl: "Galego", eu: "Euskara", pt: "Português", it: "Italiano", de: "Deutsch" },
+  ca: { ca: "català", en: "anglès", es: "castellà", fr: "francès", gl: "gallec", eu: "basc", pt: "portuguès", it: "italià", de: "alemany" },
+  es: { es: "español", en: "inglés", ca: "catalán", fr: "francés", gl: "gallego", eu: "euskera", pt: "portugués", it: "italiano", de: "alemán" },
+  fr: { fr: "français", en: "anglais", ca: "catalan", es: "espagnol", gl: "galicien", eu: "basque", pt: "portugais", it: "italien", de: "allemand" },
+  gl: { gl: "galego", en: "inglés", ca: "catalán", es: "castelán", fr: "francés", eu: "éuscaro", pt: "portugués", it: "italiano", de: "alemán" },
+  eu: { eu: "Euskaraz", en: "ingelesez", ca: "katalanez", es: "gaztelaniaz", fr: "frantsesez", gl: "galizieraz", pt: "portugesez", it: "italieraz", de: "alemanez" },
+  pt: { pt: "português", en: "inglês", ca: "catalão", es: "castelhano", fr: "francês", gl: "galego", eu: "basco", it: "italiano", de: "alemão" },
+  it: { it: "italiano", en: "inglese", ca: "catalano", es: "spagnolo", fr: "francese", gl: "galiziano", eu: "basco", pt: "portoghese", de: "tedesco" },
+  de: { de: "Deutsch", en: "Englisch", ca: "Katalanisch", es: "Spanisch", fr: "Französisch", gl: "Galicisch", eu: "Baskisch", pt: "Portugiesisch", it: "Italienisch" },
+};
+
+/**
+ * The fixed sentence wrapped around the language-name links in the
+ * footer, per display language: `lead` + comma-joined links + `conjunction`
+ * + final link + `trail`. `eu` has no `lead` since Basque's verb ("available")
+ * comes at the very end of the sentence instead of the start.
+ */
+const FOOTER_LANGUAGES_TEXT: Record<SupportedLanguage, { lead: string; conjunction: string; trail: string }> = {
+  en: { lead: "Available in ", conjunction: " and ", trail: "." },
+  ca: { lead: "Disponible en ", conjunction: " i ", trail: "." },
+  es: { lead: "Disponible en ", conjunction: " y ", trail: "." },
+  fr: { lead: "Disponible en ", conjunction: " et ", trail: "." },
+  gl: { lead: "Dispoñible en ", conjunction: " e ", trail: "." },
+  eu: { lead: "", conjunction: " eta ", trail: " eskuragarri." },
+  pt: { lead: "Disponível em ", conjunction: " e ", trail: "." },
+  it: { lead: "Disponibile in ", conjunction: " e ", trail: "." },
+  de: { lead: "Verfügbar auf ", conjunction: " und ", trail: "." },
+};
+
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+/**
+ * Renders the footer's language-availability sentence with every language
+ * name — other than the one currently displayed — as a `?lang=<code>`
+ * link, so a visitor whose browser reports a generic Accept-Language (and
+ * who is therefore not seeing the landing page in their actual language)
+ * can switch with a single click, the same way `/language` lets them do
+ * in the bot itself. The current language's own name is shown but left
+ * unlinked, mirroring the bot's language-switch keyboard (see
+ * `domain/shareText.ts`), which never offers a button for the language a
+ * message is already written in.
+ */
+function renderFooterLanguages(lang: SupportedLanguage): string {
+  const { lead, conjunction, trail } = FOOTER_LANGUAGES_TEXT[lang];
+  const names = LANGUAGE_NAMES[lang];
+  const order: SupportedLanguage[] = [lang, ...SUPPORTED_LANGUAGES.filter((code) => code !== lang)];
+  const links = order.map((code) => {
+    const name = escapeHtml(names[code]);
+    return code === lang ? name : `<a href="?lang=${code}" hreflang="${code}">${name}</a>`;
+  });
+  const head = links.slice(0, -1).join(", ");
+  const last = links[links.length - 1];
+  return `${escapeHtml(lead)}${head}${escapeHtml(conjunction)}${last}${escapeHtml(trail)}`;
 }
 
 function renderCommand(command: string): string {
@@ -1067,7 +1117,7 @@ export function renderLandingPage(lang: SupportedLanguage): string {
     </section>
 
     <footer>
-      <p>${escapeHtml(c.footerLanguages)}</p>
+      <p>${renderFooterLanguages(lang)}</p>
       <p><a class="gh-link" href="${REPO_URL}">${GITHUB_ICON}${escapeHtml(c.footerSource)}</a></p>
     </footer>
   </div>
