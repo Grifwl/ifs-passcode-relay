@@ -1,5 +1,5 @@
 /** Languages the bot can speak to a user in. */
-export const SUPPORTED_LANGUAGES = ["en", "ca", "es", "fr", "gl", "eu"] as const;
+export const SUPPORTED_LANGUAGES = ["en", "ca", "es", "fr", "gl", "eu", "pt", "it", "de"] as const;
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 

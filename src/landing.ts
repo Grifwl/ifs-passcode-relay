@@ -90,7 +90,7 @@ const en: LandingContent = {
       heading: "Getting started",
       rows: [
         { command: "/start, /help", description: "Introduction and command list." },
-        { command: "/language <code>", description: "Set your language (en, ca, es, fr, gl, eu)." },
+        { command: "/language <code>", description: "Set your language (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -132,7 +132,7 @@ const en: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Available in English, Català, Castellano, Français, Galego and Euskara.",
+  footerLanguages: "Available in English, Català, Castellano, Français, Galego, Euskara, Português, Italiano and Deutsch.",
   footerSource: "Source on GitHub",
 };
 
@@ -174,7 +174,7 @@ const ca: LandingContent = {
       heading: "Per començar",
       rows: [
         { command: "/start, /help", description: "Introducció i llista de comandes." },
-        { command: "/language <codi>", description: "Estableix el teu idioma (en, ca, es, fr, gl, eu)." },
+        { command: "/language <codi>", description: "Estableix el teu idioma (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -216,7 +216,7 @@ const ca: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en català, anglès, castellà, francès, gallec i basc.",
+  footerLanguages: "Disponible en català, anglès, castellà, francès, gallec, basc, portuguès, italià i alemany.",
   footerSource: "Codi font a GitHub",
 };
 
@@ -258,7 +258,7 @@ const es: LandingContent = {
       heading: "Para empezar",
       rows: [
         { command: "/start, /help", description: "Introducción y lista de comandos." },
-        { command: "/language <código>", description: "Establece tu idioma (en, ca, es, fr, gl, eu)." },
+        { command: "/language <código>", description: "Establece tu idioma (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -300,7 +300,7 @@ const es: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en español, inglés, catalán, francés, gallego y euskera.",
+  footerLanguages: "Disponible en español, inglés, catalán, francés, gallego, euskera, portugués, italiano y alemán.",
   footerSource: "Código fuente en GitHub",
 };
 
@@ -342,7 +342,7 @@ const fr: LandingContent = {
       heading: "Pour commencer",
       rows: [
         { command: "/start, /help", description: "Introduction et liste des commandes." },
-        { command: "/language <code>", description: "Définit votre langue (en, ca, es, fr, gl, eu)." },
+        { command: "/language <code>", description: "Définit votre langue (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -384,7 +384,7 @@ const fr: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Disponible en français, anglais, catalan, espagnol, galicien et basque.",
+  footerLanguages: "Disponible en français, anglais, catalan, espagnol, galicien, basque, portugais, italien et allemand.",
   footerSource: "Code source sur GitHub",
 };
 
@@ -426,7 +426,7 @@ const gl: LandingContent = {
       heading: "Para empezar",
       rows: [
         { command: "/start, /help", description: "Introdución e lista de comandos." },
-        { command: "/language <código>", description: "Establece o teu idioma (en, ca, es, fr, gl, eu)." },
+        { command: "/language <código>", description: "Establece o teu idioma (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -468,7 +468,7 @@ const gl: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Dispoñible en galego, inglés, catalán, castelán, francés e éuscaro.",
+  footerLanguages: "Dispoñible en galego, inglés, catalán, castelán, francés, éuscaro, portugués, italiano e alemán.",
   footerSource: "Código fonte en GitHub",
 };
 
@@ -510,7 +510,7 @@ const eu: LandingContent = {
       heading: "Hasteko",
       rows: [
         { command: "/start, /help", description: "Sarrera eta komandoen zerrenda." },
-        { command: "/language <kodea>", description: "Zure hizkuntza ezartzen du (en, ca, es, fr, gl, eu)." },
+        { command: "/language <kodea>", description: "Zure hizkuntza ezartzen du (en, ca, es, fr, gl, eu, pt, it, de)." },
       ],
     },
     {
@@ -552,11 +552,263 @@ const eu: LandingContent = {
       ],
     },
   ],
-  footerLanguages: "Euskaraz, ingelesez, katalanez, gaztelaniaz, frantsesez eta galizieraz eskuragarri.",
+  footerLanguages: "Euskaraz, ingelesez, katalanez, gaztelaniaz, frantsesez, galizieraz, portugesez, italieraz eta alemanez eskuragarri.",
   footerSource: "Iturburu-kodea GitHub-en",
 };
 
-const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr, gl, eu };
+const pt: LandingContent = {
+  htmlLang: "pt",
+  metaDescription:
+    "Um bot de Telegram que permite aos participantes de um Ingress First Saturday montar o passcode do evento em tempo real, de forma colaborativa.",
+  eyebrow: "Para o Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Monte o passcode do seu evento com todos, em tempo real — sem mais capturas de tela em um grupo de chat.",
+  ctaLabel: "Abrir @ifs_relay_bot no Telegram",
+  navAbout: "O que é isso",
+  navHowItWorks: "Como funciona",
+  navCommands: "Comandos",
+  aboutHeading: "O que é isso?",
+  aboutBody: [
+    "Ingress First Saturday é um evento presencial recorrente do jogo para celular Ingress. Durante o evento, os jogadores recebem as imagens de um conjunto de portais; visitá-los no local e examinar sua mídia revela um caractere. Concatenando os caracteres na ordem certa, obtém-se um passcode resgatável na loja do jogo por um pacote de itens do IFS.",
+    "Este bot permite que todos os participantes de um IFS específico reportem o caractere que encontraram e a posição correspondente, e mantém uma visão compartilhada e ao vivo do passcode conforme ele é preenchido. Vários eventos IFS podem acontecer ao mesmo tempo — cada um com seu próprio código de acesso e seu próprio grupo de participantes.",
+  ],
+  howHeading: "Como funciona",
+  steps: [
+    { text: "Quem organiza o revezamento de passcode cria um evento com /newevent — quem cria entra automaticamente como seu administrador, e recebe uma mensagem de convite pronta para reenviar aos participantes." },
+    { text: "Cada outro participante envia /join <código> ao bot, que também os convida a executar /sharetext para ajudar a divulgar." },
+    {
+      text: "Encontrou algo? Reporte enviando a posição e o valor, sem precisar de comando:",
+      subitems: [
+        '"6 GLYPH" registra que a posição 6 é GLYPH.',
+        "Errou e quer corrigir seu próprio report? Reenvie a mesma posição com o valor correto — não precisa de confirmação, e o bot lembra qual era o valor anterior caso você queira desfazer.",
+        'Reportou na posição errada, ou ainda não sabe de verdade? Envie apenas a posição, sem nada depois, ex. "6", para remover seu report ali.',
+      ],
+    },
+    { text: "Se duas pessoas diferentes reportarem valores diferentes para a mesma posição, ambos são mantidos e mostrados como possibilidades separadas — até que o administrador do evento resolva com /resolve." },
+    { text: "Concordância total não é o mesmo que verificado: o evento só pode ser encerrado depois que o administrador tiver de fato testado um passcode no jogo e confirmado com /verify, que então envia o passcode final a todos os participantes." },
+  ],
+  commandsHeading: "Comandos",
+  commandsIntro: "Cada jogador os vê em seu próprio idioma, definido uma vez com /language.",
+  commandGroups: [
+    {
+      heading: "Para começar",
+      rows: [
+        { command: "/start, /help", description: "Introdução e lista de comandos." },
+        { command: "/language <código>", description: "Define seu idioma (en, ca, es, fr, gl, eu, pt, it, de)." },
+      ],
+    },
+    {
+      heading: "Eventos",
+      rows: [
+        {
+          command: "/newevent <nome> [| <padrão>]",
+          description: `Cria um novo evento IFS e obtém seu código de acesso; entra automaticamente e marca você como de confiança. Pede confirmação primeiro se seu evento atual ainda não estiver resolvido (recusar não cria nada); esse é repassado antes. O padrão é opcional (por padrão ${DEFAULT_PATTERN}); para definir o seu, digite o nome, depois um "|", e depois o padrão usando X para uma letra, 9 para um dígito e * para uma palavra inteira, ex. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
+        { command: "/join <código>", description: "Entra em um evento — pede confirmação só se seu evento atual ainda não estiver resolvido; um encerrado sem administrador é reaberto sob você em vez de rejeitado." },
+        { command: "/leave", description: "Sai do seu evento atual. Se você é o administrador, outro participante assume o papel automaticamente (os de confiança primeiro, senão quem mais contribuiu), ou o evento é encerrado como inacabado se ninguém for elegível — criar ou entrar em outro evento repassa o papel do mesmo jeito." },
+        { command: "/current", description: "Mostra o evento atual, seu administrador e o número de participantes." },
+        { command: "/sharetext [código] [idioma]", description: "(Re)obtém a mensagem de convite, por padrão do seu evento atual e do seu idioma." },
+        { command: "/events", description: "Lista todos os eventos dos quais você participou, atuais ou passados." },
+      ],
+    },
+    {
+      heading: "Reportando o passcode",
+      rows: [
+        { command: '"<posição> <valor>"', description: "Reporta o valor encontrado em uma posição." },
+        { command: '"<posição>" (sem valor)', description: "Remove seu próprio report nessa posição, se houver." },
+        {
+          command: "/status",
+          description: "Mostra o estado atual do passcode quando quiser, e move as próximas atualizações ao vivo para esta nova mensagem.",
+        },
+      ],
+    },
+    {
+      heading: "Para o administrador do evento",
+      rows: [
+        { command: "/resolve <posição> [<valor>]", description: "Escolhe o valor correto quando há discrepância; sem valor, lista os valores reportados (com o detalhamento de apoios de confiança) como botões para resolver." },
+        { command: "/resolve", description: "Percorre todas as posições ainda em discrepância, uma a uma; quando não sobrar nenhuma, aponta para /verify — consenso sozinho nunca encerra o evento." },
+        { command: "/unresolve <posição>", description: "Reabre uma posição resolvida." },
+        { command: "/trust, /troll, /untrust <usuário>", description: "Modera as contribuições de um participante; o apoio de confiança é destacado nas listas de candidatos de /resolve." },
+        { command: "/kick <usuário>", description: "Remove um participante do evento." },
+        { command: "/promote <usuário>", description: "Passa o papel de administrador a outro participante já no evento; também marca como de confiança, do mesmo jeito que /newevent faz com quem cria o evento." },
+        { command: "/claim", description: "Tenta assumir o papel de administrador se o atual está inativo há mais de 30 minutos; ele tem 5 minutos para aceitar, recusar ou não responder antes que aconteça." },
+        { command: "/verify <passcode>", description: "A única forma de encerrar um evento: cole um passcode confirmado correto na tela de resgate do jogo; resolve todas as posições a partir dele de uma vez, congela o evento e anuncia o passcode final a todos." },
+      ],
+    },
+  ],
+  footerLanguages: "Disponível em português, inglês, catalão, castelhano, francês, galego, basco, italiano e alemão.",
+  footerSource: "Código-fonte no GitHub",
+};
+
+const it: LandingContent = {
+  htmlLang: "it",
+  metaDescription:
+    "Un bot Telegram che permette ai partecipanti a un Ingress First Saturday di costruire insieme il passcode dell'evento in tempo reale.",
+  eyebrow: "Per l'Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Costruisci il passcode del tuo evento tutti insieme, in tempo reale — niente più screenshot in una chat di gruppo.",
+  ctaLabel: "Apri @ifs_relay_bot su Telegram",
+  navAbout: "Cos'è",
+  navHowItWorks: "Come funziona",
+  navCommands: "Comandi",
+  aboutHeading: "Cos'è questo?",
+  aboutBody: [
+    "Ingress First Saturday è un evento ricorrente in presenza del gioco mobile Ingress. Durante l'evento, ai giocatori vengono mostrate le immagini di una serie di portali; visitarli sul posto ed esaminarne i contenuti multimediali rivela un carattere. Concatenando i caratteri nell'ordine giusto si ottiene un passcode riscattabile nel negozio del gioco per un pacchetto di oggetti IFS.",
+    "Questo bot permette a chiunque partecipi a un IFS specifico di segnalare il carattere trovato e la posizione a cui appartiene, mantenendo una vista condivisa e in tempo reale del passcode man mano che si completa. Più eventi IFS possono svolgersi contemporaneamente — ognuno con il proprio codice di accesso e il proprio gruppo di partecipanti.",
+  ],
+  howHeading: "Come funziona",
+  steps: [
+    { text: "Chi organizza la staffetta del passcode crea un evento con /newevent — chi lo crea si unisce automaticamente come suo amministratore, e riceve un messaggio di invito pronto da inoltrare ai partecipanti." },
+    { text: "Ogni altro partecipante invia /join <codice> al bot, che li invita anche a eseguire /sharetext per aiutare a diffonderlo." },
+    {
+      text: "Hai trovato qualcosa? Segnalalo inviando la posizione e il valore, senza bisogno di comandi:",
+      subitems: [
+        '"6 GLYPH" registra che la posizione 6 è GLYPH.',
+        "Hai sbagliato e vuoi correggere la tua segnalazione? Reinvia la stessa posizione con il valore giusto — non serve conferma, e il bot ti ricorda qual era il valore precedente nel caso tu voglia annullare.",
+        'Hai segnalato la posizione sbagliata, o ancora non la conosci davvero? Invia solo la posizione senza nient\'altro, es. "6", per rimuovere la tua segnalazione lì.',
+      ],
+    },
+    { text: "Se due persone diverse segnalano valori diversi per la stessa posizione, entrambi vengono mantenuti e mostrati come possibilità separate — finché l'amministratore dell'evento non lo risolve con /resolve." },
+    { text: "L'accordo totale non è la stessa cosa della verifica: l'evento può essere chiuso solo dopo che l'amministratore ha davvero testato un passcode nel gioco e lo ha confermato con /verify, che invia poi il passcode finale a tutti i partecipanti." },
+  ],
+  commandsHeading: "Comandi",
+  commandsIntro: "Ogni giocatore li vede nella propria lingua, impostata una volta con /language.",
+  commandGroups: [
+    {
+      heading: "Per iniziare",
+      rows: [
+        { command: "/start, /help", description: "Introduzione ed elenco dei comandi." },
+        { command: "/language <codice>", description: "Imposta la tua lingua (en, ca, es, fr, gl, eu, pt, it, de)." },
+      ],
+    },
+    {
+      heading: "Eventi",
+      rows: [
+        {
+          command: "/newevent <nome> [| <pattern>]",
+          description: `Crea un nuovo evento IFS e ottiene il suo codice di accesso; ti unisce automaticamente e ti contrassegna come affidabile. Chiede conferma prima se il tuo evento attuale non è ancora risolto (rifiutare non crea nulla); quello viene ceduto per primo. Il pattern è opzionale (predefinito ${DEFAULT_PATTERN}); per impostarne uno tuo, scrivi il nome, poi un "|", poi il pattern usando X per una lettera, 9 per una cifra e * per una parola intera, es. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
+        { command: "/join <codice>", description: "Unisciti a un evento — chiede conferma solo se il tuo evento attuale non è ancora risolto; uno chiuso senza amministratore si riapre sotto di te invece di essere rifiutato." },
+        { command: "/leave", description: "Lascia il tuo evento attuale. Se sei l'amministratore, un altro partecipante assume automaticamente il ruolo (prima gli affidabili, altrimenti chi ha contribuito di più), oppure l'evento viene chiuso come incompiuto se nessuno è idoneo — creare o unirsi a un altro evento cede il ruolo allo stesso modo." },
+        { command: "/current", description: "Mostra l'evento attuale, il suo amministratore e il numero di partecipanti." },
+        { command: "/sharetext [codice] [lingua]", description: "(Ri)ottiene il messaggio di invito, di default per il tuo evento attuale e la tua lingua." },
+        { command: "/events", description: "Elenca tutti gli eventi a cui hai partecipato, attuali o passati." },
+      ],
+    },
+    {
+      heading: "Segnalare il passcode",
+      rows: [
+        { command: '"<posizione> <valore>"', description: "Segnala il valore trovato a una posizione." },
+        { command: '"<posizione>" (senza valore)', description: "Rimuove la tua segnalazione a quella posizione, se presente." },
+        {
+          command: "/status",
+          description: "Mostra lo stato attuale del passcode su richiesta, e sposta qui i prossimi aggiornamenti in tempo reale.",
+        },
+      ],
+    },
+    {
+      heading: "Per l'amministratore dell'evento",
+      rows: [
+        { command: "/resolve <posizione> [<valore>]", description: "Sceglie il valore corretto in caso di disaccordo; senza valore, elenca i valori segnalati (con il dettaglio dei sostenitori affidabili) come pulsanti da risolvere." },
+        { command: "/resolve", description: "Ripercorre tutte le posizioni ancora in disaccordo, una alla volta; una volta esaurite, rimanda a /verify — il consenso da solo non chiude mai l'evento." },
+        { command: "/unresolve <posizione>", description: "Riapre una posizione risolta." },
+        { command: "/trust, /troll, /untrust <utente>", description: "Modera i contributi di un partecipante; il sostegno affidabile viene evidenziato negli elenchi di candidati di /resolve." },
+        { command: "/kick <utente>", description: "Rimuove un partecipante dall'evento." },
+        { command: "/promote <utente>", description: "Cede il ruolo di amministratore a un altro partecipante già nell'evento; lo contrassegna anche come affidabile, come /newevent fa per il proprio amministratore." },
+        { command: "/claim", description: "Prova ad assumere il ruolo di amministratore se quello attuale è inattivo da 30+ minuti; ha 5 minuti per accettare, rifiutare o non rispondere prima che avvenga." },
+        { command: "/verify <passcode>", description: "L'unico modo per chiudere un evento: incolla un passcode confermato corretto nella schermata di riscatto del gioco; risolve tutte le posizioni a partire da esso in una volta, blocca l'evento e annuncia il passcode finale a tutti." },
+      ],
+    },
+  ],
+  footerLanguages: "Disponibile in italiano, inglese, catalano, spagnolo, francese, galiziano, basco, portoghese e tedesco.",
+  footerSource: "Codice sorgente su GitHub",
+};
+
+const de: LandingContent = {
+  htmlLang: "de",
+  metaDescription:
+    "Ein Telegram-Bot, mit dem Teilnehmer eines Ingress First Saturday den Passcode ihres Events gemeinsam in Echtzeit zusammensetzen.",
+  eyebrow: "Für den Ingress First Saturday",
+  title: "IFS Passcode Relay",
+  tagline: "Setzt den Passcode eures Events gemeinsam in Echtzeit zusammen — keine Screenshots mehr in einer Gruppenchat.",
+  ctaLabel: "@ifs_relay_bot in Telegram öffnen",
+  navAbout: "Worum es geht",
+  navHowItWorks: "So funktioniert's",
+  navCommands: "Befehle",
+  aboutHeading: "Worum geht es hier?",
+  aboutBody: [
+    "Ingress First Saturday ist eine wiederkehrende Präsenzveranstaltung für das Mobile Game Ingress. Dabei erhalten die Spieler Bilder einer Reihe von Portalen; wer sie vor Ort besucht und ihre Medien untersucht, findet jeweils ein Zeichen. Werden die Zeichen in der richtigen Reihenfolge aneinandergereiht, ergibt sich ein Passcode, der im Spiel-Shop gegen ein IFS-Item-Paket eingelöst werden kann.",
+    "Dieser Bot lässt alle Teilnehmer eines bestimmten IFS das gefundene Zeichen und dessen Position melden und hält eine geteilte Live-Ansicht des Passcodes, während er sich füllt. Mehrere IFS-Events können gleichzeitig laufen — jedes mit eigenem Beitrittscode und eigener Teilnehmergruppe.",
+  ],
+  howHeading: "So funktioniert's",
+  steps: [
+    { text: "Wer die Passcode-Staffel organisiert, erstellt ein Event mit /newevent — die erstellende Person tritt automatisch als Administrator bei und erhält eine fertige Einladungsnachricht zum Weiterleiten an die Teilnehmer." },
+    { text: "Jeder andere Teilnehmer sendet /join <Code> an den Bot, der auch dazu einlädt, /sharetext auszuführen, um beim Verbreiten zu helfen." },
+    {
+      text: "Etwas gefunden? Melde es, indem du Position und Wert sendest, ganz ohne Befehl:",
+      subitems: [
+        '"6 GLYPH" erfasst, dass Position 6 GLYPH ist.',
+        "Einen Fehler gemacht und willst deine eigene Meldung korrigieren? Sende dieselbe Position einfach mit dem richtigen Wert erneut — keine Bestätigung nötig, und der Bot erinnert dich daran, welcher Wert vorher dort stand, falls du das rückgängig machen willst.",
+        'An die falsche Position gemeldet, oder kennst du sie noch gar nicht wirklich? Sende nur die Position ohne alles danach, z. B. "6", um deine eigene Meldung dort zu entfernen.',
+      ],
+    },
+    { text: "Melden zwei verschiedene Personen unterschiedliche Werte für dieselbe Position, werden beide behalten und als getrennte Möglichkeiten angezeigt — bis der Administrator des Events es mit /resolve klärt." },
+    { text: "Volle Übereinstimmung ist nicht dasselbe wie verifiziert: Das Event kann erst geschlossen werden, wenn der Administrator tatsächlich einen Passcode im Spiel getestet und mit /verify bestätigt hat, was dann den finalen Passcode an alle Teilnehmer sendet." },
+  ],
+  commandsHeading: "Befehle",
+  commandsIntro: "Jeder Spieler sieht sie in seiner eigenen Sprache, einmal festgelegt mit /language.",
+  commandGroups: [
+    {
+      heading: "Erste Schritte",
+      rows: [
+        { command: "/start, /help", description: "Einführung und Befehlsliste." },
+        { command: "/language <Code>", description: "Legt deine Sprache fest (en, ca, es, fr, gl, eu, pt, it, de)." },
+      ],
+    },
+    {
+      heading: "Events",
+      rows: [
+        {
+          command: "/newevent <Name> [| <Muster>]",
+          description: `Erstellt ein neues IFS-Event und liefert dessen Beitrittscode; tritt dir automatisch bei und markiert dich als vertrauenswürdig. Fragt zuerst nach Bestätigung, wenn dein aktuelles Event noch nicht geklärt ist (Ablehnen erstellt nichts); dieses wird zuerst übergeben. Das Muster ist optional (Standard ${DEFAULT_PATTERN}); um ein eigenes festzulegen, gib den Namen ein, dann ein "|", dann das Muster mit X für einen Buchstaben, 9 für eine Ziffer und * für ein ganzes Wort, z. B. "/newevent Barcelona 2026-08 | XXX99*999XX".`,
+        },
+        { command: "/join <Code>", description: "Einem Event beitreten — fragt nur nach Bestätigung, wenn dein aktuelles Event noch nicht geklärt ist; ein ohne Administrator geschlossenes wird unter dir wiedereröffnet, statt abgelehnt zu werden." },
+        { command: "/leave", description: "Verlässt dein aktuelles Event. Bist du Administrator, übernimmt automatisch ein anderer Teilnehmer die Rolle (zuerst vertrauenswürdige, sonst wer am meisten beigetragen hat), oder das Event wird als unvollendet geschlossen, wenn niemand geeignet ist — ein anderes Event zu erstellen oder ihm beizutreten übergibt die Rolle genauso." },
+        { command: "/current", description: "Zeigt das aktuelle Event, seinen Administrator und die Teilnehmerzahl." },
+        { command: "/sharetext [Code] [Sprache]", description: "Holt den Einladungstext (erneut), standardmäßig für dein aktuelles Event und deine Sprache." },
+        { command: "/events", description: "Listet alle Events auf, an denen du teilgenommen hast, aktuelle oder vergangene." },
+      ],
+    },
+    {
+      heading: "Den Passcode melden",
+      rows: [
+        { command: '"<Position> <Wert>"', description: "Meldet den an einer Position gefundenen Wert." },
+        { command: '"<Position>" (ohne Wert)', description: "Entfernt deine eigene Meldung an dieser Position, falls vorhanden." },
+        {
+          command: "/status",
+          description: "Zeigt den aktuellen Stand des Passcodes auf Abruf und verschiebt künftige Live-Updates auf diese neue Nachricht.",
+        },
+      ],
+    },
+    {
+      heading: "Für den Administrator des Events",
+      rows: [
+        { command: "/resolve <Position> [<Wert>]", description: "Wählt den richtigen Wert bei Uneinigkeit; ohne Wert werden gemeldete Werte (mit Aufschlüsselung vertrauenswürdiger Unterstützer) als Buttons zum Klären aufgelistet." },
+        { command: "/resolve", description: "Geht alle noch uneinigen Positionen einzeln durch; sind keine mehr übrig, verweist es auf /verify — Konsens allein schließt das Event nie ab." },
+        { command: "/unresolve <Position>", description: "Öffnet eine geklärte Position wieder." },
+        { command: "/trust, /troll, /untrust <Nutzer>", description: "Moderiert die Beiträge eines Teilnehmers; vertrauenswürdige Unterstützung wird in den Kandidatenlisten von /resolve hervorgehoben." },
+        { command: "/kick <Nutzer>", description: "Entfernt einen Teilnehmer aus dem Event." },
+        { command: "/promote <Nutzer>", description: "Überträgt die Administratorrolle an einen anderen, bereits im Event befindlichen Teilnehmer; markiert ihn ebenfalls als vertrauenswürdig, genau wie /newevent es für den eigenen Administrator tut." },
+        { command: "/claim", description: "Versucht, die Administratorrolle zu übernehmen, wenn der aktuelle Administrator seit 30+ Minuten inaktiv ist; er hat 5 Minuten Zeit, zuzustimmen, abzulehnen oder nicht zu reagieren, bevor es vollzogen wird." },
+        { command: "/verify <passcode>", description: "Der einzige Weg, ein Event abzuschließen: füge einen am Einlöse-Bildschirm des Spiels als korrekt bestätigten Passcode ein; klärt daraus alle Positionen auf einmal, friert das Event ein und verkündet allen den finalen Passcode." },
+      ],
+    },
+  ],
+  footerLanguages: "Verfügbar auf Deutsch, Englisch, Katalanisch, Spanisch, Französisch, Galicisch, Baskisch, Portugiesisch und Italienisch.",
+  footerSource: "Quellcode auf GitHub",
+};
+
+const content: Record<SupportedLanguage, LandingContent> = { en, ca, es, fr, gl, eu, pt, it, de };
 
 function escapeHtml(text: string): string {
   return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

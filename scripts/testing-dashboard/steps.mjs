@@ -38,20 +38,20 @@ export const steps = [
     id: '0.3', phase: 0, agents: ['A', 'B', 'C', 'D'],
     action: '/language {{me.langTarget}}',
     expected:
-      "Confirmació en el NOU idioma; els missatges ja enviats no canvien. L'idioma suggerit a cada agent es calcula a partir del que ja tenia detectat al pas 0.1 (taula users) i és sempre diferent del seu; entre els 4 agents es couen 4 idiomes diferents entre si d'entre els 6 suportats (en/ca/es/fr/gl/eu) sempre que sigui possible — només no ho és si els 4 ja tenien exactament el mateix idioma de partida.",
+      "Confirmació en el NOU idioma; els missatges ja enviats no canvien. L'idioma suggerit a cada agent es calcula a partir del que ja tenia detectat al pas 0.1 (taula users) i és sempre diferent del seu; entre els 4 agents es couen 4 idiomes diferents entre si d'entre els 9 suportats (en/ca/es/fr/gl/eu/pt/it/de) sempre que sigui possible — només no ho és si els 4 ja tenien exactament el mateix idioma de partida.",
     baselineSql: "SELECT user_id, language FROM users WHERE user_id IN ({{A}},{{B}},{{C}},{{D}})",
     currentSql: "SELECT user_id, language FROM users WHERE user_id IN ({{A}},{{B}},{{C}},{{D}})",
     // Computes, once per step (from the baseline just captured), a
     // per-agent target language different from that agent's own current
-    // one — a permutation of 4 of the 6 supported languages across
+    // one — a permutation of 4 of the 9 supported languages across
     // A/B/C/D when one exists, so a spread of distinct languages gets
     // exercised across the group (there are only 4 test agents, so a
-    // single run can't exercise all 6). Falls back to a single shared
+    // single run can't exercise all 9). Falls back to a single shared
     // different language only in the degenerate case where all 4 agents
     // already share the same current language (a permutation avoiding
     // everyone's own language is then impossible).
     prepare(baseline, ctx) {
-      const LANGS = ['en', 'ca', 'es', 'fr', 'gl', 'eu'];
+      const LANGS = ['en', 'ca', 'es', 'fr', 'gl', 'eu', 'pt', 'it', 'de'];
       const letters = ['A', 'B', 'C', 'D'];
       const cur = {};
       for (const l of letters) {
@@ -89,7 +89,7 @@ export const steps = [
   },
   {
     id: '0.4', phase: 0, agents: ['A'],
-    action: '/language de',
+    action: '/language pl',
     expected:
       "Codi no suportat: missatge d'error / ús, sense canviar l'idioma actual. Tot seguit, cadascú (A inclòs) estableix amb /language <codi> l'idioma amb què vol continuar la resta de les proves: el que li va tocar al pas 0.3, el seu original detectat al pas 0.1, o qualsevol altre — incloent-hi no fer res, per mantenir el del pas 0.3.",
     manual: true,

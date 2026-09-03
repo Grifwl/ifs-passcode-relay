@@ -29,7 +29,8 @@ codebase, and any conversation about the project must keep them distinct:
   This is the one thing that's actually called "code" (`codi`/`código`)
   in bot text, and only this.
 - **language code** — the two-letter argument to `/language <code>`
-  (`en`/`ca`/`es`/`fr`/`gl`/`eu`), unrelated to either of the above.
+  (`en`/`ca`/`es`/`fr`/`gl`/`eu`/`pt`/`it`/`de`), unrelated to either of
+  the above.
 
 If a conversation about this project — including with the human
 maintainer — uses "code"/"codi" ambiguously or where "passcode" is
@@ -132,7 +133,8 @@ is ever supplied.
 
 - **`users`** — one row per Telegram user who has ever interacted with the
   bot, independent of event membership.
-  `user_id` (PK, Telegram id), `language` (`en`|`ca`|`es`|`fr`|`gl`|`eu`),
+  `user_id` (PK, Telegram id), `language`
+  (`en`|`ca`|`es`|`fr`|`gl`|`eu`|`pt`|`it`|`de`),
   `created_at`.
 - **`events`** — an IFS event.
   `id` (PK), `code` (unique short join code, e.g. `7KPQ2M`), `name`,
@@ -723,7 +725,8 @@ future updates land.
 
 Every user has an independent, persistent language preference
 (`users.language`), defaulting to their Telegram `language_code` when it
-is one of the supported languages (`en`, `ca`, `es`, `fr`, `gl`, `eu`),
+is one of the supported languages (`en`, `ca`, `es`, `fr`, `gl`, `eu`,
+`pt`, `it`, `de`),
 else `en`.
 `/language <code>` changes it. The change is **not retroactive**: already
 sent messages are left as they were; only messages sent after the change
